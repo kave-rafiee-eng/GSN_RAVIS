@@ -12,7 +12,9 @@
 
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="../../../../tree_css.css">
+    <link rel="stylesheet" href="../../../tree_css.css">
+
+    <link rel="stylesheet" href="NUM_AND_TALK.css">
 
     <SCRIPT>
         function myFunction(){
@@ -49,7 +51,7 @@
 
 <div class=""   >
     <?php
-    include "../../../../navbar.php";
+    include "../../../navbar.php";
     ?>
 </div>
 
@@ -58,7 +60,7 @@
     <!-- left -->
     <div class="col-sm-3 "  >
         <?php
-        include "../../../../tree.php";
+        include "../../../tree.php";
         ?>
     </div>
 
@@ -88,28 +90,59 @@
 
 
         <!-- setting -->
-        <p>service type</p>
+        <p>NUM AND TALK</p>
         <div class="row " >
 
             <blockquote class="blockquote">
-                <p>نحوه سرویس دهی به طبقات</p>
+                <p>نمایش شاخص طبقات و سخنگو</p>
             </blockquote>
 
         </div>
 
-        <div class="row" >
 
-            <div class="input-group mb-3">
-                <form class="input-group mb-3" action="" method="get" >
-                    <span class="input-group-text" id="basic-addon1">OPEN DELAY</span>
-                    <input name="OPEN_DELAY" type="text" class="form-control" placeholder="0" aria-label="Username" aria-describedby="basic-addon1">
-                    <input  onmousemove="myFunction()"  type="submit">
-                </form>
-            </div>
+            <table class="fixed_header" >
+
+                <thead>
+                <tr>
+                    <th scope="col">FLOOR</th>
+                    <th scope="col">SL</th>
+                    <th scope="col">SR</th>
+                    <th scope="col">TALK</th>
+                </tr>
+                </thead>
+
+                <tbody  >
+
+                    <?php
+                        $i=0;
+                        for($i=0;$i<10;$i++ ){
+                            echo "<tr >";
+                            $floor = $i;
+                            echo "<th scope=\"row\">"."$floor"."</th>";
+
+                            echo "<td>";
+                            echo "<select onchange=\"myFunction()\" id=\"select\" name=\"choise\" class=\"form-select\" >";
+                            print_TALK_VALUE();
+                            echo "</select>" ;
+                            echo "</td>";
+                            echo "<td>";
+                            echo "<select onchange=\"myFunction()\" id=\"select\" name=\"choise\" class=\"form-select\" >";
+                            print_TALK_VALUE();
+                            echo "</select>" ;
+                            echo "</td>";
+                            echo "<td>";
+                            echo "<select onchange=\"myFunction()\" id=\"select\" name=\"choise\" class=\"form-select\" >";
+                            print_TALK_VALUE();
+                            echo "</select>" ;
+                            echo "</td>";
+                            echo "</tr>";
+
+                        }
+                    ?>
+                </tbody>
+            </table>
 
 
-
-        </div>
     </div>
 
 
@@ -173,3 +206,13 @@
 
 </html>
 
+<?php
+
+    function print_TALK_VALUE()
+    {
+        echo "<option value=\"G\">G</option>";
+        echo "<option value=\"P\">P</option>";
+        echo "<option value=\"P1\">P1</option>";
+    }
+
+?>

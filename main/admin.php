@@ -95,8 +95,8 @@
                 <div class="row" >
                     <form  action="" >
                         <select onchange="myFunction()" id="select" name="choise" class="form-select" aria-label="Default select example">
-                            <option value="1">COLLICTIVE DW</option>
-                            <option value="2">FULL COLLECTIVE</option>
+                            <option value="COLLICTIVE DW">COLLICTIVE DW</option>
+                            <option value="FULL COLLECTIVE">FULL COLLECTIVE</option>
                             <option value="3">PUSH BUTTON</option>
                         </select>
                         <input type="submit" value="Submit the form"/>
