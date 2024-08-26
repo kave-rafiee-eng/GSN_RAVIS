@@ -1,8 +1,7 @@
 <?php
 
-    $temp_serial=0;
-
-    if (isset($_COOKIE["temp_serial"])) $temp_serial = $_COOKIE["temp_serial"];
+    if (isset($_COOKIE["serial"])) $serial = $_COOKIE["serial"];
+    if (isset($_COOKIE["password"])) $password = $_COOKIE["password"];
 
     $pass_wrong=0;
     $serial_wrong=0;
@@ -12,8 +11,8 @@
         $serial = $_GET['serial'];
         $password = $_GET['password'];
 
-        setcookie("temp_serial", $serial, time() + 60, "/");
-        $temp_serial = $serial;
+        setcookie("serial", $serial, time() + (86400 * 30), "/");
+        setcookie("password", $password, time() + (86400 * 30), "/");
 
         include "../read.php";
 
@@ -27,7 +26,7 @@
                 setcookie("serial", $serial, time() + (86400 * 30), "/");
                 setcookie("password", $password, time() + (86400 * 30), "/");
 
-                header("location: ../index.php");
+                header("location: ../main/advance/general/service_type/service_type.php");
                 die();
 
             }
@@ -107,13 +106,15 @@
                                             <div class="col-12">
                                                 <label for="email" class="form-label">Serial number <span class="text-danger">*</span></label>
                                                 <input VALUE=<?php
-                                                    if( $temp_serial>0)echo $temp_serial;
+                                                    if( $serial>0)echo $serial;
                                                     else echo "-"; ?>
                                                        type="number" class="form-control" name="serial" id="serial" placeholder="----" required>
                                             </div>
                                             <div class="col-12">
                                                 <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="password" id="password" value="" required>
+                                                <input VALUE=<?php
+                                                if( $password>0)echo $password;
+                                                else echo "-"; ?> type="text" class="form-control" name="password" id="password" value="" required>
                                             </div>
                                             <div class="col-12">
                                                 <div class="form-check">

@@ -1,4 +1,69 @@
 
+<?php
+
+/*  setcookie("serial", $serial, time() + (86400 * 30), "/");
+  setcookie("password", $password, time() + (86400 * 30), "/");
+
+  header("location: ../index.php");
+  die();*/
+
+    if (isset($_COOKIE["serial"]))$serial= $_COOKIE["serial"];
+    if (isset($_COOKIE["password"]))$password = $_COOKIE["password"];
+
+    if( $serial == 100 && $password == 1234 ){ echo "user"; }
+    else{
+        header("location: ../login/login.php");
+        die();
+    }
+
+    if ( !empty($_GET["service_type"] )){
+
+        $service_type = $_GET['service_type'];
+        $type = "advance_settin";
+        $name = "general_service_type";
+
+        include "../read.php";
+
+        echo $service_type;
+
+        $serial=100;
+
+        $data_found=0;
+
+        $quary = "SELECT `id`, `serial`, `type`, `name`, `data` FROM `data` WHERE `serial` = '$serial'";
+        $resault=mysqli_query($con,$quary);
+        while( $page = mysqli_fetch_assoc($resault) ) {
+
+            if ($page['type'] == $type && $page['name'] == $name ) {
+
+                $id = $page['id'];
+
+                $quary = "UPDATE `data` SET `serial`='$serial',`type`='$type',`name`='$name',`data`='$service_type' WHERE `id` = '$id'";
+                $resault=mysqli_query($con,$quary);
+
+                echo "data_found".$id;
+
+                $data_found=1;
+                break;
+
+            }
+            else echo '.';
+        }
+
+        if( $data_found == 0 ){
+
+            $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`) VALUES ('','$serial','advance_settin','general_service_type','$service_type')";
+            $resault=mysqli_query($con,$quary);
+
+            echo "new_data";
+
+        }
+
+
+
+    }
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -94,10 +159,17 @@
 
                 <div class="row" >
                     <form  action="" >
-                        <select onchange="myFunction()" id="select" name="choise" class="form-select" aria-label="Default select example">
-                            <option value="COLLICTIVE DW">COLLICTIVE DW</option>
-                            <option value="FULL COLLECTIVE">FULL COLLECTIVE</option>
-                            <option value="3">PUSH BUTTON</option>
+                        <select  onchange="myFunction()" id="service_type" name="service_type" class="form-select" aria-label="Default select example">
+                            <option value="COLLICTIVE_DW">COLLICTIVE DW</option>
+                            <option value="FULL_COLLECTIVE">FULL COLLECTIVE</option>
+                            <option value="PUSH_BUTTON">PUSH BUTTON</option>>
+
+                            <option value="" selected="selected" hidden="hidden">
+                                <?php
+                                    echo "set :".$service_type;
+                                ?>
+                            </option>
+
                         </select>
                         <input type="submit" value="Submit the form"/>
                     </form>

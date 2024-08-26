@@ -11,6 +11,11 @@
                     </li>
 
                     <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="http://localhost/gsm_ravis/main/ADVANCE/GENERAL/service_type/service_type.php?">
+                            Sercive type</a>
+                    </li>
+
+                    <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="index.php">NUM & TALK</a>
                     </li>
 
