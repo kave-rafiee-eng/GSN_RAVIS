@@ -19,12 +19,13 @@
     $type = "advance_settin";
     $name = "general_service_type";
 
-    $quary = "SELECT `id`, `serial`, `type`, `name`, `data` FROM `data` WHERE `serial` = '$serial'";
+    $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
     $resault=mysqli_query($con,$quary);
     while( $page = mysqli_fetch_assoc($resault) ) {
 
         if ($page['type'] == $type && $page['name'] == $name ) {
 
+            $change = $page['change'];
             $id = $page['id'];
             $service_type = $page['data'];
             echo "data_found".$id;
@@ -36,26 +37,29 @@
         else echo '.';
     }
 
-    if ( !empty($_GET["service_type"] )){
+   // if ( !empty($_GET["service_type"] )){
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-        $service_type = $_GET['service_type'];
+        if( $_POST['service_type'] != $service_type ){
 
-        $quary = "UPDATE `data` SET `serial`='$serial',`type`='$type',`name`='$name',`data`='$service_type',`change`='1' WHERE `id` = '$id'";
-        $resault=mysqli_query($con,$quary);
+            $service_type = $_POST['service_type'];
 
-        echo $service_type;
-
-
-
-        if( $data_found == 0 ){
-
-            $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','advance_settin','general_service_type','$service_type','1')";
+            $quary = "UPDATE `data` SET `serial`='$serial',`type`='$type',`name`='$name',`data`='$service_type',`change`='1' WHERE `id` = '$id'";
             $resault=mysqli_query($con,$quary);
+            $change = 1;
 
-            echo "new_data";
+            echo $service_type;
+
+            if( $data_found == 0 ){
+
+                $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','advance_settin','general_service_type','$service_type','1')";
+                $resault=mysqli_query($con,$quary);
+                $change = 1;
+                echo "new_data";
+
+            }
 
         }
-
 
 
     }
@@ -75,6 +79,12 @@
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../../../tree_css.css">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
     <SCRIPT>
         function myFunction(){
@@ -99,22 +109,27 @@
 
         }
 
+        // Refresh the page after a delay of 3 seconds
+        setTimeout(function(){
+            location.reload();
+        }, 60000); // 3000 milliseconds = 3 seconds
 
     </SCRIPT>
 
 
 </head>
 
-<body>
+<body style="background-color: #F0F0F0;">
 
-<div class=""   >
-    <?php
-    include "../../../navbar.php";
-    ?>
-</div>
+
 
 <div class="row" style="font-family:Arial; "  >
 
+    <?php
+    include "../../../navbar.php";
+    ?>
+
+    <!-- left -->
     <div class="col-sm-3 "  >
         <?php
         include "../../../tree.php";
@@ -125,6 +140,7 @@
 
     </div>
 
+    <!-- center -->
     <div class="col-sm-4  "  >
 
         <div class="col-sm-1 " style="height: 5%"  >
@@ -145,6 +161,22 @@
             </div>
         </div>
 
+        <?php
+
+            if( $change == 1 ){
+
+                echo"<div class=\"spinner-grow text-primary\"   role=\"status\">";
+                    echo"<label style=\"color: black\"> update</label>";
+                    echo "<span class=\"visually-hidden\">Loading...</span>";
+                echo"</div> ";
+
+            }
+
+
+        ?>
+
+
+        <!-- setting -->
         <p>service type</p>
         <div class="row " >
 
@@ -155,20 +187,20 @@
         </div>
 
         <div class="row" >
-            <form  action="" >
+            <form  action="" method="post" >
                 <select  onchange="myFunction()" id="service_type" name="service_type" class="form-select" aria-label="Default select example">
                     <option value="COLLICTIVE_DW">COLLICTIVE DW</option>
                     <option value="FULL_COLLECTIVE">FULL COLLECTIVE</option>
                     <option value="PUSH_BUTTON">PUSH BUTTON</option>>
 
-                    <option value="" selected="selected" hidden="hidden">
+                    <option value="<?php echo $service_type; ?>" selected="selected" hidden="hidden">
                         <?php
-                        echo "set :".$service_type;
+                            echo "set : ".$service_type;
                         ?>
                     </option>
 
                 </select>
-                <input type="submit" value="Submit the form"/>
+                <input type="submit" value="Save"/>
             </form>
 
         </div>
@@ -181,10 +213,13 @@
 
     </div>
 
+    <!-- right -->
     <div class="col-sm-3 " style=" background-color: #504e51" >
 
         <div class="row" style="height: 2%" >
         </div>
+
+
 
         <div class="accordion accordion-flush" id="accordionFlushExample">
 
