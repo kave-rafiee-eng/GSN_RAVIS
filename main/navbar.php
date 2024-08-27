@@ -1,7 +1,4 @@
 
-
-
-
 <div class="container-fluid mt-3" style="background-color: #99775C">
     <br>
     <h3>Sticky Navbar</h3>
@@ -26,8 +23,8 @@
     </div>
 </nav>
 
-<!--
 
+<!--
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Sticky top</a>

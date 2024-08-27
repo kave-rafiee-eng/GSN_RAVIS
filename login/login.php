@@ -1,7 +1,9 @@
 <?php
 
     if (isset($_COOKIE["serial"])) $serial = $_COOKIE["serial"];
+    else $serial=0;
     if (isset($_COOKIE["password"])) $password = $_COOKIE["password"];
+    else $password=0;
 
     $pass_wrong=0;
     $serial_wrong=0;
@@ -37,8 +39,6 @@
         }
         else { $serial_wrong=1; $temp_serial=0; }
     }
-
-
 
 ?>
 
@@ -114,7 +114,7 @@
                                                 <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
                                                 <input VALUE=<?php
                                                 if( $password>0)echo $password;
-                                                else echo "-"; ?> type="text" class="form-control" name="password" id="password" value="" required>
+                                                else echo "-"; ?> type="number" class="form-control" name="password" id="password" value="" required>
                                             </div>
                                             <div class="col-12">
                                                 <div class="form-check">
@@ -172,4 +172,8 @@
                 </section>
     </body>
 </html>
+
+
+
+
 
