@@ -53,13 +53,17 @@ function print_TALK_VALUE($num)
 
         $data_found=0;
         while( $page = mysqli_fetch_assoc($resault) ) {
-            if ($page['type'] == $type && $page['name'] == $name ) $data_found=1;
+            if ($page['type'] == $type && $page['name'] == $name ) {
+                $data_found = 1;
+                
+            }
         }
 
         if( $data_found == 0 ){
             $data = "L".$i_floor;
             $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','$type','$name','$data','1')";
             $resault=mysqli_query($con,$quary);
+            $chang=1;
         }
     }
 
@@ -80,6 +84,7 @@ for($i_floor=1;$i_floor<$num_floor;$i_floor++ ){
         $data = "L".$i_floor;
         $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','$type','$name','$data','1')";
         $resault=mysqli_query($con,$quary);
+        $chang=1;
     }
 }
 for($i_floor=1;$i_floor<$num_floor;$i_floor++ ){
@@ -99,6 +104,7 @@ for($i_floor=1;$i_floor<$num_floor;$i_floor++ ){
         $data = "L".$i_floor;
         $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','$type','$name','$data','1')";
         $resault=mysqli_query($con,$quary);
+        $chang=1;
     }
 }
 // if ( !empty($_GET["service_type"] )){
@@ -243,7 +249,7 @@ include "../../../../Sidebar.php";
                                                 echo "</select>" ;
                                             echo "</td>";
 
-                                            echo "<td style='background-color: whitesmoke'>";
+                                            echo "<td style='background-color: antiquewhite'>";
                                                 echo "<select  id=\"select\" name=\"sr$i_floor\" class=\"form-select\" >";
                                                     $type = "advance_settin";
                                                     $name = "general*num_and_talk*floor$i_floor*sr";
@@ -260,7 +266,7 @@ include "../../../../Sidebar.php";
                                                 echo "</select>" ;
                                             echo "</td>";
 
-                                            echo "<td style='background-color: whitesmoke'>";
+                                            echo "<td style='background-color: powderblue'>";
                                                 echo "<select  id=\"select\" name=\"talk$i_floor\" class=\"form-select\" >";
                                                     $type = "advance_settin";
                                                     $name = "general*num_and_talk*floor$i_floor*talk";

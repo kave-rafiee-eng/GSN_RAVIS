@@ -24,8 +24,6 @@ if( $pass_wrong == 1 ){
 //---------LOGIN_CHECK
 
 
-
-
     $data_found=0;
 
     $type = "advance_settin";
@@ -48,6 +46,15 @@ if( $pass_wrong == 1 ){
 
         }
         else echo '.';
+    }
+
+    if( $data_found == 0 ){
+
+        $service_type = "COLLICTIVE_DW";
+        $change = 1;
+        $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','advance_settin','general_service_type','COLLICTIVE_DW','1')";
+        $resault=mysqli_query($con,$quary);
+
     }
 
     // if ( !empty($_GET["service_type"] )){
