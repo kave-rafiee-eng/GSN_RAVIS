@@ -164,17 +164,22 @@
                                     $quary = "SELECT `id`, `serial`, `name`, `date`, `time` FROM `date_time` WHERE `serial` = '$serial'";
                                     $resault=mysqli_query($con,$quary);
 
+                                    $data_found=0;
                                     while( $page = mysqli_fetch_assoc($resault) ) {
 
                                         $last_date = $page['date'];
                                         $last_time = $page['time'];
+                                        $data_found=1;
                                     }
 
-                                    echo "<tr class=\"table-dark\" >";
-                                    echo "<td>".$serial."</td>";
-                                    echo "<td>".$last_date."</td>";
-                                    echo "<td>".$last_time."</td>";
-                                    echo "</tr> ";
+                                    if($data_found){
+                                        echo "<tr class=\"table-dark\" >";
+                                        echo "<td>".$serial."</td>";
+                                        echo "<td>".$last_date."</td>";
+                                        echo "<td>".$last_time."</td>";
+                                        echo "</tr> ";
+                                    }
+
 
                                 ?>
 
