@@ -23,33 +23,84 @@ if( $pass_wrong == 1 ){
 }
 //---------LOGIN_CHECK
 
+function print_TALK_VALUE($num)
+{
+    echo "<option value=\"GRN\">GRN</option>";
+    echo "<option value=\"PAR\">PAR</option>";
+    echo "<option value=\"PAR1\">PAR1</option>";
+    echo "<option value=\"PAR2\">PAR2</option>";
+    echo "<option value=\"ROOF\">ROOF</option>";
+    echo "<option value=\"B\">B</option>";
+    echo "<option value=\"B1\">B1</option>";
+    echo "<option value=\"B2\">B2</option>";
 
-
-
-$data_found=0;
-
-$type = "advance_settin";
-$name = "general_service_type";
-
-$quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
-$resault=mysqli_query($con,$quary);
-
-while( $page = mysqli_fetch_assoc($resault) ) {
-
-    if ($page['type'] == $type && $page['name'] == $name ) {
-
-        $change = $page['change'];
-        $id = $page['id'];
-        $service_type = $page['data'];
-        echo "data_found".$id;
-
-        $data_found=1;
-        break;
-
+    $J=1;
+    for($j=1;$j<$num;$j++){
+        echo "<option value=\"$j\">$j</option>";
     }
-    else echo '.';
 }
+    $num_floor=6;
 
+    $data_found=0;
+
+    for($i_floor=1;$i_floor<$num_floor;$i_floor++ ){
+
+        $type = "advance_settin";
+        $name = "general*num_and_talk*floor$i_floor*talk";
+
+        $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
+        $resault=mysqli_query($con,$quary);
+
+        $data_found=0;
+        while( $page = mysqli_fetch_assoc($resault) ) {
+            if ($page['type'] == $type && $page['name'] == $name ) $data_found=1;
+        }
+
+        if( $data_found == 0 ){
+            $data = "L".$i_floor;
+            $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','$type','$name','$data','1')";
+            $resault=mysqli_query($con,$quary);
+        }
+    }
+
+for($i_floor=1;$i_floor<$num_floor;$i_floor++ ){
+
+    $type = "advance_settin";
+    $name = "general*num_and_talk*floor$i_floor*sl";
+
+    $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
+    $resault=mysqli_query($con,$quary);
+
+    $data_found=0;
+    while( $page = mysqli_fetch_assoc($resault) ) {
+        if ($page['type'] == $type && $page['name'] == $name ) $data_found=1;
+    }
+
+    if( $data_found == 0 ){
+        $data = "L".$i_floor;
+        $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','$type','$name','$data','1')";
+        $resault=mysqli_query($con,$quary);
+    }
+}
+for($i_floor=1;$i_floor<$num_floor;$i_floor++ ){
+
+    $type = "advance_settin";
+    $name = "general*num_and_talk*floor$i_floor*sr";
+
+    $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
+    $resault=mysqli_query($con,$quary);
+
+    $data_found=0;
+    while( $page = mysqli_fetch_assoc($resault) ) {
+        if ($page['type'] == $type && $page['name'] == $name ) $data_found=1;
+    }
+
+    if( $data_found == 0 ){
+        $data = "L".$i_floor;
+        $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','$type','$name','$data','1')";
+        $resault=mysqli_query($con,$quary);
+    }
+}
 // if ( !empty($_GET["service_type"] )){
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -73,6 +124,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -115,37 +168,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     * Author: BootstrapMade.com
     * License: https://bootstrapmade.com/license/
     ======================================================== -->
-    <SCRIPT>
-
-        function myFunction() {
-
-            var select = document.getElementById("select").value;
-
-            if( select == "COLLICTIVE_DW" ){
-                document.getElementById("alert_text").innerHTML = "اولویت بر اساس انتخاب طبقه از بالا به پایین";
-            }
-            else if(select=="FULL_COLLECTIVE"){
-                document.getElementById("alert_text").innerHTML = "بدون اولویت سرویس دهی به نزدیک ترین طبقه";
-            }
-            else if( select== "PUSH_BUTTON" ){
-                document.getElementById("alert_text").innerHTML = "دستی";
-            }
-
-            //document.getElementById("alert").innerHTML = document.getElementById("select").value;
-            var x = document.getElementById("alert");
-
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            }
-
-        }
-
-        // Refresh the page after a delay of 3 seconds
-       /* setTimeout(function(){
-            location.reload();
-        }, 15000); // 3000 milliseconds = 3 seconds*/
-
-    </SCRIPT>
 
 </head>
 
@@ -197,29 +219,61 @@ include "../../../../Sidebar.php";
                             <tbody>
 
                                 <?php
-                                    $i=0;
-                                    for($i=0;$i<10;$i++ ){
+                                    $i_floor=1;
+                                    for($i_floor=1;$i_floor<$num_floor;$i_floor++ ){
 
                                         echo "<tr >";
 
-                                        $floor = $i;
-                                            echo "<th class=\"table-active\" scope=\"row\">"."$floor"."</th>";
+                                            echo "<th class=\"table-active\" scope=\"row\">"."$i_floor"."</th>";
 
-                                            echo "<td style='background-color: wheat'>";
-                                                echo "<select  id=\"select\" name=\"SL$floor\" class=\"form-select\" >";
-                                                print_TALK_VALUE();
+                                            echo "<td style='background-color: whitesmoke'>";
+                                                echo "<select  id=\"select\" name=\"sl$i_floor\" class=\"form-select\" >";
+                                                    $type = "advance_settin";
+                                                    $name = "general*num_and_talk*floor$i_floor*sl";
+
+                                                    $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
+                                                    $resault=mysqli_query($con,$quary);
+
+                                                    $data_found=0;
+                                                    while( $page = mysqli_fetch_assoc($resault) ) {
+                                                        if ($page['type'] == $type && $page['name'] == $name ) $data=$page['data'];
+                                                    }
+                                                    echo "<option selected='selected' value=\"$data\">$data</option>";
+                                                    print_TALK_VALUE($num_floor);
                                                 echo "</select>" ;
                                             echo "</td>";
 
                                             echo "<td style='background-color: whitesmoke'>";
-                                                echo "<select  id=\"select\" name=\"SR$floor\" class=\"form-select\" >";
-                                                print_TALK_VALUE();
+                                                echo "<select  id=\"select\" name=\"sr$i_floor\" class=\"form-select\" >";
+                                                    $type = "advance_settin";
+                                                    $name = "general*num_and_talk*floor$i_floor*sr";
+
+                                                    $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
+                                                    $resault=mysqli_query($con,$quary);
+
+                                                    $data_found=0;
+                                                    while( $page = mysqli_fetch_assoc($resault) ) {
+                                                        if ($page['type'] == $type && $page['name'] == $name ) $data=$page['data'];
+                                                    }
+                                                    echo "<option selected='selected' value=\"$data\">$data</option>";
+                                                    print_TALK_VALUE($num_floor);
                                                 echo "</select>" ;
                                             echo "</td>";
 
-                                            echo "<td style='background-color: honeydew'>";
-                                                echo "<select  id=\"select\" name=\"TALK$floor\" class=\"form-select\" >";
-                                                print_TALK_VALUE();
+                                            echo "<td style='background-color: whitesmoke'>";
+                                                echo "<select  id=\"select\" name=\"talk$i_floor\" class=\"form-select\" >";
+                                                    $type = "advance_settin";
+                                                    $name = "general*num_and_talk*floor$i_floor*talk";
+
+                                                    $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
+                                                    $resault=mysqli_query($con,$quary);
+
+                                                    $data_found=0;
+                                                    while( $page = mysqli_fetch_assoc($resault) ) {
+                                                        if ($page['type'] == $type && $page['name'] == $name ) $data=$page['data'];
+                                                    }
+                                                    echo "<option selected='selected' value=\"$data\">$data</option>";
+                                                    print_TALK_VALUE($num_floor);
                                                 echo "</select>" ;
                                             echo "</td>";
 
@@ -342,26 +396,6 @@ include "../../../../Sidebar.php";
 include "../../../../Footer.php";
 ?>
 
-<?php
-
-    function print_TALK_VALUE()
-    {
-        echo "<option value=\"GRN\">GRN</option>";
-        echo "<option value=\"PAR\">PAR</option>";
-        echo "<option value=\"PAR1\">PAR1</option>";
-        echo "<option value=\"PAR2\">PAR2</option>";
-        echo "<option value=\"ROOF\">ROOF</option>";
-        echo "<option value=\"B\">B</option>";
-        echo "<option value=\"B1\">B1</option>";
-        echo "<option value=\"B2\">B2</option>";
-
-        $J=1;
-        for($j=1;$j<10;$j++){
-            echo "<option value=\"$j\">$j</option>";
-        }
-    }
-
-?>
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
