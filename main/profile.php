@@ -66,6 +66,16 @@
     }
 
 
+    if ( !empty($_GET["information"] )){
+
+        $information = $_GET['information'];
+        $address = $_GET['address'];
+        $phone_number = $_GET['phone_number'];
+
+        $quary = "UPDATE `project` SET `information`='$information' ,`address`='$address' ,`phone_number`='$phone_number' WHERE `serial` = '$serial'";
+        $resault=mysqli_query($con,$quary);
+
+    }
 
 ?>
 
@@ -219,7 +229,7 @@ include "../Sidebar.php";
                             <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                                 <!-- Profile Edit Form -->
-                                <form method="post" action="">
+                                <form method="get" action="">
 
                                     <div class="row mb-3">
                                         <label for="about" class="col-md-4 col-lg-3 col-form-label">information</label>
@@ -236,9 +246,9 @@ include "../Sidebar.php";
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+                                        <label for="phone_number" class="col-md-4 col-lg-3 col-form-label">Phone</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="phone" type="text" class="form-control" id="Phone" value="<?php echo $phone_number;?>" >
+                                            <input name="phone_number" type="text" class="form-control" id="Phone" value="<?php echo $phone_number;?>" >
                                         </div>
                                     </div>
 

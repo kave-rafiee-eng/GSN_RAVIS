@@ -191,11 +191,11 @@
 
                         <table class="table datatable">
                             <thead>
-                            <tr>
-                                <th>Serial</th>
-                                <th data-type="date" data-format="YYYY/DD/MM">Date</th>
-                                <th data-type="time" >Time</th>
-                            </tr>
+                                <tr>
+                                    <th>Serial</th>
+                                    <th data-type="date" data-format="YYYY/DD/MM">Date</th>
+                                    <th data-type="time" >Time</th>
+                                </tr>
                             </thead>
                             <tbody>
 

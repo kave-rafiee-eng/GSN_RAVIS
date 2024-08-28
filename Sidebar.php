@@ -23,7 +23,7 @@
                 <!-- End Service Type Nav -->
 
                 <li>
-                    <a href="">
+                    <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/NUM_AND_TALK/num_and_talk_bs.php">
                         <i class="bi bi-circle"></i><span>Num & Talk</span>
                     </a>
                 </li>
