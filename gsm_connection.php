@@ -25,6 +25,20 @@
             }
             else echo '.';
         }
+
+
+        date_default_timezone_set("Asia/Tehran");
+        //echo "Today is " . date("Y/m/d") . "<br>";
+        //echo "The time is " . date("h:i:sa");
+
+        include "read.php";
+
+        $date = date("Y/m/d");
+        $time = date("h:i:sa");
+
+        $quary = "INSERT INTO `date_time`(`id`, `serial`, `name`, `date`, `time`) VALUES ('','$serial','gsm_last_connect','$date','$time')";
+        $resault=mysqli_query($con,$quary);
+
     }
 
 ?>

@@ -1,18 +1,30 @@
 
 <?php
 
-    if (isset($_COOKIE["serial"]))$serial= $_COOKIE["serial"];
-    else $serial=0;
-    if (isset($_COOKIE["password"]))$password = $_COOKIE["password"];
-    else $password =0;
+if (isset($_COOKIE["serial"]))$serial= $_COOKIE["serial"];
+else $serial=0;
+if (isset($_COOKIE["password"]))$password = $_COOKIE["password"];
+else $password =0;
 
-    if( $serial == 100 && $password == 1234 ){ echo "user"; }
-    else{
-        header("location: ../../../../login/login_bs.php");
-        die();
-    }
+include "../../../../read.php";
 
-    include "../../../../read.php";
+$quary = "SELECT `password`, `phone_number`, `address`, `information`, `serial` FROM `project` WHERE  `serial` = '$serial'";
+$resault=mysqli_query($con,$quary);
+
+$pass_wrong=1;
+
+if( $page = mysqli_fetch_assoc($resault) ) {
+    if ($page['password'] == $password)$pass_wrong=0;
+}
+
+if( $pass_wrong == 1 ){
+    header("location: /GSM_RAVIS/login/login_bs.php");
+    die();
+}
+//---------LOGIN_CHECK
+
+
+
 
     $data_found=0;
 
@@ -159,7 +171,7 @@
 
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="/GSM_RAVIS/main/home.php">Home</a></li>
                 <li class="breadcrumb-item">General</li>
                 <li class="breadcrumb-item active">Service Type</li>
             </ol>

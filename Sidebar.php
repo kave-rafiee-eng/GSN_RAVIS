@@ -16,7 +16,7 @@
             </a>
             <ul id="General-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="">
+                    <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/SERVICE_TYPE/service_type_bs.php">
                         <i class="bi bi-circle"></i><span>Service Type</span>
                     </a>
                 </li>

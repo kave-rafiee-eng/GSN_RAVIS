@@ -1,5 +1,6 @@
 <?php
 
+
     if (isset($_COOKIE["serial"])) $serial = $_COOKIE["serial"];
     else $serial=0;
     if (isset($_COOKIE["password"])) $password = $_COOKIE["password"];
@@ -28,12 +29,11 @@
                 setcookie("serial", $serial, time() + (86400 * 30), "/");
                 setcookie("password", $password, time() + (86400 * 30), "/");
 
-                header("location: ../main/ADVANCE/GENERAL/SERVICE_TYPE/service_type_bs.php");
+                header("location: /GSM_RAVIS/main/home.php");
                 die();
 
             }
             else{
-
                 $pass_wrong=1;
             }
         }
@@ -139,18 +139,18 @@
                                         <label for="yourUsername" class="form-label">Serial</label>
                                         <div class="input-group has-validation">
                                             <span class="input-group-text" id="inputGroupPrepend">number</span>
-                                            <input VALUE=<?php
-                                            if( $serial>0)echo $serial;
-                                            else echo "-"; ?> type="text" name="serial" class="form-control" id="yourUsername" required>
+                                            <input
+                                                <?php if( $serial>0)echo "VALUE=".$serial; ?>
+                                            type="text" name="serial" class="form-control" id="yourUsername" required>
                                             <div class="invalid-feedback">Please enter your Serial.</div>
                                         </div>
                                     </div>
 
                                     <div class="col-12">
                                         <label for="yourPassword" class="form-label">Password</label>
-                                        <input VALUE=<?php
-                                        if( $password>0)echo $password;
-                                        else echo "-"; ?> type="password" name="password" class="form-control" id="yourPassword" required>
+                                        <input
+                                            <?php if( $password>0)echo "VALUE=".$password; ?>
+                                        type="password" name="password" class="form-control" id="yourPassword" required>
                                         <div class="invalid-feedback">Please enter your password!</div>
                                     </div>
 

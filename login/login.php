@@ -28,7 +28,7 @@
                 setcookie("serial", $serial, time() + (86400 * 30), "/");
                 setcookie("password", $password, time() + (86400 * 30), "/");
 
-                header("location: ../main/advance/general/service_type/SERVICE_TYPE.php");
+                header("location: /GSM_RAVIS/main/home.php");
                 die();
 
             }

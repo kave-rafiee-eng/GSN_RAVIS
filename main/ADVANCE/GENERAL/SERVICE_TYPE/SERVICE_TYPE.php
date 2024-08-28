@@ -106,9 +106,6 @@
             else if( x== 3 ){
                 document.getElementById("my_alert").innerHTML = "دستی";
             }
-
-
-
         }
 
         // Refresh the page after a delay of 3 seconds
