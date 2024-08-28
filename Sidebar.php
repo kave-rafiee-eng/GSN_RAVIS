@@ -4,7 +4,7 @@
     <ul class="sidebar-nav  bg-light-subtle " id="sidebar-nav">
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="index.html">
+            <a class="nav-link collapsed" href="">
                 <i class="bi bi-bezier2 "></i>
                 <span>Dashboard</span>
             </a>
@@ -16,21 +16,21 @@
             </a>
             <ul id="General-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="components-tooltips.html">
+                    <a href="">
                         <i class="bi bi-circle"></i><span>Service Type</span>
                     </a>
                 </li>
                 <!-- End Service Type Nav -->
 
                 <li>
-                    <a href="components-tooltips.html">
+                    <a href="">
                         <i class="bi bi-circle"></i><span>Num & Talk</span>
                     </a>
                 </li>
                 <!-- End Num & Talk Nav -->
 
                 <li>
-                    <a href="components-tooltips.html">
+                    <a href="">
                         <i class="bi bi-circle"></i><span>Travel Time</span>
                     </a>
                 </li>
@@ -42,21 +42,21 @@
                     </a>
                     <ul id="door-a" class="nav-content collapse " >
                         <li>
-                            <a href="components-tooltips.html">
+                            <a href="">
                                 <i class="bi bi-circle"></i>
                                 <i class="bi bi-circle"></i><span>Door Time</span>
                             </a>
                         </li><!-- End Door Time Time -->
 
                         <li>
-                            <a href="components-tooltips.html">
+                            <a href="">
                                 <i class="bi bi-circle"></i>
                                 <i class="bi bi-circle"></i><span>Cotrol Type</span>
                             </a>
                         </li><!-- End Cotrol Type Time -->
 
                         <li>
-                            <a href="components-tooltips.html">
+                            <a href="">
                                 <i class="bi bi-circle"></i>
                                 <i class="bi bi-circle"></i><span>Second Door</span>
                             </a>
@@ -74,28 +74,28 @@
         <li class="nav-heading">Pages</li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="users-profile.html">
+            <a class="nav-link collapsed" href="">
                 <i class="bi bi-person"></i>
                 <span>Profile</span>
             </a>
         </li><!-- End Profile Page Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-contact.html">
+            <a class="nav-link collapsed" href="">
                 <i class="bi bi-envelope"></i>
                 <span>Contact</span>
             </a>
         </li><!-- End Contact Page Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-register.html">
+            <a class="nav-link collapsed" href="">
                 <i class="bi bi-card-list"></i>
                 <span>Register</span>
             </a>
         </li><!-- End Register Page Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-login.html">
+            <a class="nav-link collapsed" href="">
                 <i class="bi bi-box-arrow-in-right"></i>
                 <span>Login</span>
             </a>

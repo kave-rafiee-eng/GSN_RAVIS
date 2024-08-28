@@ -28,7 +28,7 @@
                 setcookie("serial", $serial, time() + (86400 * 30), "/");
                 setcookie("password", $password, time() + (86400 * 30), "/");
 
-                header("location: ../main/advance/general/service_type/SERVICE_TYPE.php");
+                header("location: ../main/ADVANCE/GENERAL/SERVICE_TYPE/service_type_bs.php");
                 die();
 
             }
@@ -107,7 +107,7 @@
                             if( $serial_wrong || $pass_wrong ){
                                 echo"<div  id=\"liveToast\" class=\"col-4 \" style=\"  width: 100%  \">";
 
-                                    echo "<div class=\"alert alert-primary  alert-dismissible fade show \" role=\"alert\" >";
+                                    echo "<div class=\"alert alert-warning  alert-dismissible fade show \" role=\"alert\" >";
 
                                         echo "<strong class=\"me-auto\">Error</strong>";
                                         echo "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>";
