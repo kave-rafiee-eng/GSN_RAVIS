@@ -22,124 +22,54 @@ if( $pass_wrong == 1 ){
     die();
 }
 //---------LOGIN_CHECK
-
-
-function read_data($con,$serial,$type,$name,$data_init)
-{
-    $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
-    $resault=mysqli_query($con,$quary);
-    $data_found=0;
-    while( $page = mysqli_fetch_assoc($resault) ) {
-        if ($page['type'] == $type && $page['name'] == $name ) {
-            $data = $page['data'];
-            return $data;
-        }
-    }
-    if( $data_found == 0 ){
-        $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','$type','$name','$data_init','1')";
-        mysqli_query($con,$quary);
-        return $data_init;
-    }
-}
-
-function update_data($con,$serial,$type,$name,$data)
-{
-    $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
-    $resault=mysqli_query($con,$quary);
-    $data_found=0;
-    while( $page = mysqli_fetch_assoc($resault) ) {
-        if ($page['type'] == $type && $page['name'] == $name ) {
-            $id = $page['id'];
-            $last_data = $page['data'];
-        }
-    }
-    if( $last_data != $data ) {
-        $quary = "UPDATE `data` SET `serial`='$serial',`type`='$type',`name`='$name',`data`='$data',`change`='1' WHERE `id` = '$id'";
-        $resault=mysqli_query($con,$quary);
-    }
-}
-
 $change=0;
 
-//-------------------------------------------------OPEN DELAY
-$add = "open_delay";
-$open_delay = read_data($con,$serial,"advance_settin","general*door_time*$add",0);
+$open_delay=0;
+$type = "advance_settin";
+$name = "general*door_time*open_delay";
+
+$quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
+$resault=mysqli_query($con,$quary);
+
+$data_found=0;
+while( $page = mysqli_fetch_assoc($resault) ) {
+
+    if ($page['type'] == $type && $page['name'] == $name ) {
+
+        $change = $page['change'];
+        $id_open_delay = $page['id'];
+        $open_delay = $page['data'];
+        $data_found=1;
+    }
+}
+
+if( $data_found == 0 ){
+    $data = $open_delay;
+    $number_of_stop = 5;
+    $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','$type','$name','$data','1')";
+    $resault=mysqli_query($con,$quary);  $change = 1;
+}
+else{
+
+    // if ( !empty($_GET["service_type"] )){
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if( !empty($_POST[$add] )  ){
-            $open_delay = $_POST[$add];
-            update_data($con,$serial,"advance_settin","general*door_time*$add",$open_delay);
-            $change = 1;
+
+        if( !empty($_POST['open_delay'] )  ){
+
+            if( $_POST['open_delay'] != $open_delay ){
+
+                $open_delay = $_POST['open_delay'];
+
+                $data = $open_delay;
+                $quary = "UPDATE `data` SET `serial`='$serial',`type`='$type',`name`='$name',`data`='$data',`change`='1' WHERE `id` = '$id'";
+                $resault=mysqli_query($con,$quary);
+                $change = 1;
+
+            }
+
         }
     }
-//-------------------------------------------------CLOSE DELAY
-$add = "close_delay";
-$close_delay = read_data($con,$serial,"advance_settin","general*door_time*$add",0);
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if( !empty($_POST[$add] )  ){
-        $close_delay = $_POST[$add];
-        update_data($con,$serial,"advance_settin","general*door_time*$add",$close_delay);
-        $change = 1;
-    }
-}
-//-------------------------------------------------END DOOR TIME
-$add = "end_door_time";
-$end_door_time = read_data($con,$serial,"advance_settin","general*door_time*$add",0);
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if( !empty($_POST[$add] )  ){
-        $end_door_time = $_POST[$add];
-        update_data($con,$serial,"advance_settin","general*door_time*$add",$end_door_time);
-        $change = 1;
-    }
-}
-//-------------------------------------------------CLOSE TIME OUT
-$add = "close_time_out";
-$close_time_out = read_data($con,$serial,"advance_settin","general*door_time*$add",0);
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if( !empty($_POST[$add] )  ){
-        $close_time_out = $_POST[$add];
-        update_data($con,$serial,"advance_settin","general*door_time*$add",$close_time_out);
-        $change = 1;
-    }
-}
-//-------------------------------------------------DOOR PARK
-$add = "door_park";
-$door_park = read_data($con,$serial,"advance_settin","general*door_time*$add",0);
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if( !empty($_POST[$add] )  ){
-        $door_park = $_POST[$add];
-        update_data($con,$serial,"advance_settin","general*door_time*$add",$door_park);
-        $change = 1;
-    }
-}
-//-------------------------------------------------DEBOUNCE_69
-$add = "debounce_69";
-$debounce_69 = read_data($con,$serial,"advance_settin","general*door_time*$add",0);
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if( !empty($_POST[$add] )  ){
-        $debounce_69 = $_POST[$add];
-        update_data($con,$serial,"advance_settin","general*door_time*$add",$debounce_69);
-        $change = 1;
-    }
-}
-//-------------------------------------------------DEBOUNCE_68
-$add = "debounce_68";
-$debounce_68 = read_data($con,$serial,"advance_settin","general*door_time*$add",0);
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if( !empty($_POST[$add] )  ){
-        $debounce_68 = $_POST[$add];
-        update_data($con,$serial,"advance_settin","general*door_time*$add",$debounce_68);
-        $change = 1;
-    }
-}
-//-------------------------------------------------DOOR OPEN TIME
-$add = "door_open_time";
-$door_open_time = read_data($con,$serial,"advance_settin","general*door_time*$add",0);
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if( !empty($_POST[$add] )  ){
-        $door_open_time = $_POST[$add];
-        update_data($con,$serial,"advance_settin","general*door_time*$add",$door_open_time);
-        $change = 1;
-    }
+
 }
 
 
@@ -245,7 +175,7 @@ include "../../../../../Sidebar.php";
 
                 <div class="card"  >
                     <div class="card-body ">
-                        <h5 class="card-title">Door Times</h5>
+                        <h5 class="card-title">Num Of Door</h5>
 
                         <!-- General Form Elements -->
                         <form method="post" action="" >
@@ -257,54 +187,6 @@ include "../../../../../Sidebar.php";
                                 </div>
                             </div>
 
-                            <div class="row mb-1">
-                                <label class="col-sm-4 col-form-label">Close Delay</label>
-                                <div class="col-sm-3">
-                                    <input oninput="myFunction(this)"  value="<?php echo $close_delay;?>" name="close_delay" type="number" class="form-control" id="close_delay" min="0" max="20">
-                                </div>
-                            </div>
-
-                            <div class="row mb-1">
-                                <label class="col-sm-4 col-form-label">End Door Time</label>
-                                <div class="col-sm-3">
-                                    <input oninput="myFunction(this)"  value="<?php echo $end_door_time;?>" name="end_door_time" type="number" class="form-control" id="end_door_time" min="0" max="10">
-                                </div>
-                            </div>
-
-                            <div class="row mb-1">
-                                <label class="col-sm-4 col-form-label">Close Time Out</label>
-                                <div class="col-sm-3">
-                                    <input oninput="myFunction(this)"  value="<?php echo $close_time_out;?>" name="close_time_out" type="number" class="form-control" id="close_time_out" min="0" max="200">
-                                </div>
-                            </div>
-
-                            <div class="row mb-1">
-                                <label class="col-sm-4 col-form-label">Door Park</label>
-                                <div class="col-sm-3">
-                                    <input oninput="myFunction(this)"  value="<?php echo $door_park;?>" name="door_park" type="number" class="form-control" id="door_park" min="0" max="250">
-                                </div>
-                            </div>
-
-                            <div class="row mb-1">
-                                <label class="col-sm-4 col-form-label">69 Debouncer</label>
-                                <div class="col-sm-3">
-                                    <input oninput="myFunction(this)"  value="<?php echo $debouncer_69;?>" name="debouncer_69" type="number" class="form-control" id="debouncer_69" min="0" max="3">
-                                </div>
-                            </div>
-
-                            <div class="row mb-1">
-                                <label class="col-sm-4 col-form-label">68 Debouncer</label>
-                                <div class="col-sm-3">
-                                    <input oninput="myFunction(this)"  value="<?php echo $debouncer_68;?>" name="debouncer_68" type="number" class="form-control" id="debouncer_68" min="0" max="3">
-                                </div>
-                            </div>
-
-                            <div class="row mb-1">
-                                <label class="col-sm-4 col-form-label">Door Open Time</label>
-                                <div class="col-sm-3">
-                                    <input oninput="myFunction(this)"  value="<?php echo $door_open_time;?>" name="door_open_time" type="number" class="form-control" id="door_open_time" min="0" max="200">
-                                </div>
-                            </div>
 
                             <div class="row mb-3" >
                                 <div class="col-sm-10">
@@ -314,10 +196,62 @@ include "../../../../../Sidebar.php";
 
                         </form><!-- End General Form Elements -->
 
+
+                            <table  class="table datatable text-center  ">
+                                <thead>
+                                <tr>
+                                    <th>FLOOR</th>
+                                    <th>D1</th>
+                                    <th>D2</th>
+                                    <th>D2</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <?php
+                                $num_floor = 3;
+                                $i_floor=1;
+                                for($i_floor=1;$i_floor<$num_floor;$i_floor++ ){
+
+                                    echo "<tr >";
+
+                                    echo "<th class=\"table-active\" scope=\"row\">"."$i_floor"."</th>";
+
+                                    echo "<td style='background-color: whitesmoke'>";
+                                    echo "<div  class=\"form-check form-switch  d-flex justify-content-center \">";
+                                    echo "<input  class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckDefault\">";
+                                    echo "<label class=\"form-check-label\" for=\"flexSwitchCheckDefault\"></label>";
+                                    echo "</div>";
+                                    echo "</td>";
+
+                                    echo "<td style='background-color: antiquewhite'>";
+                                    echo "<div  class=\"form-check form-switch  d-flex justify-content-center \">";
+                                    echo "<input  class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckDefault\">";
+                                    echo "<label class=\"form-check-label\" for=\"flexSwitchCheckDefault\"></label>";
+                                    echo "</div>";
+                                    echo "</td>";
+
+                                    echo "<td style='background-color: powderblue'>";
+                                    echo "<div  class=\"form-check form-switch  d-flex justify-content-center \">";
+                                    echo "<input  class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckDefault\">";
+                                    echo "<label class=\"form-check-label\" for=\"flexSwitchCheckDefault\"></label>";
+                                    echo "</div>";
+                                    echo "</td>";
+
+                                    echo "</tr>";
+
+                                }
+                                ?>
+
+                                </tbody>
+                            </table>
+
+
                         <div style="display: none;" id="alert" class="alert alert-primary bg-primary text-light border-0 alert-dismissible fade show" role="alert">
                             <div id="alert_text">A simple primary alert with solid color—check it out! </div>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
+
 
                     </div>
                 </div>

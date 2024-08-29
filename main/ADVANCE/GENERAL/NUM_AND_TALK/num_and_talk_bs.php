@@ -8,6 +8,7 @@ else $password =0;
 
 include "../../../../read.php";
 
+//--------- START <--LOGIN_CHECK-->
 $quary = "SELECT `password`, `phone_number`, `address`, `information`, `serial` FROM `project` WHERE  `serial` = '$serial'";
 $resault=mysqli_query($con,$quary);
 
@@ -21,8 +22,9 @@ if( $pass_wrong == 1 ){
     header("location: /GSM_RAVIS/login/login_bs.php");
     die();
 }
-//---------LOGIN_CHECK
+//--------- END <--LOGIN_CHECK-->
 
+$change=0;
 function print_TALK_VALUE($num)
 {
     echo "<option value=\"GRN\">GRN</option>";
@@ -34,15 +36,45 @@ function print_TALK_VALUE($num)
     echo "<option value=\"B1\">B1</option>";
     echo "<option value=\"B2\">B2</option>";
 
-    $J=1;
+    for($j=1;$j<$num;$j++){
+        echo "<option value=\"L$j\">L$j</option>";
+    }
+}
+
+function print_SRGMENT_VALUE($num)
+{
+    echo "<option value=\"G\">G</option>";
+    echo "<option value=\"P\">P</option>";
+    echo "<option value=\"P1\">P1</option>";
+    echo "<option value=\"P2\">P2</option>";
+    echo "<option value=\"R\">R</option>";
+    echo "<option value=\"B\">B</option>";
+    echo "<option value=\"B1\">B1</option>";
+    echo "<option value=\"B2\">B2</option>";
+
     for($j=1;$j<$num;$j++){
         echo "<option value=\"$j\">$j</option>";
     }
 }
-    $num_floor=6;
 
-    $data_found=0;
 
+$type = "advance_settin";
+$name = "general*number_of_stop";
+
+$quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
+$resault=mysqli_query($con,$quary);
+
+$data_found=0;
+$number_of_stop=1;
+while( $page = mysqli_fetch_assoc($resault) ) {
+    if ($page['type'] == $type && $page['name'] == $name ) {
+        $number_of_stop = $page['data'];
+    }
+}
+
+$num_floor = $number_of_stop+1;
+
+    // talk_data_found
     for($i_floor=1;$i_floor<$num_floor;$i_floor++ ){
 
         $type = "advance_settin";
@@ -53,83 +85,122 @@ function print_TALK_VALUE($num)
 
         $data_found=0;
         while( $page = mysqli_fetch_assoc($resault) ) {
-            if ($page['type'] == $type && $page['name'] == $name ) {
-                $data_found = 1;
-                
+            if ($page['type'] == $type && $page['name'] == $name ) $data_found = 1;
+        }
+
+        if( $data_found == 0 ){ echo "*";
+            $data = "L".$i_floor; $chang=1;
+            $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','$type','$name','$data','1')";
+            $resault=mysqli_query($con,$quary);
+        }
+
+    }
+    // sl_data_found
+    for($i_floor=1;$i_floor<$num_floor;$i_floor++ ){
+
+        $type = "advance_settin";
+        $name = "general*num_and_talk*floor$i_floor*sl";
+
+        $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
+        $resault=mysqli_query($con,$quary);
+
+        $data_found=0;
+        while( $page = mysqli_fetch_assoc($resault) )if ($page['type'] == $type && $page['name'] == $name ) $data_found=1;
+
+        if( $data_found == 0 ){
+            $data = $i_floor; $chang=1;
+            $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','$type','$name','$data','1')";
+            $resault=mysqli_query($con,$quary);
+        }
+    }
+    // sr_data_found
+    for($i_floor=1;$i_floor<$num_floor;$i_floor++ ){
+
+        $type = "advance_settin";
+        $name = "general*num_and_talk*floor$i_floor*sr";
+
+        $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
+        $resault=mysqli_query($con,$quary);
+
+        $data_found=0;
+        while( $page = mysqli_fetch_assoc($resault) ) if ($page['type'] == $type && $page['name'] == $name ) $data_found=1;
+
+        if( $data_found == 0 ){
+            $data = $i_floor; $chang=1;
+            $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','$type','$name','$data','1')";
+            $resault=mysqli_query($con,$quary);
+        }
+    }
+
+    if ( !empty($_GET )){
+    //if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        //--------- <--UPDATE SR-->
+        for($i_floor=1;$i_floor<$num_floor;$i_floor++ ) {
+
+            $type = "advance_settin";
+            $name = "general*num_and_talk*floor$i_floor*sr";
+            $form = "sr".$i_floor;
+            if( !empty($_GET[$form]) ){$data = $_GET[$form];
+
+                $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
+                $resault=mysqli_query($con,$quary);
+
+                $data_found=0;
+                while( $page = mysqli_fetch_assoc($resault) ) {
+                    if ($page['type'] == $type && $page['name'] == $name ) $id=$page['id'];
+                }
+
+                $quary = "UPDATE `data` SET `serial`='$serial',`type`='$type',`name`='$name',`data`='$data',`change`='1' WHERE `id` = '$id'";
+                $resault=mysqli_query($con,$quary); $change = 1;
+
             }
         }
 
-        if( $data_found == 0 ){
-            $data = "L".$i_floor;
-            $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','$type','$name','$data','1')";
-            $resault=mysqli_query($con,$quary);
-            $chang=1;
+        //--------- <--UPDATE SL-->
+        for($i_floor=1;$i_floor<$num_floor;$i_floor++ ) {
+
+            $type = "advance_settin";
+            $name = "general*num_and_talk*floor$i_floor*sl";
+            $form = "sl".$i_floor;
+            if( !empty($_GET[$form]) ){$data = $_GET[$form];
+
+                $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
+                $resault=mysqli_query($con,$quary);
+
+                $data_found=0;
+                while( $page = mysqli_fetch_assoc($resault) ) {
+                    if ($page['type'] == $type && $page['name'] == $name ) $id=$page['id'];
+                }
+
+                $quary = "UPDATE `data` SET `serial`='$serial',`type`='$type',`name`='$name',`data`='$data',`change`='1' WHERE `id` = '$id'";
+                $resault=mysqli_query($con,$quary); $change = 1;
+
+            }
+        }
+
+        //--------- <--UPDATE TALK-->
+        for($i_floor=1;$i_floor<$num_floor;$i_floor++ ) {
+
+            $type = "advance_settin";
+            $name = "general*num_and_talk*floor$i_floor*talk";
+            $form = "talk".$i_floor;
+            $form = "talk".$i_floor;
+            if( !empty($_GET[$form]) ){$data = $_GET[$form];
+
+                $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
+                $resault=mysqli_query($con,$quary);
+
+                $data_found=0;
+                while( $page = mysqli_fetch_assoc($resault) ) {
+                    if ($page['type'] == $type && $page['name'] == $name ) $id=$page['id'];
+                }
+
+                $quary = "UPDATE `data` SET `serial`='$serial',`type`='$type',`name`='$name',`data`='$data',`change`='1' WHERE `id` = '$id'";
+                $resault=mysqli_query($con,$quary); $change = 1;
+
+            }
         }
     }
-
-for($i_floor=1;$i_floor<$num_floor;$i_floor++ ){
-
-    $type = "advance_settin";
-    $name = "general*num_and_talk*floor$i_floor*sl";
-
-    $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
-    $resault=mysqli_query($con,$quary);
-
-    $data_found=0;
-    while( $page = mysqli_fetch_assoc($resault) ) {
-        if ($page['type'] == $type && $page['name'] == $name ) $data_found=1;
-    }
-
-    if( $data_found == 0 ){
-        $data = "L".$i_floor;
-        $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','$type','$name','$data','1')";
-        $resault=mysqli_query($con,$quary);
-        $chang=1;
-    }
-}
-for($i_floor=1;$i_floor<$num_floor;$i_floor++ ){
-
-    $type = "advance_settin";
-    $name = "general*num_and_talk*floor$i_floor*sr";
-
-    $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
-    $resault=mysqli_query($con,$quary);
-
-    $data_found=0;
-    while( $page = mysqli_fetch_assoc($resault) ) {
-        if ($page['type'] == $type && $page['name'] == $name ) $data_found=1;
-    }
-
-    if( $data_found == 0 ){
-        $data = "L".$i_floor;
-        $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','$type','$name','$data','1')";
-        $resault=mysqli_query($con,$quary);
-        $chang=1;
-    }
-}
-// if ( !empty($_GET["service_type"] )){
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    if( $_POST['service_type'] != $service_type ){
-
-        $service_type = $_POST['service_type'];
-
-        $quary = "UPDATE `data` SET `serial`='$serial',`type`='$type',`name`='$name',`data`='$service_type',`change`='1' WHERE `id` = '$id'";
-        $resault=mysqli_query($con,$quary);
-        $change = 1;
-
-        echo $service_type;
-
-        if( $data_found == 0 ){
-
-            $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','advance_settin','general_service_type','$service_type','1')";
-            $resault=mysqli_query($con,$quary);
-            $change = 1;
-            echo "new_data";
-
-        }
-    }
-}
 
 
 ?>
@@ -180,14 +251,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body  >
 
 
-
-
 <?php
-include "../../../../header.php";
+    include "../../../../header.php";
 ?>
 
 <?php
-include "../../../../Sidebar.php";
+    include "../../../../Sidebar.php";
 ?>
 
 <main  id="main" class="main">
@@ -211,7 +280,9 @@ include "../../../../Sidebar.php";
                 <div class="card"  >
                     <div class="card-body text-center">
                         <h5 class="card-title">num and talk</h5>
+                        <h2 class="card-title"><?php echo "number of stop :"."$number_of_stop"?></h2>
 
+                        <form method="get" action="">
                         <!-- last connect -->
                         <table class="table datatable text-center ">
                             <thead>
@@ -245,7 +316,7 @@ include "../../../../Sidebar.php";
                                                         if ($page['type'] == $type && $page['name'] == $name ) $data=$page['data'];
                                                     }
                                                     echo "<option selected='selected' value=\"$data\">$data</option>";
-                                                    print_TALK_VALUE($num_floor);
+                                                    print_SRGMENT_VALUE($num_floor);
                                                 echo "</select>" ;
                                             echo "</td>";
 
@@ -262,7 +333,7 @@ include "../../../../Sidebar.php";
                                                         if ($page['type'] == $type && $page['name'] == $name ) $data=$page['data'];
                                                     }
                                                     echo "<option selected='selected' value=\"$data\">$data</option>";
-                                                    print_TALK_VALUE($num_floor);
+                                                    print_SRGMENT_VALUE($num_floor);
                                                 echo "</select>" ;
                                             echo "</td>";
 
@@ -290,6 +361,14 @@ include "../../../../Sidebar.php";
 
                             </tbody>
                         </table>
+
+                            <div class="row mb-3" >
+                                <div class="col-sm-10">
+                                    <button type="submit" class="btn btn-primary">SAVE</button>
+                                </div>
+                            </div>
+
+                        </form>
 
                         <div style="display: none;" id="alert" class="alert alert-primary bg-primary text-light border-0 alert-dismissible fade show" role="alert">
                             <div id="alert_text">A simple primary alert with solid color—check it out! </div>
