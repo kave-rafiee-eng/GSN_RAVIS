@@ -112,22 +112,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 //-------------------------------------------------DEBOUNCE_69
-$add = "debounce_69";
-$debounce_69 = read_data($con,$serial,"advance_settin","general*door_time*$add",0);
+$add = "debouncer_69";
+$debouncer_69 = read_data($con,$serial,"advance_settin","general*door_time*$add",0);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if( !empty($_POST[$add] )  ){
-        $debounce_69 = $_POST[$add];
-        update_data($con,$serial,"advance_settin","general*door_time*$add",$debounce_69);
+        $debouncer_69 = $_POST[$add];
+        update_data($con,$serial,"advance_settin","general*door_time*$add",$debouncer_69);
         $change = 1;
     }
 }
 //-------------------------------------------------DEBOUNCE_68
-$add = "debounce_68";
-$debounce_68 = read_data($con,$serial,"advance_settin","general*door_time*$add",0);
+$add = "debouncer_68";
+$debouncer_68 = read_data($con,$serial,"advance_settin","general*door_time*$add",0);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if( !empty($_POST[$add] )  ){
-        $debounce_68 = $_POST[$add];
-        update_data($con,$serial,"advance_settin","general*door_time*$add",$debounce_68);
+        $debouncer_68 = $_POST[$add];
+        update_data($con,$serial,"advance_settin","general*door_time*$add",$debouncer_68);
         $change = 1;
     }
 }
@@ -403,7 +403,7 @@ include "../../../../../Sidebar.php";
 
 
 <?php
-include "/GSM_RAVIS/Footer.php";
+include "../../../../../Footer.php";
 ?>
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>

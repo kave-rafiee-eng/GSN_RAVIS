@@ -22,56 +22,61 @@ if( $pass_wrong == 1 ){
     die();
 }
 //---------LOGIN_CHECK
-$change=0;
 
-$open_delay=0;
-$type = "advance_settin";
-$name = "general*door_time*open_delay";
-
-$quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
-$resault=mysqli_query($con,$quary);
-
-$data_found=0;
-while( $page = mysqli_fetch_assoc($resault) ) {
-
-    if ($page['type'] == $type && $page['name'] == $name ) {
-
-        $change = $page['change'];
-        $id_open_delay = $page['id'];
-        $open_delay = $page['data'];
-        $data_found=1;
-    }
-}
-
-if( $data_found == 0 ){
-    $data = $open_delay;
-    $number_of_stop = 5;
-    $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','$type','$name','$data','1')";
-    $resault=mysqli_query($con,$quary);  $change = 1;
-}
-else{
-
-    // if ( !empty($_GET["service_type"] )){
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-        if( !empty($_POST['open_delay'] )  ){
-
-            if( $_POST['open_delay'] != $open_delay ){
-
-                $open_delay = $_POST['open_delay'];
-
-                $data = $open_delay;
-                $quary = "UPDATE `data` SET `serial`='$serial',`type`='$type',`name`='$name',`data`='$data',`change`='1' WHERE `id` = '$id'";
-                $resault=mysqli_query($con,$quary);
-                $change = 1;
-
-            }
-
+function read_data($con,$serial,$type,$name,$data_init)
+{
+    $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
+    $resault=mysqli_query($con,$quary);
+    $data_found=0;
+    while( $page = mysqli_fetch_assoc($resault) ) {
+        if ($page['type'] == $type && $page['name'] == $name ) {
+            $data = $page['data'];
+            return $data;
         }
     }
-
+    if( $data_found == 0 ){
+        $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','$type','$name','$data_init','1')";
+        mysqli_query($con,$quary);
+        return $data_init;
+    }
 }
 
+function update_data($con,$serial,$type,$name,$data)
+{
+    $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
+    $resault=mysqli_query($con,$quary);
+    $data_found=0;
+    while( $page = mysqli_fetch_assoc($resault) ) {
+        if ($page['type'] == $type && $page['name'] == $name ) {
+            $id = $page['id'];
+            $last_data = $page['data'];
+        }
+    }
+    if( $last_data != $data ) {
+        $quary = "UPDATE `data` SET `serial`='$serial',`type`='$type',`name`='$name',`data`='$data',`change`='1' WHERE `id` = '$id'";
+        mysqli_query($con,$quary);
+    }
+}
+
+//-------------------------------------------------NUM OF DOOR
+$add = "num_of_door";
+$num_of_door= read_data($con,$serial,"advance_settin","general*door*second_door*$add",1);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if( !empty($_POST[$add] )  ){
+        $num_of_door = $_POST[$add];
+        update_data($con,$serial,"advance_settin","general*door*second_door*$add",$num_of_door);
+        $change = 1;
+    }
+}
+//-------------------------------------------------NUM OF FLOOR
+$num_floor= read_data($con,$serial,"advance_settin","general*number_of_stop",1);
+
+for($i=1; $i<$num_floor+1; $i++){
+
+    if( $num_of_door > 0 )read_data($con,$serial,"advance_settin","general*door*door_select*d1f$i",1);
+    if( $num_of_door > 1 )read_data($con,$serial,"advance_settin","general*door*door_select*d2f$i",1);
+    if( $num_of_door > 2 )read_data($con,$serial,"advance_settin","general*door*door_select*d3f$i",1);
+}
 
 ?>
 
@@ -132,9 +137,9 @@ else{
         }
 
         // Refresh the page after a delay of 3 seconds
-        setTimeout(function(){
+        /*setTimeout(function(){
             location.reload();
-        }, 15000); // 3000 milliseconds = 3 seconds
+        }, 15000); // 3000 milliseconds = 3 seconds*/
 
 
 
@@ -148,7 +153,7 @@ else{
 
 
 <?php
-include "../../../../../header.php";
+//include "../../../../../header.php";
 ?>
 
 <?php
@@ -180,22 +185,19 @@ include "../../../../../Sidebar.php";
                         <!-- General Form Elements -->
                         <form method="post" action="" >
 
-                            <div class="row mb-1">
-                                <label class="col-sm-4 col-form-label">Open Delay</label>
+                            <div class="row mb-5">
+                                <label class="col-sm-4 col-form-label">Num of Door</label>
                                 <div class="col-sm-3">
-                                    <input oninput="myFunction(this)"  value="<?php echo $open_delay;?>" name="open_delay" type="number" class="form-control" id="open_delay" min="0" max="20">
+                                    <input oninput="myFunction(this)"  value="<?php echo $num_of_door;?>" name="num_of_door" type="number" class="form-control" id="num_of_door" min="0" max="3">
                                 </div>
-                            </div>
-
-
-                            <div class="row mb-3" >
-                                <div class="col-sm-10">
+                                <div class="col-sm-4">
                                     <button type="submit" class="btn btn-primary">SAVE</button>
                                 </div>
+
                             </div>
+                        </form ><!-- End General Form Elements -->
 
-                        </form><!-- End General Form Elements -->
-
+                        <form method="get" action="" >
 
                             <table  class="table datatable text-center  ">
                                 <thead>
@@ -203,13 +205,13 @@ include "../../../../../Sidebar.php";
                                     <th>FLOOR</th>
                                     <th>D1</th>
                                     <th>D2</th>
-                                    <th>D2</th>
+                                    <th>D3</th>
                                 </tr>
                                 </thead>
                                 <tbody>
 
                                 <?php
-                                $num_floor = 3;
+
                                 $i_floor=1;
                                 for($i_floor=1;$i_floor<$num_floor;$i_floor++ ){
 
@@ -217,26 +219,34 @@ include "../../../../../Sidebar.php";
 
                                     echo "<th class=\"table-active\" scope=\"row\">"."$i_floor"."</th>";
 
-                                    echo "<td style='background-color: whitesmoke'>";
-                                    echo "<div  class=\"form-check form-switch  d-flex justify-content-center \">";
-                                    echo "<input  class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckDefault\">";
-                                    echo "<label class=\"form-check-label\" for=\"flexSwitchCheckDefault\"></label>";
-                                    echo "</div>";
-                                    echo "</td>";
+                                    if( $num_of_door > 0 ){
+                                        echo "<td style='background-color: whitesmoke'>";
+                                        echo "<div  class=\"form-check form-switch  d-flex justify-content-center \">";
+                                        echo "<input value='y' name='d1floor$i_floor' class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckDefault\" checked >";
+                                        echo "</div>";
+                                        echo "</td>";
+                                    }
 
-                                    echo "<td style='background-color: antiquewhite'>";
-                                    echo "<div  class=\"form-check form-switch  d-flex justify-content-center \">";
-                                    echo "<input  class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckDefault\">";
-                                    echo "<label class=\"form-check-label\" for=\"flexSwitchCheckDefault\"></label>";
-                                    echo "</div>";
-                                    echo "</td>";
+                                    if( $num_of_door > 1 ){
 
-                                    echo "<td style='background-color: powderblue'>";
-                                    echo "<div  class=\"form-check form-switch  d-flex justify-content-center \">";
-                                    echo "<input  class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckDefault\">";
-                                    echo "<label class=\"form-check-label\" for=\"flexSwitchCheckDefault\"></label>";
-                                    echo "</div>";
-                                    echo "</td>";
+                                        echo "<td style='background-color: antiquewhite'>";
+                                        echo "<div  class=\"form-check form-switch  d-flex justify-content-center \">";
+                                        echo "<input name='d2floor$i_floor' class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckDefault\">";
+                                        echo "</div>";
+                                        echo "</td>";
+
+                                    }
+
+                                    if( $num_of_door > 2 ){
+
+                                        echo "<td style='background-color: powderblue'>";
+                                        echo "<div  class=\"form-check form-switch  d-flex justify-content-center \">";
+                                        echo "<input  name='d3floor$i_floor' class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckDefault\" checked />";
+                                        echo "</div>";
+                                        echo "</td>";
+
+                                    }
+
 
                                     echo "</tr>";
 
@@ -245,6 +255,12 @@ include "../../../../../Sidebar.php";
 
                                 </tbody>
                             </table>
+
+                            <div class="col-sm-4">
+                                <button type="submit" class="btn btn-primary">SAVE</button>
+                            </div>
+
+                        </form ><!-- End General Form Elements -->
 
 
                         <div style="display: none;" id="alert" class="alert alert-primary bg-primary text-light border-0 alert-dismissible fade show" role="alert">
