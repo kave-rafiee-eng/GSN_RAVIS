@@ -15,13 +15,15 @@ $id_show=0;
         $id_show = $_GET['show'];
     }
 
-if( !empty($_GET['delet'] )  ){
-    $id_delet = $_GET['delet'];
+    if( !empty($_GET['delet'] )  ){
+        $id_delet = $_GET['delet'];
 
-    $quary = "UPDATE `data` SET `change`='unknown' WHERE `id` = '$id_delet'";
-    $resault=mysqli_query($con,$quary);
+        $quary = "UPDATE `data` SET `change`='unknown' WHERE `id` = '$id_delet'";
+        $resault=mysqli_query($con,$quary);
 
-}
+        header("location: /GSM_RAVIS/main/GSM/device_connection_list.php");
+
+    }
 
 ?>
 
@@ -292,24 +294,6 @@ include "../../Sidebar.php";
                         <div class="tab-content pt-2" id="myTabContent">
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
-                                <?php
-                                if( $change == 1 ){
-
-                                    echo "<button class=\"btn btn-warning\" type=\"button\" disabled>";
-                                    echo "<span class=\"spinner-grow spinner-grow-sm\" role=\"status\" aria-hidden=\"true\"></span>";
-                                    echo "updating...";
-                                    echo "<i class=\"bi bi-wifi\"></i>";
-                                    echo "</button>";
-
-                                }
-                                else{
-                                    echo "<button class=\"btn btn-success\" type=\"button\" disabled>";
-                                    echo "update";
-                                    echo "<i class=\"bi bi-wifi\"></i>";
-                                    echo "</button> " ;
-
-                                }
-                                ?>
 
 
                             </div>

@@ -14,7 +14,7 @@
             if ($page['change'] == "upload"  ) {
 
                 echo "{";
-                echo $page['type'].".".$page['name']."="."\"".$page['data']."\"";
+                echo $page['type']."*".$page['name']."="."\"".$page['data']."\"";
                 echo ",";
                 echo "}";
 
@@ -27,7 +27,7 @@
             if ($page['change'] == "download"  ) {
 
                 echo "{";
-                echo $page['type'].".".$page['name']."=";
+                echo $page['type']."*".$page['name']."=";
                 echo "\"@\"";
                 echo ",";
                 echo "}";
@@ -39,8 +39,8 @@
         if ( !empty($_GET["name1"]) && !empty($_GET["data1"]) ){
             $name1 = $_GET["name1"];
             $data1 = $_GET["data1"];
+
             if( update_data_gsm($con,$serial,$name1,$data1) == 1 )echo "OK";
-            else echo "error";
         }
 
 

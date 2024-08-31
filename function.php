@@ -38,11 +38,10 @@ function update_data($con,$serial,$type,$name,$data)
         if ($page['type'] == $type && $page['name'] == $name ) {
             $id = $page['id'];
             $last_data = $page['data'];
+
+            $quary = "UPDATE `data` SET `serial`='$serial',`type`='$type',`name`='$name',`data`='$data',`change`='upload' WHERE `id` = '$id'";
+            mysqli_query($con,$quary);
         }
-    }
-    if( $last_data != $data ) {
-        $quary = "UPDATE `data` SET `serial`='$serial',`type`='$type',`name`='$name',`data`='$data',`change`='upload' WHERE `id` = '$id'";
-        mysqli_query($con,$quary);
     }
 }
 

@@ -6,7 +6,7 @@
         <li class="nav-heading">IOT Parameter</li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="">
+            <a class="nav-link collapsed" href="/GSM_RAVIS/main/GSM/device_connection_list.php">
                 <i class="bi bi-bezier2 "></i>
                 <span>GSM</span>
             </a>

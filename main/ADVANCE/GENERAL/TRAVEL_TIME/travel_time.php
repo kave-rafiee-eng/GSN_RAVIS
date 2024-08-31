@@ -1,76 +1,36 @@
 
 <?php
 
-if (isset($_COOKIE["serial"]))$serial= $_COOKIE["serial"];
-else $serial=0;
-if (isset($_COOKIE["password"]))$password = $_COOKIE["password"];
-else $password =0;
 
-include "../../../../read.php";
+include "../../../../read.php"; // $con
 
-$quary = "SELECT `password`, `phone_number`, `address`, `information`, `serial` FROM `project` WHERE  `serial` = '$serial'";
-$resault=mysqli_query($con,$quary);
+include "../../../../login/login_check.php"; //LOGIN_CHECK
+include "../../../../function.php"; //my_function
 
-$pass_wrong=1;
+include "../../../../main/GSM/change_status.php"; //change_status
 
-if( $page = mysqli_fetch_assoc($resault) ) {
-    if ($page['password'] == $password)$pass_wrong=0;
-}
-
-if( $pass_wrong == 1 ){
-    header("location: /GSM_RAVIS/login/login_bs.php");
-    die();
-}
-//---------LOGIN_CHECK
+$change="unknown";
 
 
+//-------------------------------------------------TRAVEL TIME
 $travel_time=0;
-
 $type = "advance_settin";
-$name = "general*travel_time";
+$add = "travel_time";
+$name = "general*".$add;
 
-$quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
-$resault=mysqli_query($con,$quary);
+list($id,$travel_time,$change) = read_data($con,$serial,"$type","$name","0");
 
-$data_found=0;
-while( $page = mysqli_fetch_assoc($resault) ) {
-
-    if ($page['type'] == $type && $page['name'] == $name ) {
-
-        $change = $page['change'];
-        $id = $page['id'];
-        $travel_time = $page['data'];
-        $data_found=1;
-    }
-}
-
-if( $data_found == 0 ){
-    $data = $travel_time;
-    $number_of_stop = 5;
-    $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','$type','$name','$data','1')";
-    $resault=mysqli_query($con,$quary);  $change = 1;
-}
-else{
-
-    // if ( !empty($_GET["service_type"] )){
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-        if( !empty($_POST['travel_time'] )  ){
-
-            if( $_POST['travel_time'] != $travel_time ){
-
-                $travel_time = $_POST['travel_time'];
-
-                $data = $travel_time;
-                $quary = "UPDATE `data` SET `serial`='$serial',`type`='$type',`name`='$name',`data`='$data',`change`='1' WHERE `id` = '$id'";
-                $resault=mysqli_query($con,$quary);
-                $change = 1;
-
-            }
-
-        }
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if( !empty($_POST[$add] )  ){
+        $travel_time = $_POST[$add];
+        update_data($con,$serial,"$type","$name",$travel_time);
     }
 
+    if( !empty($_POST['read_register'] )  ){
+        read_register($con,$serial,"$type","$name");
+    }
+
+    header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/TRAVEL_TIME/travel_time.php");
 }
 
 
@@ -86,8 +46,6 @@ else{
     <title>Ravis</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
-
-
 
     <!-- Favicons -->
     <link href="../../../../assets/img/favicon.png" rel="icon">
@@ -178,6 +136,16 @@ include "../../../../Sidebar.php";
                     <div class="card-body ">
                         <h5 class="card-title">Travel Time</h5>
 
+                        <div class="row mb-3 m-2" >
+                            <label  class="col-sm-6 col-form-label">Read Register</label>
+                            <div class="col-sm-6">
+                                <form method="post" action="">
+                                    <button value="read_register" name="read_register" type="submit" class="btn btn-warning">Read</button>
+                                </form>
+
+                            </div>
+                        </div>
+
                         <!-- General Form Elements -->
                         <form method="post" action="" >
 
@@ -191,9 +159,13 @@ include "../../../../Sidebar.php";
                             </div>
 
                             <div class="row mb-3" >
-                                <div class="col-sm-10">
-                                    <button type="submit" class="btn btn-primary">SAVE</button>
+                                <label id="kave" class="col-sm-3 col-form-label">SAVE</label>
+                                <div class="col-sm-3">
+                                    <button <?php if($change == "download")echo "disabled"?>  type="submit" class="btn btn-primary">SAVE</button>
                                 </div>
+                                <label  style="color: red" class="col-sm-6 col-form-label">
+                                    <?php if($change == "download")echo "wait to download complit"?>
+                                </label>
                             </div>
 
                         </form><!-- End General Form Elements -->
@@ -247,22 +219,7 @@ include "../../../../Sidebar.php";
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
                                 <?php
-                                if( $change == 1 ){
-
-                                    echo "<button class=\"btn btn-warning\" type=\"button\" disabled>";
-                                    echo "<span class=\"spinner-grow spinner-grow-sm\" role=\"status\" aria-hidden=\"true\"></span>";
-                                    echo "updating...";
-                                    echo "<i class=\"bi bi-wifi\"></i>";
-                                    echo "</button>";
-
-                                }
-                                else{
-                                    echo "<button class=\"btn btn-success\" type=\"button\" disabled>";
-                                    echo "update";
-                                    echo "<i class=\"bi bi-wifi\"></i>";
-                                    echo "</button> " ;
-
-                                }
+                                show_change_status($change);
                                 ?>
 
                             </div>
