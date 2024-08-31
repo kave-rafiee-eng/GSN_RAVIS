@@ -1,78 +1,33 @@
 
 <?php
 
-if (isset($_COOKIE["serial"]))$serial= $_COOKIE["serial"];
-else $serial=0;
-if (isset($_COOKIE["password"]))$password = $_COOKIE["password"];
-else $password =0;
+include "../../../../../read.php"; // $con
 
-include "../../../../../read.php";
+include "../../../../../login/login_check.php"; //LOGIN_CHECK
+include "../../../../../function.php"; //my_function
 
-$quary = "SELECT `password`, `phone_number`, `address`, `information`, `serial` FROM `project` WHERE  `serial` = '$serial'";
-$resault=mysqli_query($con,$quary);
+include "../../../../../main/GSM/change_status.php"; //change_status
 
-$pass_wrong=1;
+$change="unknown";
 
-if( $page = mysqli_fetch_assoc($resault) ) {
-    if ($page['password'] == $password)$pass_wrong=0;
-}
-
-if( $pass_wrong == 1 ){
-    header("location: /GSM_RAVIS/login/login_bs.php");
-    die();
-}
-//---------LOGIN_CHECK
-
-
-function read_data($con,$serial,$type,$name,$data_init)
-{
-    $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
-    $resault=mysqli_query($con,$quary);
-    $data_found=0;
-    while( $page = mysqli_fetch_assoc($resault) ) {
-        if ($page['type'] == $type && $page['name'] == $name ) {
-            $data = $page['data'];
-            return $data;
-        }
-    }
-    if( $data_found == 0 ){
-        $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','$type','$name','$data_init','1')";
-        mysqli_query($con,$quary);
-        return $data_init;
-    }
-}
-
-function update_data($con,$serial,$type,$name,$data)
-{
-    $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
-    $resault=mysqli_query($con,$quary);
-    $data_found=0;
-    while( $page = mysqli_fetch_assoc($resault) ) {
-        if ($page['type'] == $type && $page['name'] == $name ) {
-            $id = $page['id'];
-            $last_data = $page['data'];
-        }
-    }
-    if( $last_data != $data ) {
-        $quary = "UPDATE `data` SET `serial`='$serial',`type`='$type',`name`='$name',`data`='$data',`change`='1' WHERE `id` = '$id'";
-        $resault=mysqli_query($con,$quary);
-    }
-}
-
-$change=0;
-
-//-------------------------------------------------cONTROL tYPE
+//-------------------------------------------------CONTROL TYPE
 $add = "control_type";
-$control_type= read_data($con,$serial,"advance_settin","general*door*$add","LOADED");
+list($id,$control_type,$change) = read_data($con,$serial,"advance_settin","general*door*$add","LOADED");
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if( !empty($_POST[$add] )  ){
         $control_type = $_POST[$add];
         update_data($con,$serial,"advance_settin","general*door*$add",$control_type);
-        $change = 1;
     }
-}
-//-------------------------------------------------
 
+    if( !empty($_POST['read_register'] )  ){
+        read_register($con,$serial,"advance_settin","general*door*$add");
+    }
+
+    header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/DOOR/DOOR_TIME/control_type.php");
+}
+
+//-------------------------------------------------
 
 ?>
 
@@ -86,8 +41,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Ravis</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
-
-
 
     <!-- Favicons -->
     <link href="/GSM_RAVIS/assets/img/favicon.png" rel="icon">
@@ -109,13 +62,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Template Main CSS File -->
     <link href="/GSM_RAVIS/assets/css/style.css" rel="stylesheet">
 
-    <!-- =======================================================
-    * Template Name: NiceAdmin
-    * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-    * Updated: Apr 20 2024 with Bootstrap v5.3.3
-    * Author: BootstrapMade.com
-    * License: https://bootstrapmade.com/license/
-    ======================================================== -->
     <SCRIPT>
 
         function myFunction(elem) {
@@ -137,16 +83,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             location.reload();
         }, 15000); // 3000 milliseconds = 3 seconds
 
-
-
     </SCRIPT>
 
 </head>
 
 <body  >
-
-
-
 
 <?php
 include "../../../../../header.php";
@@ -177,6 +118,19 @@ include "../../../../../Sidebar.php";
 
                 <div class="card"  >
                     <div class="card-body ">
+
+
+                            <div class="row mb-3 m-2" >
+                                <label  class="col-sm-6 col-form-label">Read Register</label>
+                                <div class="col-sm-6">
+                                    <form method="post" action="">
+                                        <button value="read_register" name="read_register" type="submit" class="btn btn-warning">Read</button>
+                                    </form>
+
+                                </div>
+                            </div>
+
+
                         <h5 class="card-title">Control Type</h5>
 
                         <!-- General Form Elements -->
@@ -185,13 +139,7 @@ include "../../../../../Sidebar.php";
                             <fieldset class="row mb-3">
                                 <legend class="col-form-label col-sm-2 pt-0">value</legend>
                                 <div class="col-sm-10">
-                                    <!--
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
-                                        <label class="form-check-label" for="gridRadios2">
-                                            PUSH BUTTON
-                                        </label>
-                                    </div> -->
+
 
                                     <div class="form-check disabled">
                                         <input  class="form-check-input" type="radio" name="gridRadios" id="gridRadios" value=" 1 " disabled
@@ -252,13 +200,14 @@ include "../../../../../Sidebar.php";
                             </div>
 
                             <div class="row mb-3" >
-                                <label id="kave" class="col-sm-2 col-form-label">SAVE</label>
-                                <div class="col-sm-10">
-                                    <button type="submit" class="btn btn-primary">SAVE</button>
+                                <label id="kave" class="col-sm-3 col-form-label">SAVE</label>
+                                <div class="col-sm-3">
+                                    <button <?php if($change == "download")echo "disabled"?>  type="submit" class="btn btn-primary">SAVE</button>
                                 </div>
+                                <label  style="color: red" class="col-sm-6 col-form-label">
+                                    <?php if($change == "download")echo "wait to download complit"?>
+                                </label>
                             </div>
-
-
 
                         </form><!-- End General Form Elements -->
 
@@ -312,22 +261,7 @@ include "../../../../../Sidebar.php";
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
                                 <?php
-                                if( $change == 1 ){
-
-                                    echo "<button class=\"btn btn-warning\" type=\"button\" disabled>";
-                                    echo "<span class=\"spinner-grow spinner-grow-sm\" role=\"status\" aria-hidden=\"true\"></span>";
-                                    echo "updating...";
-                                    echo "<i class=\"bi bi-wifi\"></i>";
-                                    echo "</button>";
-
-                                }
-                                else{
-                                    echo "<button class=\"btn btn-success\" type=\"button\" disabled>";
-                                    echo "update";
-                                    echo "<i class=\"bi bi-wifi\"></i>";
-                                    echo "</button> " ;
-
-                                }
+                                    show_change_status($change);
                                 ?>
 
                             </div>

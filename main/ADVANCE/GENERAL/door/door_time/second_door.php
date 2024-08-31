@@ -71,12 +71,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 //-------------------------------------------------NUM OF FLOOR
 $num_floor= read_data($con,$serial,"advance_settin","general*number_of_stop",1);
 
-for($i=1; $i<$num_floor+1; $i++){
+for($i=1; $i<=$num_floor; $i++){
 
-    if( $num_of_door > 0 )read_data($con,$serial,"advance_settin","general*door*door_select*d1f$i",1);
-    if( $num_of_door > 1 )read_data($con,$serial,"advance_settin","general*door*door_select*d2f$i",1);
-    if( $num_of_door > 2 )read_data($con,$serial,"advance_settin","general*door*door_select*d3f$i",1);
+    if( $num_of_door > 0 )read_data($con,$serial,"advance_settin","general*door*door_select*d1f$i","y");
+    if( $num_of_door > 1 )read_data($con,$serial,"advance_settin","general*door*door_select*d2f$i","n");
+    if( $num_of_door > 2 )read_data($con,$serial,"advance_settin","general*door*door_select*d3f$i","n");
 }
+//-------------------------------------------------save
+
+for( $i_d=1; $i_d<=$num_of_door; $i_d++ ){
+
+    for($i_f=1; $i_f<=$num_floor; $i_f++){
+
+        $add = "d$i_d"."f$i_f";
+        echo $add;
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if( !empty($_POST[$add] )  ){
+                $data = $_POST[$add];
+                update_data($con,$serial,"advance_settin","general*door*door_select*$add",$data);
+                $change = 1;
+            }
+            else{
+                update_data($con,$serial,"advance_settin","general*door*door_select*$add","n");
+                $change = 1;
+            }
+        }
+    }
+
+}
+
+
 
 ?>
 
@@ -153,11 +177,11 @@ for($i=1; $i<$num_floor+1; $i++){
 
 
 <?php
-//include "../../../../../header.php";
+    include "../../../../../header.php";
 ?>
 
 <?php
-include "../../../../../Sidebar.php";
+    include "../../../../../Sidebar.php";
 ?>
 
 <main  id="main" class="main">
@@ -197,7 +221,7 @@ include "../../../../../Sidebar.php";
                             </div>
                         </form ><!-- End General Form Elements -->
 
-                        <form method="get" action="" >
+                        <form method="post" action="" >
 
                             <table  class="table datatable text-center  ">
                                 <thead>
@@ -212,8 +236,7 @@ include "../../../../../Sidebar.php";
 
                                 <?php
 
-                                $i_floor=1;
-                                for($i_floor=1;$i_floor<$num_floor;$i_floor++ ){
+                                for($i_floor=1;$i_floor<=$num_floor;$i_floor++ ){
 
                                     echo "<tr >";
 
@@ -222,7 +245,11 @@ include "../../../../../Sidebar.php";
                                     if( $num_of_door > 0 ){
                                         echo "<td style='background-color: whitesmoke'>";
                                         echo "<div  class=\"form-check form-switch  d-flex justify-content-center \">";
-                                        echo "<input value='y' name='d1floor$i_floor' class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckDefault\" checked >";
+                                        echo "<input value='y' name='d1f$i_floor' class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckDefault\" ";
+                                        if( read_data($con,$serial,"advance_settin","general*door*door_select*d1f$i_floor",1) == "y" ){
+                                            echo "checked>";
+                                        }
+                                        else echo ">";
                                         echo "</div>";
                                         echo "</td>";
                                     }
@@ -231,7 +258,10 @@ include "../../../../../Sidebar.php";
 
                                         echo "<td style='background-color: antiquewhite'>";
                                         echo "<div  class=\"form-check form-switch  d-flex justify-content-center \">";
-                                        echo "<input name='d2floor$i_floor' class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckDefault\">";
+                                        echo "<input value='y' name='d2f$i_floor' class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckDefault\" ";
+                                        if( read_data($con,$serial,"advance_settin","general*door*door_select*d2f$i_floor",1) == "y" ){
+                                            echo "checked>";
+                                        }
                                         echo "</div>";
                                         echo "</td>";
 
@@ -241,7 +271,10 @@ include "../../../../../Sidebar.php";
 
                                         echo "<td style='background-color: powderblue'>";
                                         echo "<div  class=\"form-check form-switch  d-flex justify-content-center \">";
-                                        echo "<input  name='d3floor$i_floor' class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckDefault\" checked />";
+                                        echo "<input value='y' name='d3f$i_floor' class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckDefault\" ";
+                                        if( read_data($con,$serial,"advance_settin","general*door*door_select*d3f$i_floor",1) == "y" ){
+                                            echo "checked>";
+                                        }
                                         echo "</div>";
                                         echo "</td>";
 
@@ -353,7 +386,7 @@ include "../../../../../Sidebar.php";
 
 
 <?php
-include "/GSM_RAVIS/Footer.php";
+include "../../../../../Footer.php";
 ?>
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
