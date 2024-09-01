@@ -5,6 +5,9 @@ include "function.php";
 
 if ( !empty($_GET["serial"] )){
 
+    $uplaod_i=1;
+    $download_i=1;
+
     $str = "{";
 
     $serial = $_GET["serial"];
@@ -19,15 +22,21 @@ if ( !empty($_GET["serial"] )){
             $name = $page['name'];
             $data = $page['data'];
 
+            $str .= "\"name_w$uplaod_i\":";
             $str .= "\"";
             $str .= "$type";
             $str .= "*";
             $str .= "$name";
-            $str .= "\":";
-            $str .= "\"$data\"";
+            $str .= "\"";
+
             $str .= ",";
 
+            $str .= "\"data_w$uplaod_i\":";
+            $str .= "\"";
+            $str .= "$data";
+            $str .= "\"";
 
+            $str .= ",";
 
 
             $id =  $page['id'];
@@ -35,30 +44,34 @@ if ( !empty($_GET["serial"] )){
             $quary = "UPDATE `data` SET `serial`='$serial',`change`='download' WHERE `id` = '$id'";
             mysqli_query($con,$quary);
 
+            $uplaod_i++;
+
         }
         if ($page['change'] == "download"  ) {
 
-            /*echo "{";
-            echo ."*".$page['name']."=";
-            echo "\"@\"";
-            echo ",";
-            echo "}";*/
-
             $type = $page['type'];
             $name = $page['name'];
+            $data = $page['data'];
 
-            $str = "{";
+            $str .= "\"name_r$download_i\":";
             $str .= "\"";
             $str .= "$type";
             $str .= "*";
             $str .= "$name";
-            $str .= "\":";
-            $str .= "\"@\"";
+            $str .= "\"";
+
             $str .= ",";
 
+            $str .= "\"data_r$download_i\":";
+            $str .= "\"";
+            $str .= "@";
+            $str .= "\"";
+
+            $str .= ",";
+
+            $download_i++;
 
         }
-
     }
 
     $str .= "}";
