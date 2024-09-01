@@ -87,21 +87,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (x.style.display === "none") {
                 x.style.display = "block";
             }
+        }
+
+        function refresh(){
+
+            let change = document.getElementById("change_status").textContent;
+
+            //document.getElementById("alert_text").innerHTML =  change.search("download").toString(10);
+
+            if( change.search("download") > 0 || change.search("upload") > 0  ){
+
+                document.getElementById("alert_text").innerHTML =  change;
+
+                var time = 3000;
+
+                setTimeout(function(){
+                    location.reload();
+                }, time); // 3000 milliseconds = 3 seconds
+            }
 
         }
 
-        // Refresh the page after a delay of 3 seconds
-        setTimeout(function(){
-            location.reload();
-        }, 15000); // 3000 milliseconds = 3 seconds
-
-
+        setInterval(refresh, 500);
 
     </SCRIPT>
 
 </head>
 
-<body  >
+<body onload="myFunction()" >
 
 
 
@@ -136,6 +149,12 @@ include "../../../../Sidebar.php";
                     <div class="card-body ">
                         <h5 class="card-title">Travel Time</h5>
 
+                        <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="home-tab">
+                            <?php
+                            show_change_status($change);
+                            ?>
+                        </div>
+
                         <div class="row mb-3 m-2" >
                             <label  class="col-sm-6 col-form-label">Read Register</label>
                             <div class="col-sm-6">
@@ -161,7 +180,7 @@ include "../../../../Sidebar.php";
                             <div class="row mb-3" >
                                 <label id="kave" class="col-sm-3 col-form-label">SAVE</label>
                                 <div class="col-sm-3">
-                                    <button <?php if($change == "download")echo "disabled"?>  type="submit" class="btn btn-primary">SAVE</button>
+                                    <button <?php if($change == "download" || $change == "upload" )echo "disabled"?>  type="submit" class="btn btn-primary">SAVE</button>
                                 </div>
                                 <label  style="color: red" class="col-sm-6 col-form-label">
                                     <?php if($change == "download")echo "wait to download complit"?>
@@ -216,12 +235,16 @@ include "../../../../Sidebar.php";
                             </li>
                         </ul>
                         <div class="tab-content pt-2" id="myTabContent">
-                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
+                            <div  id="change_status"  >
+                                <?php
+                                echo $change;
+                                ?>
+                            </div>
+                            <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="home-tab">
                                 <?php
                                 show_change_status($change);
                                 ?>
-
                             </div>
 
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">

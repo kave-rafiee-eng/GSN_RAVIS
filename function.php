@@ -12,7 +12,7 @@ function read_data($con,$serial,$type,$name,$data_init)
         }
     }
     if( $data_found == 0 ){
-        $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','$type','$name','$data_init','upload')";
+        $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('0','$serial','$type','$name','$data_init','upload')";
         mysqli_query($con,$quary);
     }
 
