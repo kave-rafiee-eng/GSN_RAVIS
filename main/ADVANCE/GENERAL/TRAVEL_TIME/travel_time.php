@@ -33,6 +33,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/TRAVEL_TIME/travel_time.php");
 }
 
+date_default_timezone_set("Asia/Tehran");
+/*
+echo "user : " . $user_enable_change_date. "-" . $user_enable_change_time;
+echo "<br>";
+*/
+$date_now = date("Y/m/d");
+$time_now = date("H:i:s"   );
+//$time_end = date("H:i:s" ,time() + 1*60 );
+
+
+
+    $time_allowed = 5;
+
+    $user_active_time =  $time_allowed - round ( ( strtotime($time_now) - strtotime($user_enable_change_time) ) /60 ) ;
+    echo $user_active_time;
+
+    if( $user_active_time > 0 )echo "ok";
+    else echo "error";
+
 
 ?>
 
@@ -180,10 +199,14 @@ include "../../../../Sidebar.php";
                             <div class="row mb-3" >
                                 <label id="kave" class="col-sm-3 col-form-label">SAVE</label>
                                 <div class="col-sm-3">
-                                    <button <?php if($change == "download" || $change == "upload" )echo "disabled"?>  type="submit" class="btn btn-primary">SAVE</button>
+                                    <button <?php if($change == "download" || $change == "upload"  )echo "disabled";
+                                        if( $user == "admin" ){}
+                                        else{ if($user_active_time <= 0 )echo "disabled"; }
+                                    ?>  type="submit" class="btn btn-primary">SAVE</button>
                                 </div>
                                 <label  style="color: red" class="col-sm-6 col-form-label">
                                     <?php if($change == "download")echo "wait to download complit"?>
+
                                 </label>
                             </div>
 
