@@ -4,31 +4,50 @@
 include "../../../../../read.php"; // $con
 
 include "../../../../../login/login_check.php"; //LOGIN_CHECK
+
 include "../../../../../function.php"; //my_function
 
-include "../../../../../main/GSM/change_status.php"; //change_status
+include "../../../../../main/GSM/change_status.php"; //change_status_function
 
 $change="unknown";
 
 //-------------------------------------------------CONTROL TYPE
+
+$control_type=0;
+$type = "advance_settin";
 $add = "control_type";
-list($id,$control_type,$change) = read_data($con,$serial,"advance_settin","general*door*$add","LOADED");
+$name = "general*door*".$add;
+
+list($id,$control_type,$change) = read_data($con,$serial,"$type","$name","Loaded");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if( !empty($_POST[$add] )  ){
         $control_type = $_POST[$add];
-        update_data($con,$serial,"advance_settin","general*door*$add",$control_type);
+        update_data($con,$serial,"$type","$name",$control_type);
     }
 
     if( !empty($_POST['read_register'] )  ){
-        read_register($con,$serial,"advance_settin","general*door*$add");
+        read_register($con,$serial,"$type","$name");
     }
 
     header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/DOOR/DOOR_TIME/control_type.php");
 }
 
-//-------------------------------------------------
+//-------------------------------------------------AUTO REFRESH
 
+list($id_r,$auto_refresh,$change_r) = read_data($con,$serial,"server","auto_refresh_page","1");
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    if( !empty($_POST["auto_refresh"] )  ){
+
+        if( !empty($_POST["auto_refresh_radio"] )  ){
+            update_data($con,$serial,"server","auto_refresh_page",1);
+        }
+        else update_data($con,$serial,"server","auto_refresh_page",0);
+    }
+    header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/DOOR/DOOR_TIME/control_type.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -64,24 +83,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <SCRIPT>
 
-        function myFunction(elem) {
+        function myFunction() {
 
-            //var x = document.getElementById("open_delay").value;
-            var x = elem.value;
-
+            var x = document.getElementById("number_of_stop").value;
             document.getElementById("alert_text").innerHTML = x.toString(10)+" Sec";
-            var x = document.getElementById("alert");
 
+            //document.getElementById("alert_text").innerHTML = document.getElementById("auto_refresh_value").value;
+
+            var x = document.getElementById("alert");
             if (x.style.display === "none") {
                 x.style.display = "block";
             }
-
         }
 
-        // Refresh the page after a delay of 3 seconds
-        setTimeout(function(){
-            location.reload();
-        }, 15000); // 3000 milliseconds = 3 seconds
+        function refresh_radio(){
+            let form = document.getElementById("form_refresh");
+            setTimeout(setAlert, 500);
+        }
+        function setAlert() {
+            let form = document.getElementById("form_refresh");
+            form.submit();
+        }
+
+        function refresh(){
+
+            let change = document.getElementById("change_status").textContent;
+
+            if( change.search("download") > 0 || change.search("upload") > 0  ){
+                var time = 40000;
+                if( document.getElementById("auto_refresh_value").value == "a1")time=3000;
+                setTimeout(function(){
+                    location.reload();
+                }, time); // 3000 milliseconds = 3 seconds
+            }
+
+        }
+        setInterval(refresh, 500);
 
     </SCRIPT>
 
@@ -99,9 +136,24 @@ include "../../../../../Sidebar.php";
 
 <main  id="main" class="main">
 
-    <div class="pagetitle">
-        <h1>Iot Parameter</h1>
+    <div class="row d-flex  ">
+        <h5> <span class="badge bg-dark">
+            <form onchange="refresh_radio()" action="" method="post" id="form_refresh">
+                 <div   class="form-check form-switch  ">
+                     <label class=" col-form-label ">Auto Refresh Page</label>
+                     <input   value="1" name="auto_refresh_radio" class="form-check-input" type="checkbox" id=""
+                     <?php  if($auto_refresh == "1" )echo "checked";?>
+                     >
+                 </div>
 
+                <input  style="display:none" value="<?php echo 'a'.$auto_refresh; ?>" name="auto_refresh" class="form-check-input" type="text" id="auto_refresh_value">
+            </form>
+
+        </span></h5
+    </div><!-- refresh_radio -->
+
+    <div class="pagetitle">
+        <h1>branch</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/GSM_RAVIS/main/home.php">Home</a></li>
@@ -119,19 +171,19 @@ include "../../../../../Sidebar.php";
                 <div class="card"  >
                     <div class="card-body ">
 
-
-                            <div class="row mb-3 m-2" >
-                                <label  class="col-sm-6 col-form-label">Read Register</label>
-                                <div class="col-sm-6">
-                                    <form method="post" action="">
-                                        <button value="read_register" name="read_register" type="submit" class="btn btn-warning">Read</button>
-                                    </form>
-
-                                </div>
-                            </div>
-
-
                         <h5 class="card-title">Control Type</h5>
+
+                        <div class="row mb-3 m-2" >
+                            <ul class="list-group">
+                                <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>Read From device</li>
+                                <li class="list-group-item">
+                                    <form method="post" action="">
+                                        <button value="read_register" name="read_register" type="submit" class="btn btn-warning">Read Register</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div><!-- Read From device -->
+
 
                         <!-- General Form Elements -->
                         <form method="post" action="" >
@@ -140,15 +192,14 @@ include "../../../../../Sidebar.php";
                                 <legend class="col-form-label col-sm-2 pt-0">value</legend>
                                 <div class="col-sm-10">
 
-
                                     <div class="form-check disabled">
                                         <input  class="form-check-input" type="radio" name="gridRadios" id="gridRadios" value=" 1 " disabled
                                             <?php
-                                            if( $control_type == "LOADED")echo "checked";
+                                            if( $control_type == "Loaded")echo "checked";
                                             ?>
                                         >
                                         <label class="form-check-label" for="gridRadios3">
-                                            LOADED
+                                            Loaded
                                         </label>
                                     </div>
 
@@ -185,7 +236,7 @@ include "../../../../../Sidebar.php";
                                 <label class="col-sm-2 col-form-label">Select</label>
                                 <div class="col-sm-10">
                                     <select  onclick="myFunction()" id="control_type" name="control_type" class="form-select" aria-label="Default select example">
-                                        <option value="LOADED">LOADED</option>
+                                        <option value="Loaded">Loaded</option>
                                         <option value="68">68</option>
                                         <option value="69">69</option>>
 
@@ -200,9 +251,12 @@ include "../../../../../Sidebar.php";
                             </div>
 
                             <div class="row mb-3" >
-                                <label id="kave" class="col-sm-3 col-form-label">SAVE</label>
+                                <label id="kave" class="col-sm-3 col-form-label">SAVE Register</label>
                                 <div class="col-sm-3">
-                                    <button <?php if($change == "download")echo "disabled"?>  type="submit" class="btn btn-primary">SAVE</button>
+                                    <button <?php if($change == "download" || $change == "upload"  )echo "disabled";
+                                    if( $user == "admin" ){}
+                                    else{ if($user_active_time <= 0 )echo "disabled"; }
+                                    ?>  type="submit" class="btn btn-primary">SAVE</button>
                                 </div>
                                 <label  style="color: red" class="col-sm-6 col-form-label">
                                     <?php if($change == "download")echo "wait to download complit"?>
@@ -251,19 +305,23 @@ include "../../../../../Sidebar.php";
                                 <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">updating</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">serial</button>
+                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">reserve</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">reserve</button>
                             </li>
                         </ul>
                         <div class="tab-content pt-2" id="myTabContent">
-                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
+                            <div  id="change_status"  >
                                 <?php
-                                    show_change_status($change);
+                                echo $change;
                                 ?>
-
+                            </div>
+                            <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="home-tab">
+                                <?php
+                                show_change_status($change);
+                                ?>
                             </div>
 
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
@@ -273,7 +331,7 @@ include "../../../../../Sidebar.php";
                             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
 
                             </div>
-                        </div><!-- End Default Tabs -->
+                        </div><!-- Device -->
 
                     </div>
                 </div>

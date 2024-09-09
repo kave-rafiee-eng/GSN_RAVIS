@@ -36,8 +36,14 @@
                 $user_enable_change_time = $page['time'];
                 $user_enable_change_date = $page['date'];
 
+                date_default_timezone_set("Asia/Tehran");
+
                 $date_now = date("Y/m/d");
-                $time_now = date("h:i:s");
+                $time_now = date("H:i:s"   );
+
+                $time_allowed = 10;
+
+                $user_active_time =  $time_allowed - round ( ( strtotime($time_now) - strtotime($user_enable_change_time) ) /60 ) ;
 
             }
         }
