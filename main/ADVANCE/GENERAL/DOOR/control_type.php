@@ -11,8 +11,8 @@ include "../../../../main/GSM/change_status.php"; //change_status_function
 
 $change="unknown";
 
-//-------------------------------------------------SERVICE TYPE
-list($id,$service_type,$change) = post_register_manager($con,"service_type",$serial,"advance_settin","general*",0,3);
+//-------------------------------------------------DOOR_CONTROL_TYPE4
+list($id,$control_type,$change) = post_register_manager($con,"control_type",$serial,"advance_settin","general*door*",0,4);
 
 //-------------------------------------------------AUTO REFRESH
 list($id_r,$auto_refresh,$change_r) = read_data($con,$serial,"server","auto_refresh_page","1",0,0);
@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 //-------------------------------------------------CLEAR $POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/SERVICE_TYPE/service_type_bs.php");
+    header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/DOOR/control_type.php");
 }
 
 ?>
@@ -118,8 +118,6 @@ include "../../../../Sidebar.php";
 
 <main  id="main" class="main">
 
-
-
     <div class="row d-flex  ">
         <h5> <span class="badge bg-dark">
             <form onchange="refresh_radio()" action="" method="post" id="form_refresh">
@@ -136,6 +134,18 @@ include "../../../../Sidebar.php";
         </span></h5
     </div><!-- refresh_radio -->
 
+    <div class="pagetitle">
+        <h1>branch</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/GSM_RAVIS/main/home.php">Home</a></li>
+                <li class="breadcrumb-item">General</li>
+                <li class="breadcrumb-item">Door</li>
+                <li class="breadcrumb-item active">Control Type</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
     <section class="section">
         <div class="row">
             <div class="col-lg-7">
@@ -143,7 +153,7 @@ include "../../../../Sidebar.php";
                 <div class="card"  >
                     <div class="card-body ">
 
-                        <h5 class="card-title">Service Type</h5>
+                        <h5 class="card-title">Control Type</h5>
 
                         <div class="row mb-3 m-2" >
                             <ul class="list-group">
@@ -164,15 +174,14 @@ include "../../../../Sidebar.php";
                                 <legend class="col-form-label col-sm-2 pt-0">value</legend>
                                 <div class="col-sm-10">
 
-
                                     <div class="form-check disabled">
                                         <input  class="form-check-input" type="radio" name="gridRadios" id="gridRadios" value=" 1 " disabled
                                             <?php
-                                            if( $service_type == 0)echo "checked";
+                                            if( $control_type == 0)echo "checked";
                                             ?>
                                         >
                                         <label class="form-check-label" for="gridRadios3">
-                                            Collective DN
+                                            Loaded
                                         </label>
                                     </div>
 
@@ -180,11 +189,11 @@ include "../../../../Sidebar.php";
                                     <div class="form-check disabled">
                                         <input  class="form-check-input" type="radio" name="gridRadios" id="gridRadios" value=" 1 " disabled
                                             <?php
-                                            if( $service_type == 1)echo "checked";
+                                            if( $control_type == 1)echo "checked";
                                             ?>
                                         >
                                         <label class="form-check-label" for="gridRadios3">
-                                            Full Collective
+                                            68
                                         </label>
                                     </div>
 
@@ -192,48 +201,30 @@ include "../../../../Sidebar.php";
                                     <div class="form-check disabled">
                                         <input  class="form-check-input" type="radio" name="gridRadios" id="gridRadios" value=" 1 " disabled
                                             <?php
-                                            if( $service_type == 2)echo "checked";
+                                            if( $control_type == 2)echo "checked";
                                             ?>
                                         >
                                         <label class="form-check-label" for="gridRadios3">
-                                            Push Button
+                                            69
                                         </label>
                                     </div>
 
-                                    <div class="form-check disabled">
-                                        <input  class="form-check-input" type="radio" name="gridRadios" id="gridRadios" value=" 1 " disabled
-                                            <?php
-                                            if( $service_type == 3)echo "checked";
-                                            ?>
-                                        >
-                                        <label class="form-check-label" for="gridRadios3">
-                                            Collective U/D
-                                        </label>
-                                    </div>
 
                                 </div>
                             </fieldset>
 
-                            <!--
-                                     char List_ServiceType[][17]=
-                                    {
-                                        "Collective DN", 	//0
-                                        "Full Collective",//1
-                                        "Push Button",   	//2
-                                        "Collective U/D", 			//3
-                                    };
-                             -->
+
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label">Select</label>
                                 <div class="col-sm-10">
-                                    <select  onclick="myFunction()" id="service_type" name="service_type" class="form-select" aria-label="Default select example">
-                                        <option value="0">Collective DN</option>
-                                        <option value="1">Full Collective</option>
-                                        <option value="2">Push Button</option>>
-                                        <option value="3">Collective U/D</option>>
+                                    <select  onclick="myFunction()" id="control_type" name="control_type" class="form-select" aria-label="Default select example">
+                                        <option value="0">Loaded</option>
+                                        <option value="1">68</option>
+                                        <option value="2">69</option>>
 
-                                        <option value="<?php echo $service_type; ?>" selected="selected" hidden="hidden">
+                                        <option value="<?php echo $control_type; ?>" selected="selected" hidden="hidden">
                                             <?php
+                                            //echo "set : ".$service_type;
                                             echo "select mode";
                                             ?>
                                         </option>
@@ -278,15 +269,7 @@ include "../../../../Sidebar.php";
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="flush-headingOne">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                        Collective DN
-                                    </button>
-                                </h2>
-                                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">تعداد طبقات</div>
-                                </div>
-                                <h2 class="accordion-header" id="flush-headingOne">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                        Collective DN
+                                        Number Of Stop
                                     </button>
                                 </h2>
                                 <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">

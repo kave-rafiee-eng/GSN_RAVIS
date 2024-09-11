@@ -1,53 +1,60 @@
 
 <?php
 
-include "../../../../../read.php"; // $con
+include "../../../../read.php"; // $con
 
-include "../../../../../login/login_check.php"; //LOGIN_CHECK
+include "../../../../login/login_check.php"; //LOGIN_CHECK
 
-include "../../../../../function.php"; //my_function
+include "../../../../function.php"; //my_function
 
-include "../../../../../main/GSM/change_status.php"; //change_status_function
+include "../../../../main/GSM/change_status.php"; //change_status_function
 
 $change="unknown";
 
-//-------------------------------------------------CONTROL TYPE
+$unknown = 0;
+$progress_passed=0;
+$progress=100;
+//-------------------------------------------------DOOR_OPEN_DELAY	STNG    15
+list($id,$open_delay,$change) = post_register_manager($con,"open_delay",$serial,"advance_settin","general*door*",0,15);
+if( $change == "upload")$progress_passed+=2;
+if( $change == "download")$progress_passed+=1;
+if( $change == "unknown")$unknown=1;
+//-------------------------------------------------DOOR_CLOSE_DELAY STNG    16
+list($id,$close_delay,$change) = post_register_manager($con,"close_delay",$serial,"advance_settin","general*door*",0,16);
+if( $change == "upload")$progress_passed+=2;
+if( $change == "download")$progress_passed+=1;
+if( $change == "unknown")$unknown=1;
+//-------------------------------------------------DOOR_END_TIME    STNG    17
+list($id,$end_door_time,$change) = post_register_manager($con,"end_door_time",$serial,"advance_settin","general*door*",0,17);
+if( $change == "upload")$progress_passed+=2;
+if( $change == "download")$progress_passed+=1;
+if( $change == "unknown")$unknown=1;
 
-$control_type=0;
-$type = "advance_settin";
-$add = "control_type";
-$name = "general*door*".$add;
+//-------------------------------------------------$progress
+$progress = round(  100 - ($progress_passed/6 *100) );
 
-list($id,$control_type,$change) = read_data($con,$serial,"$type","$name","Loaded");
+if( $progress <= 50)$change="upload";
+else $change="download";
+if( $progress == 100 )$change="update";
+if($unknown == 1) $change = "unknown";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if( !empty($_POST[$add] )  ){
-        $control_type = $_POST[$add];
-        update_data($con,$serial,"$type","$name",$control_type);
-    }
-
-    if( !empty($_POST['read_register'] )  ){
-        read_register($con,$serial,"$type","$name");
-    }
-
-    header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/DOOR/DOOR_TIME/control_type.php");
-}
-
+echo $progress_passed;
 //-------------------------------------------------AUTO REFRESH
-
-list($id_r,$auto_refresh,$change_r) = read_data($con,$serial,"server","auto_refresh_page","1");
-
+list($id_r,$auto_refresh,$change_r) = read_data($con,$serial,"server","auto_refresh_page","1",0,0);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    if( !empty($_POST["auto_refresh"] )  ){
-
-        if( !empty($_POST["auto_refresh_radio"] )  ){
-            update_data($con,$serial,"server","auto_refresh_page",1);
+    if( isset($_POST["auto_refresh"] )  ){
+        if( isset($_POST["auto_refresh_radio"] )  ){
+            update_data($con,$serial,"server","auto_refresh_page",1,0,0);
         }
-        else update_data($con,$serial,"server","auto_refresh_page",0);
+        else update_data($con,$serial,"server","auto_refresh_page",0,0,0);
     }
-    header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/DOOR/DOOR_TIME/control_type.php");
 }
+
+//-------------------------------------------------CLEAR $POST
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/DOOR/door_time.php");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -81,6 +88,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Template Main CSS File -->
     <link href="/GSM_RAVIS/assets/css/style.css" rel="stylesheet">
 
+    <!-- =======================================================
+    * Template Name: NiceAdmin
+    * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+    * Updated: Apr 20 2024 with Bootstrap v5.3.3
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
     <SCRIPT>
 
         function myFunction() {
@@ -121,17 +135,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         setInterval(refresh, 500);
 
     </SCRIPT>
-
 </head>
 
-<body  >
+<body onload="myFunction()" >
+
 
 <?php
-include "../../../../../header.php";
+//include "../../../../header.php";
 ?>
 
 <?php
-include "../../../../../Sidebar.php";
+include "../../../../Sidebar.php";
 ?>
 
 <main  id="main" class="main">
@@ -153,15 +167,18 @@ include "../../../../../Sidebar.php";
     </div><!-- refresh_radio -->
 
     <div class="pagetitle">
+
         <h1>branch</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/GSM_RAVIS/main/home.php">Home</a></li>
                 <li class="breadcrumb-item">General</li>
-                <li class="breadcrumb-item">Door</li>
-                <li class="breadcrumb-item active">Control Type</li>
+                <li class="breadcrumb-item">Door</li
+                <li class="breadcrumb-item active">Door Time</li>
             </ol>
+
         </nav>
+
     </div><!-- End Page Title -->
 
     <section class="section">
@@ -170,8 +187,7 @@ include "../../../../../Sidebar.php";
 
                 <div class="card"  >
                     <div class="card-body ">
-
-                        <h5 class="card-title">Control Type</h5>
+                        <h5 class="card-title">Door Time</h5>
 
                         <div class="row mb-3 m-2" >
                             <ul class="list-group">
@@ -184,75 +200,101 @@ include "../../../../../Sidebar.php";
                             </ul>
                         </div><!-- Read From device -->
 
-
                         <!-- General Form Elements -->
                         <form method="post" action="" >
 
-                            <fieldset class="row mb-3">
-                                <legend class="col-form-label col-sm-2 pt-0">value</legend>
-                                <div class="col-sm-10">
+                            <div class="row mb-3 m-2" >
+                                <ul class="list-group">
 
-                                    <div class="form-check disabled">
-                                        <input  class="form-check-input" type="radio" name="gridRadios" id="gridRadios" value=" 1 " disabled
-                                            <?php
-                                            if( $control_type == "Loaded")echo "checked";
-                                            ?>
-                                        >
-                                        <label class="form-check-label" for="gridRadios3">
-                                            Loaded
-                                        </label>
-                                    </div>
+                                    <li class="list-group-item"><i class="bi bi-activity me-1 text-primary"></i>Write To device</li>
 
+                                    <li class="list-group-item"><!--  Open Delay !-->
+                                        <div class="row ">
+                                            <label class="col-sm-4 col-form-label">Open Delay</label>
+                                            <div class="col-sm-6">
+                                                <input  value="<?php echo $open_delay;?>" name="open_delay" type="number" class="form-control"  min="0" max="200">
+                                            </div>
+                                            <label class="col-sm-2 col-form-label text-danger ">sec</label>
+                                        </div>
+                                    </li>
 
-                                    <div class="form-check disabled">
-                                        <input  class="form-check-input" type="radio" name="gridRadios" id="gridRadios" value=" 1 " disabled
-                                            <?php
-                                            if( $control_type == "68")echo "checked";
-                                            ?>
-                                        >
-                                        <label class="form-check-label" for="gridRadios3">
-                                            68
-                                        </label>
-                                    </div>
+                                    <li class="list-group-item"> <!--  Close Delay !-->
+                                        <div class="row ">
+                                            <label class="col-sm-4 col-form-label">Close Delay</label>
+                                            <div class="col-sm-6">
+                                                <input  value="<?php echo $close_delay;?>" name="close_delay" type="number" class="form-control"  min="0" max="200">
+                                            </div>
+                                            <label class="col-sm-2 col-form-label text-danger ">sec</label>
+                                        </div>
+                                    </li>
 
+                                    <li class="list-group-item"> <!--  END DOOR TIME !-->
+                                        <div class="row ">
+                                            <label class="col-sm-4 col-form-label">End Door Time</label>
+                                            <div class="col-sm-6">
+                                                <input  value="<?php echo $end_door_time;?>" name="end_door_time" type="number" class="form-control"  min="0" max="200">
+                                            </div>
+                                            <label class="col-sm-2 col-form-label text-danger ">sec</label>
+                                        </div>
+                                    </li>
 
-                                    <div class="form-check disabled">
-                                        <input  class="form-check-input" type="radio" name="gridRadios" id="gridRadios" value=" 1 " disabled
-                                            <?php
-                                            if( $control_type == "69")echo "checked";
-                                            ?>
-                                        >
-                                        <label class="form-check-label" for="gridRadios3">
-                                            69
-                                        </label>
-                                    </div>
+                                    <li class="list-group-item"> <!--  Close time out !-->
+                                        <div class="row ">
+                                            <label class="col-sm-4 col-form-label">Close Time Out</label>
+                                            <div class="col-sm-6">
+                                                <input  value="<?php echo $close_time_out;?>" name="close_time_out" type="number" class="form-control"  min="0" max="200">
+                                            </div>
+                                            <label class="col-sm-2 col-form-label text-danger ">sec</label>
+                                        </div>
+                                    </li>
 
+                                    <li class="list-group-item"> <!--  Door Park !-->
+                                        <div class="row ">
+                                            <label class="col-sm-4 col-form-label">Door Park</label>
+                                            <div class="col-sm-6">
+                                                <input  value="<?php echo $door_park;?>" name="door_park" type="number" class="form-control"  min="0" max="200">
+                                            </div>
+                                            <label class="col-sm-2 col-form-label text-danger ">sec</label>
+                                        </div>
+                                    </li>
 
-                                </div>
-                            </fieldset>
+                                    <li class="list-group-item"> <!--  Door Park !-->
+                                        <div class="row ">
+                                            <label class="col-sm-4 col-form-label">69 Debouncer</label>
+                                            <div class="col-sm-6">
+                                                <input  value="<?php echo $debouncer_69;?>" name="$debouncer_69" type="number" class="form-control"  min="0" max="200">
+                                            </div>
+                                            <label class="col-sm-2 col-form-label text-danger ">sec</label>
+                                        </div>
+                                    </li>
 
+                                    <li class="list-group-item"> <!--  Door Park !-->
+                                        <div class="row ">
+                                            <label class="col-sm-4 col-form-label">68 Debouncer</label>
+                                            <div class="col-sm-6">
+                                                <input  value="<?php echo $debouncer_68;?>" name="$debouncer_69" type="number" class="form-control"  min="0" max="200">
+                                            </div>
+                                            <label class="col-sm-2 col-form-label text-danger ">sec</label>
+                                        </div>
+                                    </li>
 
-                            <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label">Select</label>
-                                <div class="col-sm-10">
-                                    <select  onclick="myFunction()" id="control_type" name="control_type" class="form-select" aria-label="Default select example">
-                                        <option value="Loaded">Loaded</option>
-                                        <option value="68">68</option>
-                                        <option value="69">69</option>>
+                                    <li class="list-group-item"> <!--  Door Park !-->
+                                        <div class="row ">
+                                            <label class="col-sm-4 col-form-label">Open Time</label>
+                                            <div class="col-sm-6">
+                                                <input  value="<?php echo $open_time;?>" name="open_time" type="number" class="form-control"  min="0" max="200">
+                                            </div>
+                                            <label class="col-sm-2 col-form-label text-danger ">sec</label>
+                                        </div>
+                                    </li>
 
-                                        <option value="<?php echo $control_type; ?>" selected="selected" hidden="hidden">
-                                            <?php
-                                            //echo "set : ".$service_type;
-                                            echo "select mode";
-                                            ?>
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
+                                </ul>
+
+                            </div><!-- Read From device -->
 
                             <div class="row mb-3" >
-                                <label id="kave" class="col-sm-3 col-form-label">SAVE Register</label>
-                                <div class="col-sm-3">
+                                <label id="kave" class="col-sm-6 col-form-label ">SAVE Register</label>
+                                <div class="col-sm-6">
                                     <button <?php if($change == "download" || $change == "upload"  )echo "disabled";
                                     if( $user == "admin" ){}
                                     else{ if($user_active_time <= 0 )echo "disabled"; }
@@ -263,13 +305,10 @@ include "../../../../../Sidebar.php";
                                 </label>
                             </div>
 
+
+
                         </form><!-- End General Form Elements -->
 
-
-                        <div style="display: none;" id="alert" class="alert alert-primary bg-primary text-light border-0 alert-dismissible fade show" role="alert">
-                            <div id="alert_text">A simple primary alert with solid color—check it out! </div>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
 
                     </div>
                 </div>
@@ -320,7 +359,7 @@ include "../../../../../Sidebar.php";
                             </div>
                             <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="home-tab">
                                 <?php
-                                show_change_status($change);
+                                show_change_status_progress($change,$progress);
                                 ?>
                             </div>
 
@@ -344,7 +383,7 @@ include "../../../../../Sidebar.php";
 
 
 <?php
-include "../../../../../Footer.php";
+include "../../../../Footer.php";
 ?>
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
@@ -362,8 +401,6 @@ include "../../../../../Footer.php";
 
 <!-- Template Main JS File -->
 <script src="/GSM_RAVIS/assets/js/main.js"></script>
-
-
 
 </body>
 

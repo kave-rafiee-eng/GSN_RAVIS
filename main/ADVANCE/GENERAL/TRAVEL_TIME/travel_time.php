@@ -12,39 +12,21 @@ include "../../../../main/GSM/change_status.php"; //change_status_function
 $change="unknown";
 
 //-------------------------------------------------TRAVEL TIME
-$travel_time=0;
-$type = "advance_settin";
-$add = "travel_time";
-$name = "general*".$add;
-
-list($id,$travel_time,$change) = read_data($con,$serial,"$type","$name","0");
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if( !empty($_POST[$add] )  ){
-        $travel_time = $_POST[$add];
-        update_data($con,$serial,"$type","$name",$travel_time);
-    }
-
-    if( !empty($_POST['read_register'] )  ){
-        read_register($con,$serial,"$type","$name");
-    }
-
-    header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/TRAVEL_TIME/travel_time.php");
-}
+list($id,$travel_time,$change) = post_register_manager($con,"travel_time",$serial,"advance_settin","general*",0,14);
 
 //-------------------------------------------------AUTO REFRESH
-
-list($id_r,$auto_refresh,$change_r) = read_data($con,$serial,"server","auto_refresh_page","1");
-
+list($id_r,$auto_refresh,$change_r) = read_data($con,$serial,"server","auto_refresh_page","1",0,0);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    if( !empty($_POST["auto_refresh"] )  ){
-
-        if( !empty($_POST["auto_refresh_radio"] )  ){
-            update_data($con,$serial,"server","auto_refresh_page",1);
+    if( isset($_POST["auto_refresh"] )  ){
+        if( isset($_POST["auto_refresh_radio"] )  ){
+            update_data($con,$serial,"server","auto_refresh_page",1,0,0);
         }
-        else update_data($con,$serial,"server","auto_refresh_page",0);
+        else update_data($con,$serial,"server","auto_refresh_page",0,0,0);
     }
+}
+
+//-------------------------------------------------CLEAR $POST
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/TRAVEL_TIME/travel_time.php");
 }
 

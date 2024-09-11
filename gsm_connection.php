@@ -3,7 +3,9 @@
 include "read.php";
 include "function.php";
 
-if ( !empty($_GET["serial"] )){
+//echo isset($_GET["SW_ENABLE"]);
+
+if ( isset($_GET["serial"] )){
 
     $uplaod_i=1;
     $download_i=1;
@@ -12,64 +14,69 @@ if ( !empty($_GET["serial"] )){
 
     $serial = $_GET["serial"];
 
-    $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
+    $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` ,`arreay_select`, `byte_count` FROM `data` WHERE `serial` = '$serial'";
     $resault=mysqli_query($con,$quary);
     while( $page = mysqli_fetch_assoc($resault) ) {
 
-        if ($page['change'] == "upload"  ) {
+        if ($page['change'] == "upload" &&  $page['type'] == "advance_settin" ) {
 
             $type = $page['type'];
             $name = $page['name'];
             $data = $page['data'];
+            $arreay_select  = $page['arreay_select'];
+            $byte_count   = $page['byte_count'];
 
-            $str .= "\"name_w$uplaod_i\":";
-            $str .= "\"";
-            // $str .= "$type";
-            // $str .= "*";
-            $str .= "$name";
-            $str .= "\"";
-
+            $str .= "\"ar$uplaod_i\":"; // arreay
+            $str .= "$arreay_select";
             $str .= ",";
 
-            $str .= "\"data_w$uplaod_i\":";
-            $str .= "\"";
+            $str .= "\"ad$uplaod_i\":"; // byte_count
+            $str .= "$byte_count";
+            $str .= ",";
+
+            $str .= "\"da$uplaod_i\":"; // data
             $str .= "$data";
-            $str .= "\"";
-
             $str .= ",";
 
+            $str .= "\"st$uplaod_i\":"; // data
+            $str .= "1";
+            $str .= ",";
 
             $id =  $page['id'];
-
             $quary = "UPDATE `data` SET `serial`='$serial',`change`='download' WHERE `id` = '$id'";
             mysqli_query($con,$quary);
 
             $uplaod_i++;
 
+            break;
         }
-        if ($page['change'] == "download"  ) {
+        if ($page['change'] == "download" &&  $page['type'] == "advance_settin"  ) {
 
             $type = $page['type'];
             $name = $page['name'];
             $data = $page['data'];
+            $arreay_select  = $page['arreay_select'];
+            $byte_count   = $page['byte_count'];
 
-            $str .= "\"name_r$download_i\":";
-            $str .= "\"";
-            // $str .= "$type";
-            // $str .= "*";
-            $str .= "$name";
-            $str .= "\"";
-
+            $str .= "\"ar$uplaod_i\":"; // arreay
+            $str .= "$arreay_select";
             $str .= ",";
 
-            $str .= "\"data_r$download_i\":";
-            $str .= "\"";
-            $str .= "@";
-            $str .= "\"";
-
+            $str .= "\"ad$uplaod_i\":"; // byte_count
+            $str .= "$byte_count";
             $str .= ",";
 
-            $download_i++;
+            $str .= "\"da$uplaod_i\":"; // data
+            $str .= "$data";
+            $str .= ",";
+
+            $str .= "\"st$uplaod_i\":"; // data
+            $str .= "0";
+            $str .= ",";
+
+            $uplaod_i++;
+
+            break;
 
         }
     }
@@ -77,14 +84,18 @@ if ( !empty($_GET["serial"] )){
     $str .= "}";
     echo $str;
 
-    if ( !empty($_GET["name1"]) && !empty($_GET["data1"]) ){
-        $name1 = $_GET["name1"];
-        $data1 = $_GET["data1"];
+    if ( isset($_GET["ar1"]) && isset($_GET["ad1"]) && isset($_GET["da1"])  ){
+        echo "sd";
+        $arreay_select = $_GET["ar1"];
+        $byte_count = $_GET["ad1"];
+        $data = $_GET["da1"];
 
-        if( update_data_gsm($con,$serial,$name1,$data1) == 1 )echo "OK";
-    }
+        if( update_data_gsm($con,$serial,$data,$arreay_select,$byte_count) == 1 )echo "OK";
+   }
 
-    if ( !empty($_GET["SW_ENABLE"])  ){
+
+
+    if ( isset($_GET["SW_ENABLE"])  ){
 
         date_default_timezone_set("Asia/Tehran");
 

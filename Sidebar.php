@@ -52,21 +52,21 @@
                     </a>
                     <ul id="door-a" class="nav-content collapse " >
                         <li>
-                            <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/DOOR/DOOR_TIME/door_time.php">
+                            <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/DOOR/door_time.php">
                                 <i class="bi bi-circle"></i>
                                 <i class="bi bi-circle"></i><span>Door Time</span>
                             </a>
                         </li><!-- End Door Time Time -->
 
                         <li>
-                            <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/DOOR/DOOR_TIME/control_type.php">
+                            <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/DOOR/control_type.php">
                                 <i class="bi bi-circle"></i>
                                 <i class="bi bi-circle"></i><span>Cotrol Type</span>
                             </a>
                         </li><!-- End Cotrol Type Time -->
 
                         <li>
-                            <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/DOOR/DOOR_TIME/second_door.php">
+                            <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/DOOR/second_door.php">
                                 <i class="bi bi-circle"></i>
                                 <i class="bi bi-circle"></i><span>Second Door</span>
                             </a>

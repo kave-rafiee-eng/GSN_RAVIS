@@ -1,79 +1,36 @@
 
 <?php
 
-if (isset($_COOKIE["serial"]))$serial= $_COOKIE["serial"];
-else $serial=0;
-if (isset($_COOKIE["password"]))$password = $_COOKIE["password"];
-else $password =0;
 
-include "../../../../read.php";
+include "../../../../read.php"; // $con
 
-$quary = "SELECT `password`, `phone_number`, `address`, `information`, `serial` FROM `project` WHERE  `serial` = '$serial'";
-$resault=mysqli_query($con,$quary);
+include "../../../../login/login_check.php"; //LOGIN_CHECK
 
-$pass_wrong=1;
+include "../../../../function.php"; //my_function
 
-if( $page = mysqli_fetch_assoc($resault) ) {
-    if ($page['password'] == $password)$pass_wrong=0;
-}
+include "../../../../main/GSM/change_status.php"; //change_status_function
 
-if( $pass_wrong == 1 ){
-    header("location: /GSM_RAVIS/login/login_bs.php");
-    die();
-}
-//---------LOGIN_CHECK
+$change="unknown";
 
+//-------------------------------------------------NUMBER OF STOP
+list($id,$number_of_stop,$change) = post_register_manager($con,"number_of_stop",$serial,"advance_settin","general*",0,2);
 
-
-
-$type = "advance_settin";
-$name = "general*number_of_stop";
-
-$quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
-$resault=mysqli_query($con,$quary);
-
-$data_found=0;
-while( $page = mysqli_fetch_assoc($resault) ) {
-
-    if ($page['type'] == $type && $page['name'] == $name ) {
-
-        $change = $page['change'];
-        $id = $page['id'];
-        $number_of_stop = $page['data'];
-        $data_found=1;
-    }
-}
-
-if( $data_found == 0 ){
-
-    $number_of_stop = 5;
-    $change = 1;
-    $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','$type','$name','$number_of_stop','1')";
-    $resault=mysqli_query($con,$quary);
-
-}
-else{
-
-    // if ( !empty($_GET["service_type"] )){
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-        if( !empty($_POST['number_of_stop'] )  ){
-
-            if( $_POST['number_of_stop'] != $number_of_stop ){
-
-                $number_of_stop = $_POST['number_of_stop'];
-
-                $quary = "UPDATE `data` SET `serial`='$serial',`type`='$type',`name`='$name',`data`='$number_of_stop',`change`='1' WHERE `id` = '$id'";
-                $resault=mysqli_query($con,$quary);
-                $change = 1;
-
-            }
-
+//-------------------------------------------------AUTO REFRESH
+list($id_r,$auto_refresh,$change_r) = read_data($con,$serial,"server","auto_refresh_page","1",0,0);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if( isset($_POST["auto_refresh"] )  ){
+        if( isset($_POST["auto_refresh_radio"] )  ){
+            update_data($con,$serial,"server","auto_refresh_page",1,0,0);
         }
+        else update_data($con,$serial,"server","auto_refresh_page",0,0,0);
     }
-
+    //header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/TRAVEL_TIME/travel_time.php");
 }
 
+//-------------------------------------------------CLEAR $POST
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/NUMBER_OF_STOP/number_of_stop.php");
+}
 
 ?>
 
@@ -87,8 +44,6 @@ else{
     <title>Ravis</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
-
-
 
     <!-- Favicons -->
     <link href="../../../../assets/img/favicon.png" rel="icon">
@@ -122,31 +77,44 @@ else{
         function myFunction() {
 
             var x = document.getElementById("number_of_stop").value;
+            document.getElementById("alert_text").innerHTML = x.toString(10)+" Sec";
 
-            document.getElementById("alert_text").innerHTML = x.toString(10)+"stop";
+            //document.getElementById("alert_text").innerHTML = document.getElementById("auto_refresh_value").value;
 
             var x = document.getElementById("alert");
-
             if (x.style.display === "none") {
                 x.style.display = "block";
             }
-
         }
 
-        // Refresh the page after a delay of 3 seconds
-        setTimeout(function(){
-            location.reload();
-        }, 15000); // 3000 milliseconds = 3 seconds
+        function refresh_radio(){
+            let form = document.getElementById("form_refresh");
+            setTimeout(setAlert, 500);
+        }
+        function setAlert() {
+            let form = document.getElementById("form_refresh");
+            form.submit();
+        }
 
+        function refresh(){
 
+            let change = document.getElementById("change_status").textContent;
+
+            if( change.search("download") > 0 || change.search("upload") > 0  ){
+                var time = 40000;
+                if( document.getElementById("auto_refresh_value").value == "a1")time=3000;
+                setTimeout(function(){
+                    location.reload();
+                }, time); // 3000 milliseconds = 3 seconds
+            }
+
+        }
+        setInterval(refresh, 500);
 
     </SCRIPT>
-
 </head>
 
-<body  >
-
-
+<body onload="myFunction()" >
 
 
 <?php
@@ -159,16 +127,34 @@ include "../../../../Sidebar.php";
 
 <main  id="main" class="main">
 
-    <div class="pagetitle">
-        <h1>Iot Parameter</h1>
+    <div class="row d-flex  ">
+        <h5> <span class="badge bg-dark">
+            <form onchange="refresh_radio()" action="" method="post" id="form_refresh">
+                 <div   class="form-check form-switch  ">
+                     <label class=" col-form-label ">Auto Refresh Page</label>
+                     <input   value="1" name="auto_refresh_radio" class="form-check-input" type="checkbox" id=""
+                     <?php  if($auto_refresh == "1" )echo "checked";?>
+                     >
+                 </div>
 
+                <input  style="display:none" value="<?php echo 'a'.$auto_refresh; ?>" name="auto_refresh" class="form-check-input" type="text" id="auto_refresh_value">
+            </form>
+
+        </span></h5
+    </div><!-- refresh_radio -->
+
+    <div class="pagetitle">
+
+        <h1>branch</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/GSM_RAVIS/main/home.php">Home</a></li>
                 <li class="breadcrumb-item">General</li>
                 <li class="breadcrumb-item active">Number Of Stop</li>
             </ol>
+
         </nav>
+
     </div><!-- End Page Title -->
 
     <section class="section">
@@ -179,6 +165,17 @@ include "../../../../Sidebar.php";
                     <div class="card-body ">
                         <h5 class="card-title">Number Of Stop</h5>
 
+                        <div class="row mb-3 m-2" >
+                            <ul class="list-group">
+                                <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>Read From device</li>
+                                <li class="list-group-item">
+                                    <form method="post" action="">
+                                        <button value="read_register" name="read_register" type="submit" class="btn btn-warning">Read Register</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div><!-- Read From device -->
+
                         <!-- General Form Elements -->
                         <form method="post" action="" >
 
@@ -187,19 +184,26 @@ include "../../../../Sidebar.php";
                             <div class="row mb-3">
 
                                 <div class="col-sm-10">
-                                    <input oninput="myFunction()"  value="<?php echo $number_of_stop;?>" name="number_of_stop" type="number" class="form-control" id="number_of_stop" min="1" max="60">
+                                    <input oninput="myFunction()"  value="<?php echo $number_of_stop;?>" name="number_of_stop" type="number" class="form-control" id="" min="0" max="60">
                                 </div>
                             </div>
 
                             <div class="row mb-3" >
-                                <div class="col-sm-10">
-                                    <button type="submit" class="btn btn-primary">SAVE</button>
+                                <label id="kave" class="col-sm-3 col-form-label">SAVE Register</label>
+                                <div class="col-sm-3">
+                                    <button <?php if($change == "download" || $change == "upload"  )echo "disabled";
+                                    if( $user == "admin" ){}
+                                    else{ if($user_active_time <= 0 )echo "disabled"; }
+                                    ?>  type="submit" class="btn btn-primary">SAVE</button>
                                 </div>
+                                <label  style="color: red" class="col-sm-6 col-form-label">
+                                    <?php if($change == "download")echo "wait to download complit"?>
+                                </label>
                             </div>
 
                         </form><!-- End General Form Elements -->
 
-                        <div style="display: none;" id="alert" class="alert alert-primary bg-primary text-light border-0 alert-dismissible fade show" role="alert">
+                        <div style="display: none;" id="alert" class="alert alert-primary bg-opacity-75  border-0 alert-dismissible fade show" role="alert">
                             <div id="alert_text">A simple primary alert with solid color—check it out! </div>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
@@ -238,34 +242,23 @@ include "../../../../Sidebar.php";
                                 <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">updating</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">serial</button>
+                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">reserve</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">reserve</button>
                             </li>
                         </ul>
                         <div class="tab-content pt-2" id="myTabContent">
-                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
+                            <div  id="change_status"  >
                                 <?php
-                                if( $change == 1 ){
-
-                                    echo "<button class=\"btn btn-warning\" type=\"button\" disabled>";
-                                    echo "<span class=\"spinner-grow spinner-grow-sm\" role=\"status\" aria-hidden=\"true\"></span>";
-                                    echo "updating...";
-                                    echo "<i class=\"bi bi-wifi\"></i>";
-                                    echo "</button>";
-
-                                }
-                                else{
-                                    echo "<button class=\"btn btn-success\" type=\"button\" disabled>";
-                                    echo "update";
-                                    echo "<i class=\"bi bi-wifi\"></i>";
-                                    echo "</button> " ;
-
-                                }
+                                echo $change;
                                 ?>
-
+                            </div>
+                            <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="home-tab">
+                                <?php
+                                show_change_status($change);
+                                ?>
                             </div>
 
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
@@ -275,7 +268,7 @@ include "../../../../Sidebar.php";
                             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
 
                             </div>
-                        </div><!-- End Default Tabs -->
+                        </div><!-- Device -->
 
                     </div>
                 </div>

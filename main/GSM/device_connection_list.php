@@ -177,7 +177,7 @@ include "../../Sidebar.php";
 
                             while( $page = mysqli_fetch_assoc($resault) ) {
 
-                                if( $page['change'] == "upload" || $page['change'] == "download"  ){
+                                if( ($page['change'] == "upload" || $page['change'] == "download") && $page['type'] == "advance_settin"  ){
 
                                     echo "<tr >";
 
