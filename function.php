@@ -27,8 +27,24 @@ function read_data($con,$serial,$type,$name,$data_init,$arreay_select,$byte_coun
             return $out;
         }
     }
-
 }
+
+function only_read_data($con,$serial,$type,$name)
+{
+
+    $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
+    $resault=mysqli_query($con,$quary);
+    $data_found=0;
+    while( $page = mysqli_fetch_assoc($resault) ) {
+        if ($page['type'] == $type && $page['name'] == $name ) {
+            $out[]=$page['id'];
+            $out[]=$page['data'];
+            $out[]=$page['change'];
+            return $out;
+        }
+    }
+}
+
 function update_data($con,$serial,$type,$name,$data,$arreay_select,$byte_count)
 {
     $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change`,`arreay_select`, `byte_count`, `change` FROM `data` WHERE `serial` = '$serial'";
@@ -83,16 +99,16 @@ function read_register($con,$serial,$type,$name)
     return 0;
 }
 
-function post_register_manager( $con,$add,$serial,$type,$branch,$arreay_select,$byte_count ){
+function post_register_manager( $con,$add,$serial,$type,$branch,$arreay_select,$byte_count,$factor=1,$Addition=0,$init=0){
 
     $branch .= $add;
 
-    list($id,$data,$change) = read_data($con,$serial,"$type","$branch","0",$arreay_select,$byte_count);
+    list($id,$data,$change) = read_data($con,$serial,"$type","$branch","$init",$arreay_select,$byte_count);
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if( isset($_POST[$add] )  ){
-            $data = $_POST[$add];
+            $data = $_POST[$add] * $factor + $Addition;
             update_data($con,$serial,"$type","$branch",$data,$arreay_select,$byte_count);
         }
 
@@ -102,8 +118,8 @@ function post_register_manager( $con,$add,$serial,$type,$branch,$arreay_select,$
 
     }
 
-    $out[]=$id;
-    $out[]=$data;
+    $out[]=$id ;
+    $out[]=$data / $factor - $Addition;
     $out[]=$change;
     return $out;
 

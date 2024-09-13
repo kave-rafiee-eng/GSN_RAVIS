@@ -1,106 +1,77 @@
 
 <?php
 
-if (isset($_COOKIE["serial"]))$serial= $_COOKIE["serial"];
-else $serial=0;
-if (isset($_COOKIE["password"]))$password = $_COOKIE["password"];
-else $password =0;
+include "../../../../read.php"; // $con
 
-include "../../../../../read.php";
+include "../../../../login/login_check.php"; //LOGIN_CHECK
 
-$quary = "SELECT `password`, `phone_number`, `address`, `information`, `serial` FROM `project` WHERE  `serial` = '$serial'";
-$resault=mysqli_query($con,$quary);
+include "../../../../function.php"; //my_function
 
-$pass_wrong=1;
+include "../../../../main/GSM/change_status.php"; //change_status_function
 
-if( $page = mysqli_fetch_assoc($resault) ) {
-    if ($page['password'] == $password)$pass_wrong=0;
+$change="unknown";
+
+$unknown = 0;
+$progress_passed=0;
+$progress=100;
+$step=0;
+
+//-------------------------------------------------NUMBER OF STOP STNG    2
+list($id,$number_of_stop,$change) = post_register_manager($con,"number_of_stop",$serial,"advance_settin","general*",0,2);
+if( $change == "upload")$progress_passed+=2;
+if( $change == "download")$progress_passed+=1;
+if( $change == "unknown")$unknown=1;
+$step++;
+//-------------------------------------------------NUM_OF_DOOR	STNG    22
+list($id,$number_of_door,$change) = post_register_manager($con,"number_of_door",$serial,"advance_settin","general*door*",0,22,1,-1);
+if( $change == "upload")$progress_passed+=2;
+if( $change == "download")$progress_passed+=1;
+if( $change == "unknown")$unknown=1;
+$step++;
+
+//------------------------------------------------- D1-3 - FLOOR 2,3,4
+for($i=1; $i<=$number_of_stop; $i++){
+    list($id,$data,$change) = post_register_manager($con,"door_select*d1f$i",$serial,"advance_settin","general*door*",1,$i*100+2);
+    if( $change == "upload")$progress_passed+=2;
+    if( $change == "download")$progress_passed+=1;
+    if( $change == "unknown")$unknown=1;
+    $step++;
+    list($id,$data,$change) = post_register_manager($con,"door_select*d2f$i",$serial,"advance_settin","general*door*",1,$i*100+3);
+    if( $change == "upload")$progress_passed+=2;
+    if( $change == "download")$progress_passed+=1;
+    if( $change == "unknown")$unknown=1;
+    $step++;
+    list($id,$data,$change) = post_register_manager($con,"door_select*d3f$i",$serial,"advance_settin","general*door*",1,$i*100+4);
+    if( $change == "upload")$progress_passed+=2;
+    if( $change == "download")$progress_passed+=1;
+    if( $change == "unknown")$unknown=1;
+    $step++;
 }
 
-if( $pass_wrong == 1 ){
-    header("location: /GSM_RAVIS/login/login_bs.php");
-    die();
-}
-//---------LOGIN_CHECK
+//-------------------------------------------------$progress
+$progress = round(  100 - ($progress_passed/($step*2) *100) );
 
-function read_data($con,$serial,$type,$name,$data_init)
-{
-    $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
-    $resault=mysqli_query($con,$quary);
-    $data_found=0;
-    while( $page = mysqli_fetch_assoc($resault) ) {
-        if ($page['type'] == $type && $page['name'] == $name ) {
-            $data = $page['data'];
-            return $data;
-        }
-    }
-    if( $data_found == 0 ){
-        $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`) VALUES ('','$serial','$type','$name','$data_init','1')";
-        mysqli_query($con,$quary);
-        return $data_init;
-    }
-}
+if( $progress <= 50)$change="upload";
+else $change="download";
+if( $progress == 100 )$change="update";
+if($unknown == 1) $change = "unknown";
 
-function update_data($con,$serial,$type,$name,$data)
-{
-    $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
-    $resault=mysqli_query($con,$quary);
-    $data_found=0;
-    while( $page = mysqli_fetch_assoc($resault) ) {
-        if ($page['type'] == $type && $page['name'] == $name ) {
-            $id = $page['id'];
-            $last_data = $page['data'];
-        }
-    }
-    if( $last_data != $data ) {
-        $quary = "UPDATE `data` SET `serial`='$serial',`type`='$type',`name`='$name',`data`='$data',`change`='1' WHERE `id` = '$id'";
-        mysqli_query($con,$quary);
-    }
-}
-
-//-------------------------------------------------NUM OF DOOR
-$add = "num_of_door";
-$num_of_door= read_data($con,$serial,"advance_settin","general*door*second_door*$add",1);
+echo $progress_passed;
+//-------------------------------------------------AUTO REFRESH
+list($id_r,$auto_refresh,$change_r) = read_data($con,$serial,"server","auto_refresh_page","1",0,0);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if( !empty($_POST[$add] )  ){
-        $num_of_door = $_POST[$add];
-        update_data($con,$serial,"advance_settin","general*door*second_door*$add",$num_of_door);
-        $change = 1;
-    }
-}
-//-------------------------------------------------NUM OF FLOOR
-$num_floor= read_data($con,$serial,"advance_settin","general*number_of_stop",1);
-
-for($i=1; $i<=$num_floor; $i++){
-
-    if( $num_of_door > 0 )read_data($con,$serial,"advance_settin","general*door*door_select*d1f$i","y");
-    if( $num_of_door > 1 )read_data($con,$serial,"advance_settin","general*door*door_select*d2f$i","n");
-    if( $num_of_door > 2 )read_data($con,$serial,"advance_settin","general*door*door_select*d3f$i","n");
-}
-//-------------------------------------------------save
-
-for( $i_d=1; $i_d<=$num_of_door; $i_d++ ){
-
-    for($i_f=1; $i_f<=$num_floor; $i_f++){
-
-        $add = "d$i_d"."f$i_f";
-        echo $add;
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if( !empty($_POST[$add] )  ){
-                $data = $_POST[$add];
-                update_data($con,$serial,"advance_settin","general*door*door_select*$add",$data);
-                $change = 1;
-            }
-            else{
-                update_data($con,$serial,"advance_settin","general*door*door_select*$add","n");
-                $change = 1;
-            }
+    if( isset($_POST["auto_refresh"] )  ){
+        if( isset($_POST["auto_refresh_radio"] )  ){
+            update_data($con,$serial,"server","auto_refresh_page",1,0,0);
         }
+        else update_data($con,$serial,"server","auto_refresh_page",0,0,0);
     }
-
 }
 
-
+//-------------------------------------------------CLEAR $POST
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/DOOR/second_door.php");
+}
 
 ?>
 
@@ -114,8 +85,6 @@ for( $i_d=1; $i_d<=$num_of_door; $i_d++ ){
     <title>Ravis</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
-
-
 
     <!-- Favicons -->
     <link href="/GSM_RAVIS/assets/img/favicon.png" rel="icon">
@@ -146,55 +115,86 @@ for( $i_d=1; $i_d<=$num_of_door; $i_d++ ){
     ======================================================== -->
     <SCRIPT>
 
-        function myFunction(elem) {
+        function myFunction() {
 
-            //var x = document.getElementById("open_delay").value;
-            var x = elem.value;
-
+            var x = document.getElementById("number_of_stop").value;
             document.getElementById("alert_text").innerHTML = x.toString(10)+" Sec";
-            var x = document.getElementById("alert");
 
+            //document.getElementById("alert_text").innerHTML = document.getElementById("auto_refresh_value").value;
+
+            var x = document.getElementById("alert");
             if (x.style.display === "none") {
                 x.style.display = "block";
             }
-
         }
 
-        // Refresh the page after a delay of 3 seconds
-        /*setTimeout(function(){
-            location.reload();
-        }, 15000); // 3000 milliseconds = 3 seconds*/
+        function refresh_radio(){
+            let form = document.getElementById("form_refresh");
+            setTimeout(setAlert, 500);
+        }
+        function setAlert() {
+            let form = document.getElementById("form_refresh");
+            form.submit();
+        }
 
+        function refresh(){
 
+            let change = document.getElementById("change_status").textContent;
+
+            if( change.search("download") > 0 || change.search("upload") > 0  ){
+                var time = 40000;
+                if( document.getElementById("auto_refresh_value").value == "a1")time=3000;
+                setTimeout(function(){
+                    location.reload();
+                }, time); // 3000 milliseconds = 3 seconds
+            }
+
+        }
+        setInterval(refresh, 500);
 
     </SCRIPT>
-
 </head>
 
-<body  >
-
-
+<body onload="myFunction()" >
 
 
 <?php
-    include "../../../../../header.php";
+include "../../../../header.php";
 ?>
 
 <?php
-    include "../../../../../Sidebar.php";
+include "../../../../Sidebar.php";
 ?>
 
 <main  id="main" class="main">
 
-    <div class="pagetitle">
-        <h1>Iot Parameter</h1>
+    <div class="row d-flex  ">
+        <h5> <span class="badge bg-dark">
+            <form onchange="refresh_radio()" action="" method="post" id="form_refresh">
+                 <div   class="form-check form-switch  ">
+                     <label class=" col-form-label ">Auto Refresh Page</label>
+                     <input   value="1" name="auto_refresh_radio" class="form-check-input" type="checkbox" id=""
+                     <?php  if($auto_refresh == "1" )echo "checked";?>
+                     >
+                 </div>
 
+                <input  style="display:none" value="<?php echo 'a'.$auto_refresh; ?>" name="auto_refresh" class="form-check-input" type="text" id="auto_refresh_value">
+            </form>
+
+        </span></h5
+    </div><!-- refresh_radio -->
+
+    <div class="pagetitle">
+
+        <h1>branch</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/GSM_RAVIS/main/home.php">Home</a></li>
                 <li class="breadcrumb-item">General</li>
-                <li class="breadcrumb-item active">Door Times</li>
+                <li class="breadcrumb-item">Door</li
+                <li class="breadcrumb-item active">Door Select</li>
             </ol>
+
         </nav>
     </div><!-- End Page Title -->
 
@@ -204,103 +204,136 @@ for( $i_d=1; $i_d<=$num_of_door; $i_d++ ){
 
                 <div class="card"  >
                     <div class="card-body ">
-                        <h5 class="card-title">Num Of Door</h5>
+                        <h5 class="card-title">Door Time</h5>
+
+                        <div class="row mb-3 m-2" >
+                            <ul class="list-group">
+                                <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>Read From device</li>
+                                <li class="list-group-item">
+                                    <form method="post" action="">
+                                        <button value="read_register" name="read_register" type="submit" class="btn btn-warning">Read Register</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div><!-- Read From device -->
 
                         <!-- General Form Elements -->
                         <form method="post" action="" >
 
-                            <div class="row mb-5">
-                                <label class="col-sm-4 col-form-label">Num of Door</label>
-                                <div class="col-sm-3">
-                                    <input oninput="myFunction(this)"  value="<?php echo $num_of_door;?>" name="num_of_door" type="number" class="form-control" id="num_of_door" min="0" max="3">
+                            <div class="row mb-3 m-2" >
+                                <ul class="list-group">
+
+                                    <li class="list-group-item"><i class="bi bi-activity me-1 text-primary"></i>Write To device</li>
+
+                                    <li class="list-group-item"><!--  Open Delay !-->
+                                        <div class="row ">
+                                            <label class="col-sm-4 col-form-label">Number Of Door</label>
+                                            <div class="col-sm-6">
+                                                <input  step=".1" value="<?php echo $number_of_door;?>" name="number_of_door" type="number" class="form-control"  min="0" max="3">
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <li class="list-group-item"><!--  Open Delay !-->
+                                        <div class="row ">
+                                            <label class="col-sm-4 col-form-label">Number Of Door</label>
+                                            <table  class="table datatable text-center  ">
+                                                <thead>
+                                                <tr>
+                                                    <th>FLOOR</th>
+                                                    <th>D1</th>
+                                                    <th>D2</th>
+                                                    <th>D3</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                <?php
+
+                                                /*echo "<div  class=\"form-check form-switch  d-flex justify-content-center \">";
+                                            echo "<input value='1' name='door_select*d1f$i_floor' class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckDefault\" ";
+
+                                            list($id,$data,$change) = post_register_manager($con,"door_select*d1f$i_floor",$serial,"advance_settin","general*door*",1,$i*100+2);
+                                            if( $data == 1 )echo "checked>";
+                                            else echo ">";
+                                            echo "</div>";*/
+
+                                                for($i_floor=1;$i_floor<=$number_of_stop;$i_floor++ ){
+
+                                                    echo "<tr >";
+
+                                                    echo "<th class=\"table-active\" scope=\"row\">"."$i_floor"."</th>";
+
+                                                    if( $number_of_door > 0 ){
+                                                        echo "<td style='background-color: whitesmoke'>";
+                                                            echo "<select  id=\"select\" name='door_select*d1f$i_floor' class=\"form-select\" >";
+                                                            list($id,$data,$ch) = only_read_data($con,$serial,"advance_settin","general*door*door_select*d1f$i_floor");
+                                                            if( $data == 0 )echo "<option selected='selected' value=\"$data\">N</option>";
+                                                            if( $data == 1 )echo "<option selected='selected' value=\"$data\">Y</option>";
+                                                            if( $data == 2 )echo "<option selected='selected' value=\"$data\">S</option>";
+                                                            if( $data != 0 )echo "<option value=\"0\">N</option>";
+                                                            if( $data != 1 )echo "<option value=\"1\">Y</option>";
+                                                            if( $data != 2 )echo "<option value=\"2\">S</option>";
+                                                            echo "</select>" ;
+                                                        echo "</td>";
+                                                    }
+
+                                                    if( $number_of_door > 1 ){
+                                                        echo "<td style='background-color: antiquewhite'>";
+                                                        echo "<select  id=\"select\" name='door_select*d2f$i_floor' class=\"form-select\" >";
+                                                        list($id,$data,$ch) = only_read_data($con,$serial,"advance_settin","general*door*door_select*d2f$i_floor");
+                                                        if( $data == 0 )echo "<option selected='selected' value=\"$data\">N</option>";
+                                                        if( $data == 1 )echo "<option selected='selected' value=\"$data\">Y</option>";
+                                                        if( $data == 2 )echo "<option selected='selected' value=\"$data\">S</option>";
+                                                        if( $data != 0 )echo "<option value=\"0\">N</option>";
+                                                        if( $data != 1 )echo "<option value=\"1\">Y</option>";
+                                                        if( $data != 2 )echo "<option value=\"2\">S</option>";
+                                                        echo "</select>" ;
+                                                        echo "</td>";
+                                                    }
+
+                                                    if( $number_of_door > 2 ){
+                                                        echo "<td style='background-color: powderblue'>";
+                                                        echo "<select  id=\"select\" name='door_select*d3f$i_floor' class=\"form-select\" >";
+                                                        list($id,$data,$ch) = only_read_data($con,$serial,"advance_settin","general*door*door_select*d3f$i_floor");
+                                                        if( $data == 0 )echo "<option selected='selected' value=\"$data\">N</option>";
+                                                        if( $data == 1 )echo "<option selected='selected' value=\"$data\">Y</option>";
+                                                        if( $data == 2 )echo "<option selected='selected' value=\"$data\">S</option>";
+                                                        if( $data != 0 )echo "<option value=\"0\">N</option>";
+                                                        if( $data != 1 )echo "<option value=\"1\">Y</option>";
+                                                        if( $data != 2 )echo "<option value=\"2\">S</option>";
+                                                        echo "</select>" ;
+                                                        echo "</td>";
+                                                    }
+
+
+                                                    echo "</tr>";
+                                                }
+                                                ?>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </li>
+
+                                </ul>
+
+                            </div><!-- Read From device -->
+
+                            <div class="row mb-3" >
+                                <label id="kave" class="col-sm-6 col-form-label ">SAVE Register</label>
+                                <div class="col-sm-6">
+                                    <button <?php if($change == "download" || $change == "upload"  )//echo "disabled";
+                                    if( $user == "admin" ){}
+                                    else{ if($user_active_time <= 0 )echo "disabled"; }
+                                    ?>  type="submit" class="btn btn-primary">SAVE</button>
                                 </div>
-                                <div class="col-sm-4">
-                                    <button type="submit" class="btn btn-primary">SAVE</button>
-                                </div>
-
-                            </div>
-                        </form ><!-- End General Form Elements -->
-
-                        <form method="post" action="" >
-
-                            <table  class="table datatable text-center  ">
-                                <thead>
-                                <tr>
-                                    <th>FLOOR</th>
-                                    <th>D1</th>
-                                    <th>D2</th>
-                                    <th>D3</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-
-                                <?php
-
-                                for($i_floor=1;$i_floor<=$num_floor;$i_floor++ ){
-
-                                    echo "<tr >";
-
-                                    echo "<th class=\"table-active\" scope=\"row\">"."$i_floor"."</th>";
-
-                                    if( $num_of_door > 0 ){
-                                        echo "<td style='background-color: whitesmoke'>";
-                                        echo "<div  class=\"form-check form-switch  d-flex justify-content-center \">";
-                                        echo "<input value='y' name='d1f$i_floor' class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckDefault\" ";
-                                        if( read_data($con,$serial,"advance_settin","general*door*door_select*d1f$i_floor",1) == "y" ){
-                                            echo "checked>";
-                                        }
-                                        else echo ">";
-                                        echo "</div>";
-                                        echo "</td>";
-                                    }
-
-                                    if( $num_of_door > 1 ){
-
-                                        echo "<td style='background-color: antiquewhite'>";
-                                        echo "<div  class=\"form-check form-switch  d-flex justify-content-center \">";
-                                        echo "<input value='y' name='d2f$i_floor' class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckDefault\" ";
-                                        if( read_data($con,$serial,"advance_settin","general*door*door_select*d2f$i_floor",1) == "y" ){
-                                            echo "checked>";
-                                        }
-                                        echo "</div>";
-                                        echo "</td>";
-
-                                    }
-
-                                    if( $num_of_door > 2 ){
-
-                                        echo "<td style='background-color: powderblue'>";
-                                        echo "<div  class=\"form-check form-switch  d-flex justify-content-center \">";
-                                        echo "<input value='y' name='d3f$i_floor' class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckDefault\" ";
-                                        if( read_data($con,$serial,"advance_settin","general*door*door_select*d3f$i_floor",1) == "y" ){
-                                            echo "checked>";
-                                        }
-                                        echo "</div>";
-                                        echo "</td>";
-
-                                    }
-
-
-                                    echo "</tr>";
-
-                                }
-                                ?>
-
-                                </tbody>
-                            </table>
-
-                            <div class="col-sm-4">
-                                <button type="submit" class="btn btn-primary">SAVE</button>
+                                <label  style="color: red" class="col-sm-6 col-form-label">
+                                    <?php if($change == "download")echo "wait to download complit"?>
+                                </label>
                             </div>
 
-                        </form ><!-- End General Form Elements -->
-
-
-                        <div style="display: none;" id="alert" class="alert alert-primary bg-primary text-light border-0 alert-dismissible fade show" role="alert">
-                            <div id="alert_text">A simple primary alert with solid color—check it out! </div>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-
+                        </form><!-- End General Form Elements -->
 
                     </div>
                 </div>
@@ -336,34 +369,23 @@ for( $i_d=1; $i_d<=$num_of_door; $i_d++ ){
                                 <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">updating</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">serial</button>
+                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">reserve</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">reserve</button>
                             </li>
                         </ul>
                         <div class="tab-content pt-2" id="myTabContent">
-                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
+                            <div  id="change_status"  >
                                 <?php
-                                if( $change == 1 ){
-
-                                    echo "<button class=\"btn btn-warning\" type=\"button\" disabled>";
-                                    echo "<span class=\"spinner-grow spinner-grow-sm\" role=\"status\" aria-hidden=\"true\"></span>";
-                                    echo "updating...";
-                                    echo "<i class=\"bi bi-wifi\"></i>";
-                                    echo "</button>";
-
-                                }
-                                else{
-                                    echo "<button class=\"btn btn-success\" type=\"button\" disabled>";
-                                    echo "update";
-                                    echo "<i class=\"bi bi-wifi\"></i>";
-                                    echo "</button> " ;
-
-                                }
+                                echo $change;
                                 ?>
-
+                            </div>
+                            <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="home-tab">
+                                <?php
+                                show_change_status_progress($change,$progress);
+                                ?>
                             </div>
 
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
@@ -373,7 +395,7 @@ for( $i_d=1; $i_d<=$num_of_door; $i_d++ ){
                             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
 
                             </div>
-                        </div><!-- End Default Tabs -->
+                        </div><!-- Device -->
 
                     </div>
                 </div>
@@ -386,7 +408,7 @@ for( $i_d=1; $i_d<=$num_of_door; $i_d++ ){
 
 
 <?php
-include "../../../../../Footer.php";
+include "../../../../Footer.php";
 ?>
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
@@ -405,8 +427,10 @@ include "../../../../../Footer.php";
 <!-- Template Main JS File -->
 <script src="/GSM_RAVIS/assets/js/main.js"></script>
 
-
-
 </body>
 
 </html>
+
+
+
+

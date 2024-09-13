@@ -12,7 +12,7 @@ include "../../../../main/GSM/change_status.php"; //change_status_function
 
 $change="unknown";
 
-//-------------------------------------------------NUMBER OF STOP
+//-------------------------------------------------NUMBER OF STOP STNG    2
 list($id,$number_of_stop,$change) = post_register_manager($con,"number_of_stop",$serial,"advance_settin","general*",0,2);
 
 //-------------------------------------------------AUTO REFRESH
