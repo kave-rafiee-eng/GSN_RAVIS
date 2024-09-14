@@ -99,7 +99,7 @@ function read_register($con,$serial,$type,$name)
     return 0;
 }
 
-function post_register_manager( $con,$add,$serial,$type,$branch,$arreay_select,$byte_count,$factor=1,$Addition=0,$init=0){
+function post_register_manager( $con,$add,$serial,$type,$branch,$arreay_select,$byte_count,$factor=1,$Addition=0,$init=0,$offset=0){
 
     $branch .= $add;
 
@@ -108,7 +108,7 @@ function post_register_manager( $con,$add,$serial,$type,$branch,$arreay_select,$
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if( isset($_POST[$add] )  ){
-            $data = $_POST[$add] * $factor + $Addition;
+            $data = $_POST[$add] * $factor + $Addition + $offset;
             update_data($con,$serial,"$type","$branch",$data,$arreay_select,$byte_count);
         }
 
@@ -119,10 +119,20 @@ function post_register_manager( $con,$add,$serial,$type,$branch,$arreay_select,$
     }
 
     $out[]=$id ;
-    $out[]=$data / $factor - $Addition;
+    $out[]=($data-$offset) / $factor - $Addition;
     $out[]=$change;
     return $out;
 
 }
+
+function show_list($list,$value){
+
+    echo "<option  selected='selected'  value='$value'>$list[$value]</option>";
+    for($i=0; $i<sizeof($list); $i++ ) {
+        if ($list[$i] != $list[$value]) echo "<option  style=\"color:black\" value=\"$i\">$list[$i]</option>";
+    }
+
+}
+
 
 ?>

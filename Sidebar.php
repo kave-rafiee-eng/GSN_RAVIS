@@ -75,6 +75,138 @@
                 </li>
                 <!-- End DOOR -->
 
+                <li>
+                    <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/SOUND/sound.php">
+                        <i class="bi bi-circle"></i><span>Sound</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/FLOOR/floor.php">
+                        <i class="bi bi-circle"></i><span>Floor</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/MOTOR_SAFE/motor_safe.php">
+                        <i class="bi bi-circle"></i><span>Motor Safe</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/HYDROLIC/hydrolic.php">
+                        <i class="bi bi-circle"></i><span>HydroLoc</span>
+                    </a>
+                </li>
+
+
+                <li class="nav-item" style="background: #dcdada">
+                    <a style="background: #b5b2b2" class="nav-link collapsed" data-bs-target="#land" data-bs-toggle="collapse" href="#">
+                        <i style="background: #dcdada" class="bi bi-chevron-down "></i><span>Landing</span><i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="land" class="nav-content collapse " >
+
+                        <li class="nav-item m-3 " style="background: #e3ea96">
+                                <a style="background: #c5e16b" class="nav-link collapsed" data-bs-target="#Based" data-bs-toggle="collapse" href="#">
+                                    <i class="bi bi-circle"></i>
+                                    <i style="background: #e6e5e5" class="bi bi-chevron-down "></i><span>Based On</span><i class="bi bi-chevron-down ms-auto"></i>
+                                </a>
+                                <ul id="Based" class="nav-content collapse " >
+                                    <li>
+                                        <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/LANDING/jump1_speed.php">
+                                            <i class="bi bi-circle"></i>
+                                            <i class="bi bi-circle"></i>
+                                            <i class="bi bi-circle"></i><span>Jump1 Speed</span>
+                                        </a>
+                                    </li><!-- Jump1 Speed -->
+                                    <li>
+                                        <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/LANDING/cf3_flag.php">
+                                            <i class="bi bi-circle"></i>
+                                            <i class="bi bi-circle"></i>
+                                            <i class="bi bi-circle"></i><span>CF3 Flag</span>
+                                        </a>
+                                    </li><!-- CF3 Flag -->
+                                    <li>
+                                        <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/LANDING/cf3_delay.php">
+                                            <i class="bi bi-circle"></i>
+                                            <i class="bi bi-circle"></i>
+                                            <i class="bi bi-circle"></i><span>CF3 Delay</span>
+                                        </a>
+                                    </li><!-- CF3 Delay -->
+                                    <li>
+                                        <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/LANDING/motor_speed.php">
+                                            <i class="bi bi-circle"></i>
+                                            <i class="bi bi-circle"></i>
+                                            <i class="bi bi-circle"></i><span>Motor Speed</span>
+                                        </a>
+                                    </li><!-- Motor Speed -->
+                                    <li>
+                                        <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/LANDING/acceleration.php">
+                                            <i class="bi bi-circle"></i>
+                                            <i class="bi bi-circle"></i>
+                                            <i class="bi bi-circle"></i><span>Acceleration</span>
+                                        </a>
+                                    </li><!-- Acceleration -->
+                                    <li>
+                                        <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/LANDING/deceleration.php">
+                                            <i class="bi bi-circle"></i>
+                                            <i class="bi bi-circle"></i>
+                                            <i class="bi bi-circle"></i><span>Deceleration</span>
+                                        </a>
+                                    </li><!-- Deceleration -->
+                                    <li>
+                                        <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/LANDING/level_distanance.php">
+                                            <i class="bi bi-circle"></i>
+                                            <i class="bi bi-circle"></i>
+                                            <i class="bi bi-circle"></i><span>Level Distanance</span>
+                                        </a>
+                                    </li><!-- Level Distanance -->
+                                    <li>
+                                        <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/LANDING/auto_learning.php">
+                                            <i class="bi bi-circle"></i>
+                                            <i class="bi bi-circle"></i>
+                                            <i class="bi bi-circle"></i><span>Auto Learning</span>
+                                        </a>
+                                    </li><!-- Auto Learning -->
+
+                                </ul>
+                        </li>
+
+                        <li>
+                            <a href="">
+                                <i class="bi bi-circle"></i>
+                                <i class="bi bi-circle"></i><span>Timing</span>
+                            </a>
+                        </li><!-- End Door Time Time -->
+
+                        <li>
+                            <a href="">
+                                <i class="bi bi-circle"></i>
+                                <i class="bi bi-circle"></i><span>Encoder</span>
+                            </a>
+                        </li><!-- End Door Time Time -->
+
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/CALIBRATION/calibration.php">
+                        <i class="bi bi-circle"></i><span>Calibreation</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/EMERGENCY/emergency.php">
+                        <i class="bi bi-circle"></i><span>Emergency</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/1CF_ERROR/1cf_error.php">
+                        <i class="bi bi-circle"></i><span>1CF ERROR</span>
+                    </a>
+                </li>
+
             </ul>
         </li><!-- End Components Nav -->
 

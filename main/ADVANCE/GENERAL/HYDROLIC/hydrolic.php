@@ -16,37 +16,36 @@ $progress_passed=0;
 $progress=100;
 $step=0;
 
-//-------------------------------------------------NUMBER OF STOP STNG    2
-list($id,$number_of_stop,$change) = post_register_manager($con,"number_of_stop",$serial,"advance_settin","general*",0,2);
+//-------------------------------------------------START SLOW DELAY	STNG    43
+list($id,$start_slow_delay,$change) = post_register_manager($con,"start_slow_delay",$serial,"advance_settin","general*hydrolic*",0,43,10);
 if( $change == "upload")$progress_passed+=2;
 if( $change == "download")$progress_passed+=1;
 if( $change == "unknown")$unknown=1;
 $step++;
-//-------------------------------------------------NUM_OF_DOOR	STNG    22
-list($id,$number_of_door,$change) = post_register_manager($con,"number_of_door",$serial,"advance_settin","general*door*",0,22,1,-1);
+//-------------------------------------------------START FAST DELAY	STNG    44
+list($id,$start_fast_delay,$change) = post_register_manager($con,"start_fast_delay",$serial,"advance_settin","general*hydrolic*",0,44,10);
 if( $change == "upload")$progress_passed+=2;
 if( $change == "download")$progress_passed+=1;
 if( $change == "unknown")$unknown=1;
 $step++;
-
-//------------------------------------------------- D1-3 - FLOOR 2,3,4
-for($i=1; $i<=$number_of_stop; $i++){
-    list($id,$data,$change) = post_register_manager($con,"door_select*d1f$i",$serial,"advance_settin","general*door*",1,$i*100+2);
-    if( $change == "upload")$progress_passed+=2;
-    if( $change == "download")$progress_passed+=1;
-    if( $change == "unknown")$unknown=1;
-    $step++;
-    list($id,$data,$change) = post_register_manager($con,"door_select*d2f$i",$serial,"advance_settin","general*door*",1,$i*100+3);
-    if( $change == "upload")$progress_passed+=2;
-    if( $change == "download")$progress_passed+=1;
-    if( $change == "unknown")$unknown=1;
-    $step++;
-    list($id,$data,$change) = post_register_manager($con,"door_select*d3f$i",$serial,"advance_settin","general*door*",1,$i*100+4);
-    if( $change == "upload")$progress_passed+=2;
-    if( $change == "download")$progress_passed+=1;
-    if( $change == "unknown")$unknown=1;
-    $step++;
-}
+//-------------------------------------------------START TO DELTA DELAY	STNG    45
+list($id,$start_to_delta,$change) = post_register_manager($con,"start_to_delta",$serial,"advance_settin","general*hydrolic*",0,45,10);
+if( $change == "upload")$progress_passed+=2;
+if( $change == "download")$progress_passed+=1;
+if( $change == "unknown")$unknown=1;
+$step++;
+//-------------------------------------------------MOTOR START DELAY	STNG    46
+list($id,$motor_start_delay,$change) = post_register_manager($con,"motor_start_delay",$serial,"advance_settin","general*hydrolic*",0,46,10);
+if( $change == "upload")$progress_passed+=2;
+if( $change == "download")$progress_passed+=1;
+if( $change == "unknown")$unknown=1;
+$step++;
+//-------------------------------------------------MOTOR STOP DELAY	STNG    47
+list($id,$motor_stop_delay,$change) = post_register_manager($con,"motor_stop_delay",$serial,"advance_settin","general*hydrolic*",0,47,10,0,100,100);
+if( $change == "upload")$progress_passed+=2;
+if( $change == "download")$progress_passed+=1;
+if( $change == "unknown")$unknown=1;
+$step++;
 
 //-------------------------------------------------$progress
 $progress = round(  100 - ($progress_passed/($step*2) *100) );
@@ -70,8 +69,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 //-------------------------------------------------CLEAR $POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/DOOR/second_door.php");
+    header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/HYDROLIC/hydrolic.php");
 }
+
+
 
 ?>
 
@@ -191,11 +192,11 @@ include "../../../../Sidebar.php";
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/GSM_RAVIS/main/home.php">Home</a></li>
                 <li class="breadcrumb-item">General</li>
-                <li class="breadcrumb-item">Door</li
-                <li class="breadcrumb-item active">Door Select</li>
+                <li class="breadcrumb-item active">Hydrolic Setting</li>
             </ol>
 
         </nav>
+
     </div><!-- End Page Title -->
 
     <section class="section">
@@ -204,7 +205,7 @@ include "../../../../Sidebar.php";
 
                 <div class="card"  >
                     <div class="card-body ">
-                        <h5 class="card-title">Door Time</h5>
+                        <h5 class="card-title">Hydrolic Setting</h5>
 
                         <div class="row mb-3 m-2" >
                             <ul class="list-group">
@@ -225,94 +226,54 @@ include "../../../../Sidebar.php";
 
                                     <li class="list-group-item"><i class="bi bi-activity me-1 text-primary"></i>Write To device</li>
 
-                                    <li class="list-group-item"><!--  Open Delay !-->
+                                    <li class="list-group-item"><!--  START SLOW DELAY !-->
                                         <div class="row ">
-                                            <label class="col-sm-4 col-form-label">Number Of Door</label>
+                                            <label class="col-sm-4 col-form-label">Start Slow Delay</label>
                                             <div class="col-sm-6">
-                                                <input  step="1" value="<?php echo $number_of_door;?>" name="number_of_door" type="number" class="form-control"  min="0" max="3">
+                                                <input  step="0.1" value="<?php echo $start_slow_delay;?>" name="start_slow_delay" type="number" class="form-control"  min="0" max="20">
                                             </div>
+                                            <label class="col-sm-2 col-form-label text-danger ">sec</label>
                                         </div>
                                     </li>
 
-                                    <li class="list-group-item"><!--  Open Delay !-->
+                                    <li class="list-group-item"><!--  START FAST DELAY !-->
                                         <div class="row ">
-                                            <label class="col-sm-4 col-form-label">Number Of Door</label>
-                                            <table  class="table datatable text-center  ">
-                                                <thead>
-                                                <tr>
-                                                    <th>FLOOR</th>
-                                                    <th>D1</th>
-                                                    <th>D2</th>
-                                                    <th>D3</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
+                                            <label class="col-sm-4 col-form-label">Start Fast Delay</label>
+                                            <div class="col-sm-6">
+                                                <input  step="0.1" value="<?php echo $start_fast_delay;?>" name="start_fast_delay" type="number" class="form-control"  min="0" max="20">
+                                            </div>
+                                            <label class="col-sm-2 col-form-label text-danger ">sec</label>
+                                        </div>
+                                    </li>
 
-                                                <?php
+                                    <li class="list-group-item"><!--  START TO DELTA !-->
+                                        <div class="row ">
+                                            <label class="col-sm-4 col-form-label">Start To Delta</label>
+                                            <div class="col-sm-6">
+                                                <input  step="0.1" value="<?php echo $start_to_delta;?>" name="start_to_delta" type="number" class="form-control"  min="0" max="20">
+                                            </div>
+                                            <label class="col-sm-2 col-form-label text-danger ">sec</label>
+                                        </div>
+                                    </li>
 
-                                                /*echo "<div  class=\"form-check form-switch  d-flex justify-content-center \">";
-                                            echo "<input value='1' name='door_select*d1f$i_floor' class=\"form-check-input\" type=\"checkbox\" id=\"flexSwitchCheckDefault\" ";
-
-                                            list($id,$data,$change) = post_register_manager($con,"door_select*d1f$i_floor",$serial,"advance_settin","general*door*",1,$i*100+2);
-                                            if( $data == 1 )echo "checked>";
-                                            else echo ">";
-                                            echo "</div>";*/
-
-                                                for($i_floor=1;$i_floor<=$number_of_stop;$i_floor++ ){
-
-                                                    echo "<tr >";
-
-                                                    echo "<th class=\"table-active\" scope=\"row\">"."$i_floor"."</th>";
-
-                                                    if( $number_of_door > 0 ){
-                                                        echo "<td style='background-color: whitesmoke'>";
-                                                            echo "<select  id=\"select\" name='door_select*d1f$i_floor' class=\"form-select\" >";
-                                                            list($id,$data,$ch) = only_read_data($con,$serial,"advance_settin","general*door*door_select*d1f$i_floor");
-                                                            if( $data == 0 && $number_of_door != 1 )echo "<option selected='selected' value=\"$data\">N</option>";
-                                                            if( $data == 1 || $number_of_door == 1  )echo "<option selected='selected' value=\"$data\">Y</option>";
-                                                            if( $data == 2 && $number_of_door != 1  )echo "<option selected='selected' value=\"$data\">S</option>";
-                                                            if( $data != 0 && $number_of_door != 1 )echo "<option value=\"0\">N</option>";
-                                                            if( $data != 1 && $number_of_door != 1 )echo "<option value=\"1\">Y</option>";
-                                                            if( $data != 2 && $number_of_door != 1 )echo "<option value=\"2\">S</option>";
-                                                            echo "</select>" ;
-                                                        echo "</td>";
-                                                    }
-
-                                                    if( $number_of_door > 1 ){
-                                                        echo "<td style='background-color: antiquewhite'>";
-                                                        echo "<select  id=\"select\" name='door_select*d2f$i_floor' class=\"form-select\" >";
-                                                        list($id,$data,$ch) = only_read_data($con,$serial,"advance_settin","general*door*door_select*d2f$i_floor");
-                                                        if( $data == 0 )echo "<option selected='selected' value=\"$data\">N</option>";
-                                                        if( $data == 1 )echo "<option selected='selected' value=\"$data\">Y</option>";
-                                                        if( $data == 2 )echo "<option selected='selected' value=\"$data\">S</option>";
-                                                        if( $data != 0 )echo "<option value=\"0\">N</option>";
-                                                        if( $data != 1 )echo "<option value=\"1\">Y</option>";
-                                                        if( $data != 2 )echo "<option value=\"2\">S</option>";
-                                                        echo "</select>" ;
-                                                        echo "</td>";
-                                                    }
-
-                                                    if( $number_of_door > 2 ){
-                                                        echo "<td style='background-color: powderblue'>";
-                                                        echo "<select  id=\"select\" name='door_select*d3f$i_floor' class=\"form-select\" >";
-                                                        list($id,$data,$ch) = only_read_data($con,$serial,"advance_settin","general*door*door_select*d3f$i_floor");
-                                                        if( $data == 0 )echo "<option selected='selected' value=\"$data\">N</option>";
-                                                        if( $data == 1 )echo "<option selected='selected' value=\"$data\">Y</option>";
-                                                        if( $data == 2 )echo "<option selected='selected' value=\"$data\">S</option>";
-                                                        if( $data != 0 )echo "<option value=\"0\">N</option>";
-                                                        if( $data != 1 )echo "<option value=\"1\">Y</option>";
-                                                        if( $data != 2 )echo "<option value=\"2\">S</option>";
-                                                        echo "</select>" ;
-                                                        echo "</td>";
-                                                    }
+                                    <li class="list-group-item"><!--  MOTOR START DELAY !-->
+                                        <div class="row ">
+                                            <label class="col-sm-4 col-form-label">Motor Start Delay</label>
+                                            <div class="col-sm-6">
+                                                <input  step="0.1" value="<?php echo $motor_start_delay;?>" name="motor_start_delay" type="number" class="form-control"  min="0" max="10">
+                                            </div>
+                                            <label class="col-sm-2 col-form-label text-danger ">sec</label>
+                                        </div>
+                                    </li>
 
 
-                                                    echo "</tr>";
-                                                }
-                                                ?>
-
-                                                </tbody>
-                                            </table>
+                                    <li class="list-group-item"><!--  MOTOR STOP DELAY !-->
+                                        <div class="row ">
+                                            <label class="col-sm-4 col-form-label">Motor Stop Delay</label>
+                                            <div class="col-sm-6">
+                                                <input  step="0.1" value="<?php echo $motor_stop_delay;?>" name="motor_stop_delay" type="number" class="form-control"  min="-10" max="10">
+                                            </div>
+                                            <label class="col-sm-2 col-form-label text-danger ">sec</label>
                                         </div>
                                     </li>
 
@@ -323,9 +284,9 @@ include "../../../../Sidebar.php";
                             <div class="row mb-3" >
                                 <label id="kave" class="col-sm-6 col-form-label ">SAVE Register</label>
                                 <div class="col-sm-6">
-                                    <button <?php if($change == "download" || $change == "upload"  )echo "disabled";
-                                    if( $user == "admin" ){}
-                                    else{ if($user_active_time <= 0 )echo "disabled"; }
+                                    <button <?php if($change == "download" || $change == "upload"  )//echo "disabled";
+                                        if( $user == "admin" ){}
+                                        else{ if($user_active_time <= 0 )echo "disabled"; }
                                     ?>  type="submit" class="btn btn-primary">SAVE</button>
                                 </div>
                                 <label  style="color: red" class="col-sm-6 col-form-label">
@@ -333,7 +294,10 @@ include "../../../../Sidebar.php";
                                 </label>
                             </div>
 
+
+
                         </form><!-- End General Form Elements -->
+
 
                     </div>
                 </div>
@@ -430,7 +394,3 @@ include "../../../../Footer.php";
 </body>
 
 </html>
-
-
-
-

@@ -402,16 +402,35 @@ include "../../../../Sidebar.php";
                         <!-- Accordion without outline borders -->
                         <div class="accordion accordion-flush" id="accordionFlushExample">
                             <div class="accordion-item">
-                                <h2 class="accordion-header" id="flush-headingOne">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                        Number Of Stop
+                                <h2 class="accordion-header" id="flush-h1">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-c1" aria-expanded="false" aria-controls="flush-c1">
+                                        SL
                                     </button>
                                 </h2>
-                                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">تعداد طبقات</div>
+                                <div id="flush-c1" class="accordion-collapse collapse" aria-labelledby="flush-h1" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">نمایشگر خروجی سمت چب"</div>
                                 </div>
                             </div>
-
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-h2">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-c2" aria-expanded="false" aria-controls="flush-c2">
+                                        SR
+                                    </button>
+                                </h2>
+                                <div id="flush-c2" class="accordion-collapse collapse" aria-labelledby="flush-h2" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">نمایشگر خروجی سمت راست"</div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-h3">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-c3" aria-expanded="false" aria-controls="flush-c3">
+                                        TALK
+                                    </button>
+                                </h2>
+                                <div id="flush-c3" class="accordion-collapse collapse" aria-labelledby="flush-h3" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">نمایشگر خروجی سمت راست"</div>
+                                </div>
+                            </div>
                         </div><!-- End Accordion without outline borders -->
 
                         <h5 class="card-title">Device</h5>
