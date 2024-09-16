@@ -12,7 +12,7 @@ function read_data($con,$serial,$type,$name,$data_init,$arreay_select,$byte_coun
         }
     }
     if( $data_found == 0 ){
-        $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`,`arreay_select`,`byte_count`) VALUES ('0','$serial','$type','$name','$data_init','upload','$arreay_select','$byte_count')";
+        $quary = "INSERT INTO `data`(`id`, `serial`, `type`, `name`, `data`,`change`,`arreay_select`,`byte_count`) VALUES ('0','$serial','$type','$name','$data_init','unknown','$arreay_select','$byte_count')";
         mysqli_query($con,$quary);
     }
 
@@ -73,9 +73,12 @@ function update_data_gsm($con,$serial,$data,$arreay_select,$byte_count)
             $quary = "UPDATE `data` SET `data`='$data',`change`='update' WHERE `id` = '$id'";
             mysqli_query($con,$quary);
 
-            return 1;
+            $data_found=1;
+
         }
     }
+
+    if( $data_found == 1 )return 1;
 
     return 0;
 }
