@@ -14,6 +14,7 @@ list($id,$number_of_stop,$change) = post_register_manager($con,"number_of_stop",
 
 //-------------------------------------------------CLEAR $POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/NUMBER_OF_STOP/number_of_stop.php");
 }
 
@@ -72,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
 
-                    document.getElementById("txtHint").innerHTML = this.responseText +"@"+on_load ;
+                    //document.getElementById("txtHint").innerHTML = this.responseText +"@"+on_load ;
 
                     const obj = JSON.parse(this.responseText)  ;
 
@@ -143,7 +144,7 @@ include "../../../../Sidebar.php";
 
 <main  id="main" class="main">
 
-    <div id="txtHint">Customer info will be listed here...</div>
+    <div style="display: none;" d="txtHint">Customer info will be listed here...</div>
 
     <div class="pagetitle">
 
@@ -181,27 +182,39 @@ include "../../../../Sidebar.php";
                         <!-- General Form Elements -->
                         <form method="post" action="" >
 
-                            <label class="col-sm-6 col-form-label">Number Of Stop</label>
+                            <div class="row mb-3 m-2" >
+                                <ul class="list-group">
 
-                            <div class="row mb-3">
+                                    <li class="list-group-item"><i class="bi bi-activity me-1 text-primary"></i>Write To device</li>
 
-                                <div class="col-sm-10">
-                                    <input oninput="myFunction()"  value="<?php echo $number_of_stop;?>" name="number_of_stop" type="number" class="form-control" id="" min="0" max="60">
-                                </div>
-                            </div>
+                                    <li class="list-group-item"> <!--  Gang Select !-->
+                                        <div class="row ">
+                                            <label class="col-sm-4 col-form-label">Number Of Stop</label>
+                                            <div class="row mb-3">
+                                                <div class="col-sm-10">
+                                                    <input step="1" oninput="myFunction()"  value="<?php echo $number_of_stop;?>" name="number_of_stop" type="number" class="form-control" id="" min="0" max="60">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                </ul>
+
+                            </div><!-- Read From device -->
 
                             <div class="row mb-3" >
-                                <label id="kave" class="col-sm-3 col-form-label">SAVE Register</label>
-                                <div class="col-sm-3">
-                                    <button <?php
-                                    if( $user == "admin" ){}
-                                    else{ if($user_active_time <= 0 )echo "disabled"; }
-                                    ?>  id="btn_save" type="submit" class="btn btn-primary">SAVE</button>
+                                <label id="kave" class="col-sm-6 col-form-label ">SAVE Register</label>
+                                <div class="col-sm-6">
+                                    <button <?php if($change == "download" || $change == "upload"  )//echo "disabled";
+                                        if( $user == "admin" ){}
+                                        else{ if($user_active_time <= 0 )echo "disabled"; }
+                                    ?>  type="submit" class="btn btn-primary">SAVE</button>
                                 </div>
                                 <label  style="color: red" class="col-sm-6 col-form-label">
                                     <?php if($change == "download")echo "wait to download complit"?>
                                 </label>
                             </div>
+
 
                         </form><!-- End General Form Elements -->
 

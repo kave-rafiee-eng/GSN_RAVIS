@@ -5,6 +5,11 @@ include "function.php";
 
 //echo isset($_GET["SW_ENABLE"]);
 
+if ( isset($_GET["connection_test"])  ){
+   echo "{\"connection_test\":\"connect\",}";
+   die();
+}
+
 if ( isset($_GET["serial"] )){
 
     $uplaod_i=1;

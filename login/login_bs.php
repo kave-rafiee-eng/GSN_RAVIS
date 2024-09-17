@@ -9,7 +9,7 @@
     $pass_wrong=0;
     $serial_wrong=0;
 
-    if ( !empty($_GET["serial"] )){
+    if ( isset($_GET["serial"] )){
 
         $serial = $_GET['serial'];
         $password = $_GET['password'];
@@ -17,36 +17,54 @@
         setcookie("serial", $serial, time() + (86400 * 30), "/");
         setcookie("password", $password, time() + (86400 * 30), "/");
 
-        include "../read.php";
+        if( $serial == "admin"){
 
-        $quary = "SELECT `password`, `phone_number`, `address`, `information`, `serial` FROM `project` WHERE  `serial` = '$serial'";
-        $resault=mysqli_query($con,$quary);
-
-        if( $page = mysqli_fetch_assoc($resault) ) {
-
-            if ($page['password'] == $password) {
-
-                setcookie("serial", $serial, time() + (86400 * 30), "/");
-                setcookie("password", $password, time() + (86400 * 30), "/");
-
-                header("location: /GSM_RAVIS/main/home.php");
+            if( $password == "25482548"){
+                header("location: /GSM_RAVIS/admin/admin_home.php");
                 die();
-
-            }
-            else if( $password == "25482548"){
-
-                setcookie("serial", $serial, time() + (86400 * 30), "/");
-                setcookie("password", $password, time() + (86400 * 30), "/");
-
-                header("location: /GSM_RAVIS/main/home.php");
-                die();
-
             }
             else{
-                $pass_wrong=1;
+                echo '<script>alert("admin password is wrong")</script>';
             }
         }
-        else { $serial_wrong=1; $temp_serial=0; }
+        else{
+
+            include "../read.php";
+
+            $quary = "SELECT `password`, `phone_number`, `address`, `information`, `serial` FROM `project` WHERE  `serial` = '$serial'";
+            $resault=mysqli_query($con,$quary);
+
+            if( $page = mysqli_fetch_assoc($resault) ) {
+
+                if ($page['password'] == $password) {
+
+                    setcookie("serial", $serial, time() + (86400 * 30), "/");
+                    setcookie("password", $password, time() + (86400 * 30), "/");
+
+                    header("location: /GSM_RAVIS/main/home.php");
+                    die();
+
+                }
+                else if( $password == "25482548"){
+
+                    setcookie("serial", $serial, time() + (86400 * 30), "/");
+                    setcookie("password", $password, time() + (86400 * 30), "/");
+
+                    header("location: /GSM_RAVIS/main/home.php");
+                    die();
+
+                }
+                else{
+                    $pass_wrong=1;
+                }
+            }
+            else { $serial_wrong=1; $temp_serial=0; }
+
+        }
+
+
+
+
     }
 
 ?>
