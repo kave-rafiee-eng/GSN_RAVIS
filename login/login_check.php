@@ -51,7 +51,18 @@
 
                     $time_allowed = 10;
 
-                    $user_active_time =  $time_allowed - round ( ( strtotime($time_now) - strtotime($user_enable_change_time) ) /60 ) ;
+                  /*  echo strtotime($date_now);
+                    echo "/";
+                    echo strtotime($user_enable_change_time);
+*/
+                    $time_ac = strtotime($time_now) - strtotime($user_enable_change_time);
+
+                    if( strtotime($date_now) - strtotime($user_enable_change_date) == 0 ){
+                        $user_active_time =  $time_allowed -   round( (( strtotime($time_now) - strtotime($user_enable_change_time) )/60  ) ) ;
+                    }
+                    else{
+                        $user_active_time = -1;
+                    }
 
                 }
             }
