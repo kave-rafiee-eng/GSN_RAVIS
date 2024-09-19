@@ -1,40 +1,20 @@
 
 <?php
 
-    if (isset($_COOKIE["serial"]))$serial= $_COOKIE["serial"];
-    else $serial=0;
-    if (isset($_COOKIE["password"]))$password = $_COOKIE["password"];
-    else $password =0;
+include "../read.php"; // $con
 
-    include "../read.php";
+include "../login/login_check.php"; //LOGIN_CHECK
 
-    $quary = "SELECT `password`, `phone_number`, `address`, `information`, `serial` FROM `project` WHERE  `serial` = '$serial'";
-    $resault=mysqli_query($con,$quary);
+include "../function.php"; //my_function
 
-    $pass_wrong=1;
 
-    if( $page = mysqli_fetch_assoc($resault) ) {
-        if ($page['password'] == $password)$pass_wrong=0;
-    }
+        $quary = "SELECT `password`, `phone_number`, `address`, `information`, `serial` FROM `project` WHERE  `serial` = '$serial'";
+        $resault=mysqli_query($con,$quary);
 
-    if( $pass_wrong == 1 ){
-        header("location: /GSM_RAVIS/login/login_bs.php");
-        die();
-    }
-    //---------LOGIN_CHECK
-
-    $change=0;
-
-    $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` FROM `data` WHERE `serial` = '$serial'";
-    $resault=mysqli_query($con,$quary);
-
-    while( $page = mysqli_fetch_assoc($resault) ) {
-
-        if ($page['change'] == 1 ) {
-
-            $change=1;
+        if( $page = mysqli_fetch_assoc($resault) ) {
+            $password  = $page['password'];
         }
-    }
+
     //---------changes
 
     if ( !empty($_GET["current_password"] )){
@@ -201,12 +181,15 @@ include "../Sidebar.php";
                                 $pass_wrong=1;
 
                                 if( $page = mysqli_fetch_assoc($resault) ) {
-                                    if ($page['password'] == $password) {
-                                        $phone_number = $page['phone_number'];
-                                        $address = $page['address'];
-                                        $information = $page['information'];
-                                    }
+
+                                    $password = $page['password'];
+                                    $phone_number = $page['phone_number'];
+                                    $address = $page['address'];
+                                    $information = $page['information'];
+
                                 }
+
+
                             ?>
                             <div class="tab-pane fade show active profile-overview" id="profile-overview">
                                 <h5 class="card-title">information</h5>
@@ -222,6 +205,11 @@ include "../Sidebar.php";
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label ">Address</div>
                                     <div class="col-lg-9 col-md-8"><?php echo $address; ?></div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-4 label ">Pass</div>
+                                    <div class="col-lg-9 col-md-8"><?php echo $password; ?></div>
                                 </div>
 
                             </div>

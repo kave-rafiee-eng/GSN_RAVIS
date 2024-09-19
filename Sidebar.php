@@ -161,13 +161,6 @@
                                             <i class="bi bi-circle"></i><span>Level Distanance</span>
                                         </a>
                                     </li><!-- Level Distanance -->
-                                    <li>
-                                        <a href="/GSM_RAVIS/main/ADVANCE/GENERAL/LANDING/auto_learning.php">
-                                            <i class="bi bi-circle"></i>
-                                            <i class="bi bi-circle"></i>
-                                            <i class="bi bi-circle"></i><span>Auto Learning</span>
-                                        </a>
-                                    </li><!-- Auto Learning -->
 
                                 </ul>
                         </li>
@@ -209,7 +202,6 @@
 
             </ul>
         </li><!-- End Components Nav -->
-
 
 
 

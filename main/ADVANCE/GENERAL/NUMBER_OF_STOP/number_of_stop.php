@@ -205,13 +205,17 @@ include "../../../../Sidebar.php";
                             <div class="row mb-3" >
                                 <label id="kave" class="col-sm-6 col-form-label ">SAVE Register</label>
                                 <div class="col-sm-6">
-                                    <button <?php if($change == "download" || $change == "upload"  )//echo "disabled";
-                                        if( $user == "admin" ){}
-                                        else{ if($user_active_time <= 0 )echo "disabled"; }
+                                    <button <?php if($change == "download" || $change == "upload"  ){ //echo "disabled";
+                                    }
+                                    if( $user == "admin" ){}
+                                    else if($user_active_time <= 0 )echo "disabled";
                                     ?>  type="submit" class="btn btn-primary">SAVE</button>
                                 </div>
                                 <label  style="color: red" class="col-sm-6 col-form-label">
                                     <?php if($change == "download")echo "wait to download complit"?>
+                                </label>
+                                <label  style="color: red" class="col-sm-6 col-form-label">
+                                    <?php  if($user_active_time <= 0 )echo "Push Sw on GSM board"; ?>
                                 </label>
                             </div>
 

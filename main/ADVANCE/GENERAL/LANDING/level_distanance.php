@@ -19,40 +19,12 @@ $step=0;
 
 //-------------------------------------------------NUMBER OF STOP STNG    2
 list($id,$number_of_stop,$change) = post_register_manager($con,"number_of_stop",$serial,"advance_settin","general*",0,2);
-if( $change == "upload")$progress_passed+=2;
-if( $change == "download")$progress_passed+=1;
-if( $change == "unknown")$unknown=1;
-$step++;
 
 //-------------------------------------------------LEVEL DISTANCE floor  11
 for($i=1; $i<=$number_of_stop; $i++){
     list($id,$data,$change) = post_register_manager($con,"distance*f$i",$serial,"advance_settin","general*landing*based_on*",1,$i*100+11,10);
-    if( $change == "upload")$progress_passed+=2;
-    if( $change == "download")$progress_passed+=1;
-    if( $change == "unknown")$unknown=1;
-    $step++;
-
 }
 
-//-------------------------------------------------$progress
-$progress = round(  100 - ($progress_passed/($step*2) *100) );
-
-if( $progress <= 50)$change="upload";
-else $change="download";
-if( $progress == 100 )$change="update";
-if($unknown == 1) $change = "unknown";
-
-echo $progress_passed;
-//-------------------------------------------------AUTO REFRESH
-list($id_r,$auto_refresh,$change_r) = read_data($con,$serial,"server","auto_refresh_page","1",0,0);
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if( isset($_POST["auto_refresh"] )  ){
-        if( isset($_POST["auto_refresh_radio"] )  ){
-            update_data($con,$serial,"server","auto_refresh_page",1,0,0);
-        }
-        else update_data($con,$serial,"server","auto_refresh_page",0,0,0);
-    }
-}
 
 //-------------------------------------------------CLEAR $POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -109,39 +81,75 @@ $List_speed = array(
     ======================================================== -->
     <SCRIPT>
 
-        function myFunction() {
-
-            var x = document.getElementById("number_of_stop").value;
-            document.getElementById("alert_text").innerHTML = x.toString(10)+" Sec";
-
-            //document.getElementById("alert_text").innerHTML = document.getElementById("auto_refresh_value").value;
-
-            var x = document.getElementById("alert");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            }
-        }
-
-        function refresh_radio(){
-            let form = document.getElementById("form_refresh");
-            setTimeout(setAlert, 500);
-        }
-        function setAlert() {
-            let form = document.getElementById("form_refresh");
-            form.submit();
-        }
+        var on_load=0;
 
         function refresh(){
 
-            let change = document.getElementById("change_status").textContent;
+            var change = document.getElementById("change_status_name");
+            var progress_status = document.getElementById("progress-status");
 
-            if( change.search("download") > 0 || change.search("upload") > 0  ){
-                var time = 40000;
-                if( document.getElementById("auto_refresh_value").value == "a1")time=3000;
-                setTimeout(function(){
-                    location.reload();
-                }, time); // 3000 milliseconds = 3 seconds
+            var show_uploading = document.getElementById("show-uploading");
+            var show_download = document.getElementById("show-download");
+            var show_update = document.getElementById("show-update");
+            var show_unknown = document.getElementById("show-unknown");
+
+            var xhttp;
+
+            xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+
+                    //document.getElementById("txtHint").innerHTML = this.responseText +"@"+on_load ;
+
+                    const obj = JSON.parse(this.responseText)  ;
+
+                    if( on_load == 0 ){ on_load++;
+                        change.innerHTML = obj.change;
+                    }
+                    else{
+                        progress_status.style.width = obj.progress+"%";
+                        progress_status.innerHTML = obj.progress;
+
+                        if( obj.command.search("refresh") >= 0){
+                            location.reload();
+                        }
+                        if( obj.command.search("normal") >= 0){
+                            change.innerHTML = obj.change;
+                        }
+                    }
+                }
+            };
+
+            var str = "status=update";
+
+            if( change.textContent.search("download") >= 0 ){
+                var str = "status=download";
+                show_download.style.display="block";
             }
+            else show_download.style.display="none";
+
+            if( change.textContent.search("upload") >= 0 ){
+                var str = "status=upload";
+                show_uploading.style.display="block";
+            }
+            else show_uploading.style.display="none";
+
+            if( change.textContent.search("update") >= 0 ){
+                var str = "status=update";
+                show_update.style.display="block";
+            }
+            else show_update.style.display="none";
+
+            if( change.textContent.search("unknown") >= 0 ){
+                var str = "status=unknown";
+                show_unknown.style.display="block";
+            }
+            else show_unknown.style.display="none";
+
+            xhttp.open("GET", "level_distanance_ajax.php?"+str, true);
+            xhttp.send();
+
+            let text = '{"progress":"10","command":"refressh"}';
 
         }
         setInterval(refresh, 500);
@@ -162,21 +170,6 @@ include "../../../../Sidebar.php";
 
 <main  id="main" class="main">
 
-    <div class="row d-flex  ">
-        <h5> <span class="badge bg-dark">
-            <form onchange="refresh_radio()" action="" method="post" id="form_refresh">
-                 <div   class="form-check form-switch  ">
-                     <label class=" col-form-label ">Auto Refresh Page</label>
-                     <input   value="1" name="auto_refresh_radio" class="form-check-input" type="checkbox" id=""
-                     <?php  if($auto_refresh == "1" )echo "checked";?>
-                     >
-                 </div>
-
-                <input  style="display:none" value="<?php echo 'a'.$auto_refresh; ?>" name="auto_refresh" class="form-check-input" type="text" id="auto_refresh_value">
-            </form>
-
-        </span></h5
-    </div><!-- refresh_radio -->
 
     <div class="pagetitle">
 
@@ -282,13 +275,17 @@ include "../../../../Sidebar.php";
                             <div class="row mb-3" >
                                 <label id="kave" class="col-sm-6 col-form-label ">SAVE Register</label>
                                 <div class="col-sm-6">
-                                    <button <?php if($change == "download" || $change == "upload"  )//echo "disabled";
-                                        if( $user == "admin" ){}
-                                        else{ if($user_active_time <= 0 )echo "disabled"; }
+                                    <button <?php if($change == "download" || $change == "upload"  ){ //echo "disabled";
+                                    }
+                                    if( $user == "admin" ){}
+                                    else if($user_active_time <= 0 )echo "disabled";
                                     ?>  type="submit" class="btn btn-primary">SAVE</button>
                                 </div>
                                 <label  style="color: red" class="col-sm-6 col-form-label">
                                     <?php if($change == "download")echo "wait to download complit"?>
+                                </label>
+                                <label  style="color: red" class="col-sm-6 col-form-label">
+                                    <?php  if($user_active_time <= 0 )echo "Push Sw on GSM board"; ?>
                                 </label>
                             </div>
 
@@ -325,7 +322,7 @@ include "../../../../Sidebar.php";
                         <!-- Default Tabs -->
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">updating</button>
+                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Status</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">reserve</button>
@@ -336,25 +333,23 @@ include "../../../../Sidebar.php";
                         </ul>
                         <div class="tab-content pt-2" id="myTabContent">
 
-                            <div  id="change_status"  >
-                                <?php
-                                echo $change;
-                                ?>
+                            <div  id="change_status_name">
+
                             </div>
                             <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="home-tab">
                                 <?php
-                                show_change_status_progress($change,$progress);
+                                show_change_status_progress(0,0);
                                 ?>
                             </div>
 
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-
                             </div>
 
                             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-
                             </div>
-                        </div><!-- Device -->
+
+                        </div><!-- status -->
+
 
                     </div>
                 </div>

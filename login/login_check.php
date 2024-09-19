@@ -28,6 +28,8 @@
             die();
         }
 
+        $user_active_time = -1;
+
         if( $user == "normal" ){
 
             $quary = "SELECT `id`, `serial`, `name`, `date`, `time` FROM `date_time` WHERE `serial` = '$serial'";
