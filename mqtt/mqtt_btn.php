@@ -32,6 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta content="" name="keywords">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
+
+
     <script src="mqtt_btn.js" type="text/javascript"></script>
 
     <!-- Favicons -->
@@ -104,7 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div class="card"  >
                     <div class="card-body ">
-                        <h5 class="card-title">Number Of Stop</h5>
+                        <h5 class="card-title">kave</h5>
 
                         <div class="row mb-3 m-2" >
                             <ul class="list-group">

@@ -2,17 +2,29 @@ function startConnect(){
 
     clientID = "clientID - "+parseInt(Math.random() * 100);
 
-    host = "52769f07854f438f863fc8ef379b9b79.s1.eu.hivemq.cloud";
+    /*host = "52769f07854f438f863fc8ef379b9b79.s1.eu.hivemq.cloud";
     port = "8883";
     userId  = "ravis";
-    password = "25482548Mo";
+    password = "25482548Mo";*/
+
+   host = "127.0.0.1";
+   port = 9001;
+   userId  = "11";
+   password = "11";
 
     document.getElementById("messages").innerHTML += "<span> Connecting to " + host + "on port " +port+"</span><br>";
-    document.getElementById("messages").innerHTML += "<span> Using the  client Id " + clientID +" </span><br>";
+   // document.getElementById("messages").innerHTML += "<span> Using the  client Id " + clientID +" </span><br>";
 
-    //client = new Paho.MQTT.Client(host,Number(port),"clientID");
 
-    client = new Paho.MQTT.Client("wss://52769f07854f438f863fc8ef379b9b79.s1.eu.hivemq.cloud:8884/mqtt", "your client id");
+    //client = new Paho.MQTT.Client("wss://52769f07854f438f863fc8ef379b9b79.s1.eu.hivemq.cloud:8884/mqtt", "your client id");
+
+   //client = new Paho.MQTT.Client('127.0.0.1', 9001, 'web_client');
+
+   //client = new Paho.MQTT.Client("localhost:1883", "122365");
+
+    //client = new Paho.MQTT.Client("127.0.0.1", Number(9001), "/mqtt", "clientId");
+    client = new Paho.MQTT.Client("127.0.0.1", Number(9001), "/mqtt", "clientId");
+
 
     client.onConnectionLost = onConnectionLost;
     client.onMessageArrived = onMessageArrived;
@@ -22,7 +34,9 @@ function startConnect(){
         password : password ,
     });
 
-    document.getElementById("messages").innerHTML = "try to connect...";
+
+
+    document.getElementById("messages").innerHTML = "try to connect...1";
 }
 
 function onConnect(){
@@ -40,7 +54,7 @@ function onConnectionLost(responseObject){
 function onMessageArrived(message){
     console.log("OnMessageArrived: "+message.payloadString);
     //document.getElementById("messages").innerHTML += "<span> Topic:"+message.destinationName+"| Message : "+message.payloadString + "</span><br>";
-    //document.getElementById("messages").innerHTML = message.payloadString;
+   // document.getElementById("messages").innerHTML = message.payloadString;
 
     var show_set = document.getElementById("btn_set");
     var show_clear = document.getElementById("btn_clear");
