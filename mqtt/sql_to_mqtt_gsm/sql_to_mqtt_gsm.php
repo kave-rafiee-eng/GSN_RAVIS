@@ -46,22 +46,25 @@
     <SCRIPT>
         var on_load=0;
 
-        function refresh_page(){
+        /*function refresh_page(){
             //document.getElementById("messages").innerHTML = "test";
             location.reload();
         }
-        setInterval(refresh_page, 10000);
+        setInterval(refresh_page, 10000);*/
 
         function refresh(){
             //document.getElementById("messages").innerHTML = "test";
-            ajax();
+            //ajax();
+            normal_timer_p();
         }
         setInterval(refresh, 2000);
+
+        setTimeout(startWorker(), 500)
 
     </SCRIPT>
 </head>
 
-<body onload="startConnect()" >
+<body onload="startConnect();" >
 
 
 <main   id="main" class="main">

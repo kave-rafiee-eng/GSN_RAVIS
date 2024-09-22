@@ -1,6 +1,26 @@
 
+var normal_timer=0;
+var wo = 0;
 
-
+function normal_timer_p(){
+    normal_timer++;
+}
+function startWorker() {
+    console.log("start_worker")
+    if (typeof(Worker) !== "undefined") {
+        if (typeof(w) == "undefined") {
+            w = new Worker("worker1.js");
+            console.log("worker1.js") ;
+        }
+        w.onmessage = function(event) {
+            console.log(event.data)
+            wo=event.data;
+            ajax();
+        };
+    } else {
+        console.log("Sorry! No Web Worker support.") ;
+    }
+}
 
 function startConnect(){
 
@@ -71,7 +91,7 @@ function startDisconnect(){
 }
 function publishMessage(topic,msg){
 
-    Message = new Paho.MQTT.Message(msg);
+    Message = new Paho.MQTT.Message(msg+"/"+wo+"/"+normal_timer);
     Message.destinationName = topic;
     client.send(Message);
     document.getElementById("div_message_publish").innerHTML = msg;
