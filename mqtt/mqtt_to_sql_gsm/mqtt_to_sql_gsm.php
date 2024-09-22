@@ -8,7 +8,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8">/GSM_RAVIS/mqtt/mqtt_to_sql_gsm/mqtt_to_sql_gsm.php?
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <title>RUN ON VPS</title>
