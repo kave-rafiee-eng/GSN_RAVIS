@@ -46,11 +46,11 @@
     <SCRIPT>
         var on_load=0;
 
-        /*function refresh_page(){
+        function refresh_page(){
             //document.getElementById("messages").innerHTML = "test";
             location.reload();
         }
-        setInterval(refresh_page, 10000);*/
+        setInterval(refresh_page, 60000);
 
         function refresh(){
             //document.getElementById("messages").innerHTML = "test";
