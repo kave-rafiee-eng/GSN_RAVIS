@@ -44,6 +44,12 @@
 
         var on_load=0;
 
+        function refresh_page(){
+            //document.getElementById("messages").innerHTML = "test";
+            location.reload();
+        }
+        setInterval(refresh_page, 10000);
+
         function refresh(){
             //document.getElementById("messages").innerHTML = "test";
         }

@@ -2,6 +2,8 @@
 <?php
 
 //http://localhost:82/GSM_RAVIS/mqtt/sql_to_mqtt_gsm/sql_to_mqtt_gsm.php
+//http://localhost:82/GSM_RAVIS/mqtt/sql_to_mqtt_gsm/sql_to_mqtt_gsm_ajax.php?
+//http://5.198.176.233/GSM_RAVIS/mqtt/sql_to_mqtt_gsm/sql_to_mqtt_gsm_ajax.php?
 ?>
 
 <!DOCTYPE html>
@@ -42,8 +44,13 @@
     <!-- =======================================================
     ======================================================== -->
     <SCRIPT>
-
         var on_load=0;
+
+        function refresh_page(){
+            //document.getElementById("messages").innerHTML = "test";
+            location.reload();
+        }
+        setInterval(refresh_page, 10000);
 
         function refresh(){
             //document.getElementById("messages").innerHTML = "test";
