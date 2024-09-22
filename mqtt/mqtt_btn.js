@@ -23,8 +23,9 @@ function startConnect(){
    //client = new Paho.MQTT.Client("localhost:1883", "122365");
 
     //client = new Paho.MQTT.Client("127.0.0.1", Number(9001), "/mqtt", "clientId");
-    client = new Paho.MQTT.Client("127.0.0.1", Number(9001), "/mqtt", "clientId");
+    client = new Paho.MQTT.Client("5.198.176.233", Number(9001), "/mqtts", clientID);
 
+    console.log("clientID: "+clientID);
 
     client.onConnectionLost = onConnectionLost;
     client.onMessageArrived = onMessageArrived;
@@ -50,6 +51,8 @@ function onConnectionLost(responseObject){
     if(responseObject !=0){
         document.getElementById("messages").innerHTML += "<span> ERROR:"+ responseObject.errorMessage +"</span><br>";
     }
+
+    startConnect();
 }
 function onMessageArrived(message){
     console.log("OnMessageArrived: "+message.payloadString);
