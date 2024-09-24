@@ -7,12 +7,16 @@ list_voltage.splice(0, 1);
 
 var obj = new Object();
 
-obj.ar = 1; obj.ad = 2;
+obj.ar = 0; obj.ad = 2;
 list_voltage.push(["R" , JSON.stringify(obj) ]);
-obj.ar = 1; obj.ad = 3;
+obj.ar = 0; obj.ad = 3;
 list_voltage.push(["S" , JSON.stringify(obj) ]);
-obj.ar = 1; obj.ad = 4;
-list_voltage.push(["T" , JSON.stringify(obj) ]);
+obj.ar = 0; obj.ad = 23;
+list_voltage.push(["sound" , JSON.stringify(obj) ]);
+obj.ar = 0; obj.ad = 24;
+list_voltage.push(["talk" , JSON.stringify(obj) ]);
+obj.ar = 0; obj.ad = 25;
+list_voltage.push(["welcome" , JSON.stringify(obj) ]);
 
 //----------------------- LIST C
 

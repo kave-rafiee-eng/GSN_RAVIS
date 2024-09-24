@@ -107,11 +107,16 @@ include "../../../Sidebar.php";
                             </thead>
                             <tbody id="table_esp" >
 
-
                             </tbody>
                         </table>
+
+                        <div class="col-5">
+                            <canvas id="myChart"></canvas>
+                        </div>
                     </div>
                 </div>
+
+
 
                     <ul class="list-group">
                         <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>Connection Status</li>
@@ -119,6 +124,7 @@ include "../../../Sidebar.php";
                             <div id="div_connection_status">
                                 div_connection_status
                             </div>
+                            <button type="button" value="0" onclick="send()">send</button>
                         </li>
                     </ul>
 
@@ -139,6 +145,7 @@ include "../../../Sidebar.php";
                             </div>
                         </li>
                     </ul>
+
 
 
             </div>
@@ -200,6 +207,8 @@ include "../../../Footer.php";
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
 <!-- Vendor JS Files -->
