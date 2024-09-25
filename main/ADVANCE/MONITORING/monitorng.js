@@ -11,12 +11,20 @@ window.addEventListener("load", load_end);
 
 //------------------------------------------------------------------
 
+var timer_send = 30;
 function refresh(){
 
-    send();
+    if( timer_send >= 0 ){ timer_send-- }
+    else{
+        timer_send=30;
+        send();
+    }
+
+    document.getElementById("deb").innerHTML = timer_send
+
 
 }
-setInterval(refresh, 500);
+setInterval(refresh, 100);
 
 
 function send(){
@@ -37,7 +45,7 @@ function send(){
 
 
     if( data_table_mqtt.length)publishMessage("server",JSON.stringify(obj_send));
-    document.getElementById("deb").innerHTML = JSON.stringify(obj_send)
+    //document.getElementById("deb").innerHTML = JSON.stringify(obj_send)
 
     kave_chart.data.datasets[0].data[0]=massage_count*50;
     kave_chart.update()
@@ -50,6 +58,8 @@ function send(){
 
 
 function esp_data(esp_data){
+
+    timer_send = 0;
 
     table_esp_data.splice(0, 200);
 
