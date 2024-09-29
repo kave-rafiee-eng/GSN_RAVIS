@@ -11,12 +11,12 @@ window.addEventListener("load", load_end);
 
 //------------------------------------------------------------------
 
-var timer_send = 30;
+var timer_send = 10;
 function refresh(){
 
     if( timer_send >= 0 ){ timer_send-- }
     else{
-        timer_send=30;
+        timer_send=60;
         send();
     }
 
@@ -59,7 +59,7 @@ function send(){
 
 function esp_data(esp_data){
 
-    timer_send = 0;
+    timer_send = 5;
 
     table_esp_data.splice(0, 200);
 

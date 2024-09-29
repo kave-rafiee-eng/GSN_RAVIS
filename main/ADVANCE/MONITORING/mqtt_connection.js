@@ -6,7 +6,7 @@ function startConnect(){
 
     userId = "";
     password = "";
-    client = new Paho.MQTT.Client("5.198.176.233", Number(9001), "/mqtt", clientID);
+    client = new Paho.MQTT.Client("84.47.232.10", Number(8080), "/mqtt", clientID);
 
     client.onConnectionLost = onConnectionLost;
     client.onMessageArrived = onMessageArrived;
@@ -41,10 +41,17 @@ function onMessageArrived(message){
     console.log("OnMessageArrived: "+message.payloadString);
     document.getElementById("div_message_arrived").innerHTML = "<span> Topic:"+message.destinationName+"| Message : "+message.payloadString+"| cunt : "+get_count+" </span><br>";
 
-    const obj = JSON.parse(message.payloadString)  ;
+
+    if( message.payloadString.search("connection_test" ) >= 0 ){
+
+    }
+    else{
+        esp_data(message.payloadString);
+    }
+    //const obj = JSON.parse(message.payloadString)  ;
 
     //document.getElementById("deb").innerHTML = JSON.stringify(obj)
-    esp_data(message.payloadString);
+
 
 }
 
