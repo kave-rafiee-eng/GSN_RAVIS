@@ -146,6 +146,10 @@ include "../../../Sidebar.php";
                         </li>
                     </ul>
 
+                <div id="div_serial" style="display: none">
+                <?php echo $serial;?>
+                </div>
+
 
 
             </div>

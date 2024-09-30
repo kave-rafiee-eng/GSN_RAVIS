@@ -10,9 +10,13 @@ include "../../function.php"; //my_function
         $jsonobj = $_GET["json"];
         $obj = json_decode($jsonobj);
 
-        if( isset($obj->serial) && isset($obj->da1) && isset($obj->ar1) && isset($obj->ad1)){
+        for( $count = 0; $count < 10; $count++ ) {
 
-            if( update_data_gsm($con,$obj->serial,$obj->da1,$obj->ar1,$obj->ad1) == 1 )echo "OK";
+            if( isset($obj->serial) && isset($obj->{"ad".$count}) && isset($obj->{"ar".$count}) && isset($obj->{"da".$count})){
+
+                if( update_data_gsm($con,$obj->serial,$obj->{"da".$count},$obj->{"ar".$count},$obj->{"ad".$count}) == 1 )echo "OK";
+            }
+
         }
 
         echo $jsonobj;

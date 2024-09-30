@@ -3,49 +3,72 @@
 //http://localhost:82/GSM_RAVIS/mqtt/sql_to_mqtt_gsm/sql_to_mqtt_gsm_ajax.php
 
 include "../../read.php"; // $con
+include "../../function.php"; //my_function
 
-$quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` ,`arreay_select`, `byte_count` FROM `data` WHERE 1";
-$resault=mysqli_query($con,$quary);
-while( $page = mysqli_fetch_assoc($resault) ) {
+$count = 1;
+$num_data_send=4;
 
-    if ($page['change'] == "upload" &&  $page['type'] == "advance_settin" ) {
+if ( isset($_GET["json"])  ) {
 
-        $myObj = new stdClass();
+    $json_get = $_GET["json"];
+    $json_input = json_decode($json_get);
+    //$myJSON = json_encode($json_input);
+    //echo $myJSON;
 
-        $myObj->serial = $page["serial"] ;
-        $myObj->ar1 = $page["arreay_select"] ;
-        $myObj->ad1 = $page["byte_count"] ;
-        $myObj->da1 = $page["data"] ;
-        $myObj->st1 = "1" ;
+    $obj = json_decode($json_get);
 
-        $myJSON = json_encode($myObj);
-        echo $myJSON;
+    for( $count = 0; $count < 10; $count++ ) {
 
-        $id =  $page['id'];
-        $quary = "UPDATE `data` SET `change`='download' WHERE `id` = '$id'";
-        mysqli_query($con,$quary);
+        if( isset($obj->serial) && isset($obj->{"ad".$count}) && isset($obj->{"ar".$count}) && isset($obj->{"da".$count})){
 
-        break;
-    }
-    if ($page['change'] == "download" &&  $page['type'] == "advance_settin"  ) {
-
-        $myObj = new stdClass();
-
-        $myObj->serial = $page["serial"] ;
-        $myObj->ar1 = $page["arreay_select"] ;
-        $myObj->ad1 = $page["byte_count"] ;
-        $myObj->da1 = $page["data"] ;
-        $myObj->st1 = "0" ;
-
-        $myJSON = json_encode($myObj);
-        echo $myJSON;
-
-        break;
+            update_data_gsm($con,$obj->serial,$obj->{"da".$count},$obj->{"ar".$count},$obj->{"ad".$count});
+        }
 
     }
+
+    $count = 1;
+
+    $quary = "SELECT `id`, `serial`, `type`, `name`, `data`, `change` ,`arreay_select`, `byte_count` FROM `data` WHERE `serial` = '$json_input->serial'";
+    $resault=mysqli_query($con,$quary);
+
+    $myObj = new stdClass();
+
+    while( $page = mysqli_fetch_assoc($resault) ) {
+
+        if ($page['change'] == "upload" &&  $page['type'] == "advance_settin" ) {
+
+            $myObj->serial = $page["serial"] ;
+            $myObj->{"ar".$count} = $page["arreay_select"] ;
+            $myObj->{"ad".$count} = $page["byte_count"] ;
+            $myObj->{"da".$count} = $page["data"] ;
+            $myObj->{"st".$count} = "1" ;
+
+            $id =  $page['id'];
+            $quary = "UPDATE `data` SET `change`='download' WHERE `id` = '$id'";
+            mysqli_query($con,$quary);
+
+            $count++;
+            if( $count > $num_data_send )break;
+
+        }
+        if ($page['change'] == "download" &&  $page['type'] == "advance_settin"  ) {
+
+
+            $myObj->serial = $page["serial"] ;
+            $myObj->{"ar".$count} = $page["arreay_select"] ;
+            $myObj->{"ad".$count} = $page["byte_count"] ;
+            $myObj->{"da".$count} = $page["data"] ;
+            $myObj->{"st".$count} = "0" ;
+
+            $count++;
+            if( $count > $num_data_send )break;
+
+        }
+    }
+
+    $myJSON = json_encode($myObj);
+    echo $myJSON;
+
 }
-
-//echo "----";
-
 
 ?>

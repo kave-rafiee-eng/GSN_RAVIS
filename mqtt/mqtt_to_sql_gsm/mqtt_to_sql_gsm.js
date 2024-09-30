@@ -4,7 +4,7 @@ function startConnect(){
 
     userId = "";
     password = "";
-    client = new Paho.MQTT.Client("5.198.176.233", Number(9001), "/mqtt", clientID);
+    client = new Paho.MQTT.Client("84.47.232.10", Number(8080), "/mqtt", clientID);
 
     console.log("clientID: "+clientID);
 

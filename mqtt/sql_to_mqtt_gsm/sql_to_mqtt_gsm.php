@@ -1,7 +1,7 @@
 
 <?php
 
-//http://localhost:82/GSM_RAVIS/mqtt/sql_to_mqtt_gsm/sql_to_mqtt_gsm.php
+//http://localhost:82/GSM_RAVIS/mqtt/sql_to_mqtt_gsm/sql_to_mqtt_gsm.php?
 //http://localhost:82/GSM_RAVIS/mqtt/sql_to_mqtt_gsm/sql_to_mqtt_gsm_ajax.php?
 //http://5.198.176.233/GSM_RAVIS/mqtt/sql_to_mqtt_gsm/sql_to_mqtt_gsm_ajax.php?
 ?>
@@ -130,6 +130,10 @@
                                     </div>
                                 </li>
                             </ul>
+
+                            <div id="div_timer">
+                                div_timer
+                            </div>
 
 
                         </div><!-- Read From device -->

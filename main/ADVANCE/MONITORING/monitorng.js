@@ -43,8 +43,12 @@ function send(){
         obj_send["da"+i] = 0;
     }
 
+    let serial = Number(document.getElementById("div_serial").textContent )
+    let topic = "server/"+serial
 
-    if( data_table_mqtt.length)publishMessage("server",JSON.stringify(obj_send));
+    //document.getElementById("deb").innerHTML = topic
+
+    if( data_table_mqtt.length)publishMessage(topic,JSON.stringify(obj_send));
     //document.getElementById("deb").innerHTML = JSON.stringify(obj_send)
 
     kave_chart.data.datasets[0].data[0]=massage_count*50;

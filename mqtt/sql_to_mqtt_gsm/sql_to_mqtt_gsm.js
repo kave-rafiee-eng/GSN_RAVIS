@@ -4,6 +4,8 @@ var wo = 0;
 
 function normal_timer_p(){
     normal_timer++;
+    document.getElementById("div_timer").innerHTML = normal_timer;
+
 }
 function startWorker() {
     console.log("start_worker")
@@ -15,7 +17,7 @@ function startWorker() {
         w.onmessage = function(event) {
             console.log(event.data)
             wo=event.data;
-            ajax();
+            //ajax();
         };
     } else {
         console.log("Sorry! No Web Worker support.") ;
@@ -28,7 +30,7 @@ function startConnect(){
 
     userId = "";
     password = "";
-    client = new Paho.MQTT.Client("5.198.176.233", Number(9001), "/mqtt", clientID);
+    client = new Paho.MQTT.Client("84.47.232.10", Number(8080), "/mqtt", clientID);
 
     console.log("clientID: "+clientID);
 
@@ -46,7 +48,7 @@ function startConnect(){
 function onConnect(){
     document.getElementById("div_connection_status").innerHTML = "connect";
 
-    topic = "#";
+    topic = "gsm";
     client.subscribe(topic);
 }
 function onConnectionLost(responseObject){
@@ -56,7 +58,7 @@ function onConnectionLost(responseObject){
     }
     startConnect();
 }
-function ajax( ){
+function ajax( json_data){
 
     var xhttp;
 
@@ -66,14 +68,19 @@ function ajax( ){
 
             document.getElementById("div_ajax_responce").innerHTML = this.responseText ;
 
-            //const obj = JSON.parse(this.responseText)  ;
+            const obj = JSON.parse(this.responseText)  ;
 
-            if( this.responseText.search("serial") >= 0 )publishMessage("server",this.responseText);
+            let topic = "server/"+obj.serial;
+
+            if( this.responseText.search("serial") >= 0 )publishMessage(topic,this.responseText);
 
         }
     };
 
-    xhttp.open("GET", "sql_to_mqtt_gsm_ajax.php?", true);
+    //document.getElementById("div_ajax_responce").innerHTML = json_data ;
+
+    var str = "json="+json_data;
+    xhttp.open("GET", "sql_to_mqtt_gsm_ajax.php?"+str, true);
     xhttp.send();
 
 }
@@ -82,6 +89,8 @@ function onMessageArrived(message){
     document.getElementById("div_message_arrived").innerHTML = "<span> Topic:"+message.destinationName+"| Message : "+message.payloadString + "</span><br>";
 
     //ajax(message.payloadString);
+
+    ajax(message.payloadString);
 
 }
 
