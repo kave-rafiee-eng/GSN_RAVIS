@@ -69,6 +69,62 @@ if ( isset($_GET["json"])  ) {
     $myJSON = json_encode($myObj);
     echo $myJSON;
 
+    //-------------------------------------
+    if( isset($json_input->serial) && isset($json_input->en_user)  ){
+
+        date_default_timezone_set("Asia/Tehran");
+
+        $date = date("Y/m/d");
+        $time = date("H:i:s");
+
+        $id_found=0;
+
+        $quary = "SELECT `id`, `serial`, `name`, `date`, `time` FROM `date_time` WHERE `serial` = '$json_input->serial'";
+        $resault=mysqli_query($con,$quary);
+        while( $page = mysqli_fetch_assoc($resault) ) {
+
+            if ($page['name'] == "user_enable_change") {
+                $id_found=1;
+                $id = $page['id'];
+
+                $quary = "UPDATE `date_time` SET `date`='$date',`time`='$time' WHERE `id` = '$id'";
+                mysqli_query($con,$quary);
+
+            }
+        }
+
+        if( $id_found == 0 ){
+            $quary = "INSERT INTO `date_time`(`id`, `serial`, `name`, `date`, `time`) VALUES ('0','$json_input->serial','user_enable_change','$date','$time')";
+            $resault=mysqli_query($con,$quary);
+        }
+
+    }
+
+    date_default_timezone_set("Asia/Tehran");
+    $date = date("Y/m/d");
+    $time = date("H:i:s");
+
+    $id_found=0;
+
+    $quary = "SELECT `id`, `serial`, `name`, `date`, `time` FROM `date_time` WHERE `serial` = '$json_input->serial'";
+    $resault=mysqli_query($con,$quary);
+    while( $page = mysqli_fetch_assoc($resault) ) {
+
+        if ($page['name'] == "gsm_last_connect") {
+            $id_found=1;
+            $id = $page['id'];
+
+            $quary = "UPDATE `date_time` SET `date`='$date',`time`='$time' WHERE `id` = '$id'";
+            mysqli_query($con,$quary);
+
+        }
+    }
+
+    if( $id_found == 0 ){
+        $quary = "INSERT INTO `date_time`(`id`, `serial`, `name`, `date`, `time`) VALUES ('0','$json_input->serial','gsm_last_connect','$date','$time')";
+        $resault=mysqli_query($con,$quary);
+    }
+
 }
 
 ?>

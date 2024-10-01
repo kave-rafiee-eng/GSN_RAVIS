@@ -6,6 +6,13 @@
         <li class="nav-heading">IOT Parameter</li>
 
         <li class="nav-item">
+            <a class="nav-link collapsed" href="/GSM_RAVIS/main/ADVANCE/MONITORING/monitoring.php">
+                <i class="bi bi-bezier2 "></i>
+                <span>Monitoring</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+
+        <li class="nav-item">
             <a class="nav-link collapsed" href="/GSM_RAVIS/main/GSM/device_connection_list.php">
                 <i class="bi bi-bezier2 "></i>
                 <span>GSM</span>
