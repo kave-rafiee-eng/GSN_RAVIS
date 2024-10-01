@@ -48,18 +48,13 @@ include "../../../login/login_check.php"; //LOGIN_CHECK
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
-    <script nomodule src="https://unpkg.com/browser-es-module-loader/dist/babel-browser-build.js"></script>
-    <script nomodule src="https://unpkg.com/browser-es-module-loader"></script>
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
 
-
-
 </head>
 
 <body id="main"  >
-
 
 <?php
 include "../../../header.php";
@@ -69,8 +64,7 @@ include "../../../header.php";
 include "../../../Sidebar.php";
 ?>
 
-<main  id="main" class="main">
-
+<main  id="" class="main">
 
     <div class="pagetitle">
 
@@ -82,14 +76,14 @@ include "../../../Sidebar.php";
             </ol>
 
         </nav>
-
     </div><!-- End Page Title -->
     <div id="deb">
         deb
     </div>
     <section class="section">
         <div class="row">
-            <div class="col-lg-7">
+
+            <div class="col-lg-6">
 
                 <div class="card"  >
                     <div class="card-body ">
@@ -150,8 +144,6 @@ include "../../../Sidebar.php";
                 <?php echo $serial;?>
                 </div>
 
-
-
             </div>
 
             <div class="col-lg-5">
@@ -197,12 +189,14 @@ include "../../../Sidebar.php";
 
                     </div>
                 </div>
-
             </div>
+
         </div>
     </section>
 
 </main><!-- End #main -->
+
+
 
 
 <?php
