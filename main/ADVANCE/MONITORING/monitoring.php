@@ -54,7 +54,7 @@ include "../../../login/login_check.php"; //LOGIN_CHECK
 
 </head>
 
-<body id="main"  >
+<body id=""  >
 
 <?php
 include "../../../header.php";
@@ -64,7 +64,7 @@ include "../../../header.php";
 include "../../../Sidebar.php";
 ?>
 
-<main  id="" class="main">
+<main  id="main" class="main">
 
     <div class="pagetitle">
 
@@ -77,13 +77,15 @@ include "../../../Sidebar.php";
 
         </nav>
     </div><!-- End Page Title -->
-    <div id="deb">
-        deb
-    </div>
+
     <section class="section">
         <div class="row">
 
-            <div class="col-lg-6">
+            <div id="deb">
+                deb
+            </div>
+
+            <div class="col-lg-7">
 
                 <div class="card"  >
                     <div class="card-body ">
