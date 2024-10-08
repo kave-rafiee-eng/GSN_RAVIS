@@ -1,3 +1,4 @@
+
 function startConnect(){
 
     clientID = "clientID - "+parseInt(Math.random() * 100);
@@ -41,16 +42,7 @@ function onMessageArrived(message){
     console.log("OnMessageArrived: "+message.payloadString);
     document.getElementById("div_message_arrived").innerHTML = "<span> Topic:"+message.destinationName+"| Message : "+message.payloadString+"| cunt : "+get_count+" </span><br>";
 
-    if( message.payloadString.search("connection_test" ) >= 0 ){
-
-    }
-    else{
-        esp_data(message.payloadString);
-    }
-    //const obj = JSON.parse(message.payloadString)  ;
-
-    //document.getElementById("deb").innerHTML = JSON.stringify(obj)
-
+    mqtt_massage_get(message.payloadString);
 
 }
 
@@ -58,7 +50,6 @@ function startDisconnect(){
     client.disconnect();
     document.getElementById("messages").innerHTML += "<span> Disconnected. </span><br>";
 }
-
 
 var massage_count=0;
 function publishMessage(topic,msg){

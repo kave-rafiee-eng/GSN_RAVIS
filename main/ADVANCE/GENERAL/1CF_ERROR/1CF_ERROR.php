@@ -11,7 +11,6 @@ include "../../../../main/GSM/change_status.php"; //change_status_function
 
 $change="unknown";
 
-
 //-------------------------------------------------ENABLE_1CF_ERROR		STNG	8
 list($id,$enable,$change) = post_register_manager($con,"enable",$serial,"advance_settin","general*1cf_error*",0,8);
 
@@ -23,11 +22,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/1CF_ERROR/1cf_error.php");
 }
 
-
 $List_enable = array(
     "Disable",		//0
     "Enable",		//1
 );
+
+//-------------------------------------------------AUTO REFRESH
+list($id_r,$page_mqtt_enable,$change_r) = read_data($con,$serial,"server","page_mqtt_enable","1",0,0);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if( isset($_POST["page_mqtt_enable"] )  ){
+        if( isset($_POST["page_mqtt_enable_radio"] )  ){
+            update_data($con,$serial,"server","page_mqtt_enable",1,0,0);
+        }
+        else update_data($con,$serial,"server","page_mqtt_enable",0,0,0);
+    }
+}
+
 
 ?>
 
@@ -69,9 +79,11 @@ $List_enable = array(
     * Author: BootstrapMade.com
     * License: https://bootstrapmade.com/license/
     ======================================================== -->
+
+
     <SCRIPT>
 
-        var on_load=0;
+        /*var on_load=0;
 
         function refresh(){
 
@@ -142,7 +154,16 @@ $List_enable = array(
             let text = '{"progress":"10","command":"refressh"}';
 
         }
-        setInterval(refresh, 500);
+        setInterval(refresh, 500);*/
+
+        function refresh_radio(){
+            let form = document.getElementById("form_refresh");
+            setTimeout(setAlert, 500);
+        }
+        function setAlert() {
+            let form = document.getElementById("form_refresh");
+            form.submit();
+        }
 
         setTimeout(function(){
             location.reload();
@@ -164,6 +185,20 @@ include "../../../../Sidebar.php";
 
 <main  id="main" class="main">
 
+    <div class="row d-flex  ">
+        <h5> <span class="badge bg-dark">
+        <form onchange="refresh_radio()" action="" method="post" id="form_refresh">
+            <div   class="form-check form-switch  ">
+                <label class=" col-form-label ">MQTT Enable</label>
+                <input   value="1" name="page_mqtt_enable_radio" class="form-check-input" type="checkbox" id=""
+                    <?php  if($page_mqtt_enable == "1" )echo "checked";?>
+                >
+            </div>
+
+            <input  style="display:none" value="<?php echo 'a'.$page_mqtt_enable; ?>" name="page_mqtt_enable" class="form-check-input" type="text" id="$page_mqtt_enable_value">
+        </form>
+        </span></h5
+    </div><!-- refresh_radio -->
 
     <div class="pagetitle">
 
@@ -191,27 +226,26 @@ include "../../../../Sidebar.php";
                             <ul class="list-group">
                                 <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>Read From device</li>
                                 <li class="list-group-item">
-                                    <form method="post" action="">
-                                        <button value="read_register" name="read_register" type="submit" class="btn btn-warning">Read Register</button>
+                                    <form method="get" action="" >
+                                        <button onclick="upload_download_setting('download')" value="read_register" name="read_register" type="reset" class="btn btn-warning">Read Register</button>
                                     </form>
                                 </li>
                             </ul>
                         </div><!-- Read From device -->
 
                         <!-- General Form Elements -->
-                        <form method="post" action="" >
+                        <!-- <form method="post" action="" > -->
 
                             <div class="row mb-3 m-2" >
                                 <ul class="list-group">
 
                                     <li class="list-group-item"><i class="bi bi-activity me-1 text-primary"></i>Write To device</li>
 
-
                                     <li class="list-group-item"> <!--  Gang Select !-->
                                         <div class="row ">
                                             <label class="col-sm-4 col-form-label">Enable</label>
                                             <div class="col-sm-6 ">
-                                                <select  style="color: #0a53be" id="select" name='enable' class="form-select ">
+                                                <select  style="color: #0a53be" id="enable" name='enable' class="form-select ">
                                                     <?php
                                                     show_list($List_enable,$enable);
                                                     ?>
@@ -224,12 +258,11 @@ include "../../../../Sidebar.php";
                                         <div class="row ">
                                             <label class="col-sm-4 col-form-label">Time Out</label>
                                             <div class="col-sm-6">
-                                                <input  step="1" value="<?php echo $time_out;?>" name="time_out" type="number" class="form-control"  min="0" max="20">
+                                                <input  id="time_out" step="1" value="<?php echo $time_out;?>" name="time_out" type="number" class="form-control"  min="0" max="20">
                                             </div>
                                             <label class="col-sm-2 col-form-label text-danger ">sec</label>
                                         </div>
                                     </li>
-
 
                                 </ul>
 
@@ -238,19 +271,17 @@ include "../../../../Sidebar.php";
                             <div class="row mb-3" >
                                 <label id="kave" class="col-sm-6 col-form-label ">SAVE Register</label>
                                 <div class="col-sm-6">
-                                    <button <?php if($change == "download" || $change == "upload"  )//echo "disabled";
+                                    <button <?php
                                         if( $user == "admin" ){}
                                         else{ if($user_active_time <= 0 )echo "disabled"; }
-                                    ?>  type="submit" class="btn btn-primary">SAVE</button>
+                                    ?>  onclick="upload_download_setting('upload')" type="submit" class="btn btn-primary">SAVE</button>
                                 </div>
                                 <label  style="color: red" class="col-sm-6 col-form-label">
                                     <?php if($change == "download")echo "wait to download complit"?>
                                 </label>
                             </div>
 
-
-                        </form><!-- End General Form Elements -->
-
+                        <!-- </form> --> <!-- End General Form Elements -->
 
                     </div>
                 </div>
@@ -283,36 +314,85 @@ include "../../../../Sidebar.php";
                         <!-- Default Tabs -->
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Status</button>
+                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="false">Status</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">reserve</button>
+                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">send&recive</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">reserve</button>
+                                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">debug</button>
                             </li>
                         </ul>
                         <div class="tab-content pt-2" id="myTabContent">
 
-                            <div  id="change_status_name">
-
-                            </div>
-                            <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="home-tab">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                 <?php
-                                show_change_status_progress(0,0);
+                                if($page_mqtt_enable == 0 )show_change_status_progress(0,0);
                                 ?>
+                                <div  id="status_mqtt">
+
+                                </div>
                             </div>
 
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <canvas width="100%" id="myChart"></canvas>
                             </div>
 
                             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-code me-1 text-primary"></i>Connection Status</li>
+                                    <li class="list-group-item">
+                                        <div id="div_connection_status">
+                                            div_connection_status
+                                        </div>
+                                        <button type="button" value="0" onclick="send()">send</button>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-collection me-1 text-success"></i>on Message Arrived</li>
+                                    <li class="list-group-item">
+                                        <div id="div_message_arrived">
+                                            div_message_arrived
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-collection me-1 text-success"></i>Message Publish</li>
+                                    <li class="list-group-item">
+                                        <div id="div_message_publish">
+                                            div_message_publish
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <div id="div_serial" style="display: none">
+                                    <?php echo $serial;?>
+                                </div>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-activity me-1 text-danger"></i>debug</li>
+                                    <li class="list-group-item">
+                                        <div id="deb">
+                                            deb
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-activity me-1 text-danger"></i>ajax</li>
+                                    <li class="list-group-item">
+                                        <div id="div_ajax_responce">
+                                            div_ajax_responce
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
 
                         </div><!-- status -->
-
-
                     </div>
+
                 </div>
 
             </div>
@@ -327,6 +407,12 @@ include "../../../../Footer.php";
 ?>
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
+
+<script  src="./1cf_error.js?v1"></script>
+<script  src="./mqtt_connection.js?v1"></script>
 
 
 <!-- Vendor JS Files -->

@@ -130,7 +130,7 @@ function post_register_manager( $con,$add,$serial,$type,$branch,$arreay_select,$
 
 function show_list($list,$value){
 
-    echo "<option  selected='selected'  value='$value'>$list[$value]</option>";
+    echo "<option  selected='selected'   value='$value'>$list[$value]</option>";
     for($i=0; $i<sizeof($list); $i++ ) {
         if ($list[$i] != $list[$value]) echo "<option  style=\"color:black\" value=\"$i\">$list[$i]</option>";
     }

@@ -22,7 +22,6 @@ function refresh(){
 
     document.getElementById("deb").innerHTML = timer_send
 
-
 }
 setInterval(refresh, 100);
 
