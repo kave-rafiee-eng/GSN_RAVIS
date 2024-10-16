@@ -38,6 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+$page_mqtt_enable=1;
 
 ?>
 
@@ -330,12 +331,15 @@ include "../../../../Sidebar.php";
                                 if($page_mqtt_enable == 0 )show_change_status_progress(0,0);
                                 ?>
                                 <div  id="status_mqtt">
-
                                 </div>
+
                             </div>
 
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                 <canvas width="100%" id="myChart"></canvas>
+                                <div  id="status_connection">
+
+                                </div>
                             </div>
 
                             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">

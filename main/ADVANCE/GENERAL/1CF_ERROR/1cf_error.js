@@ -17,6 +17,22 @@ list_settnig.push(["enable" , JSON.stringify(obj),"unknown",0 ]);
 var serial = Number(document.getElementById("div_serial").textContent )
 var dbg_mass = document.getElementById("deb")
 
+const time_out = 8;
+
+var timer_time_out_mqtt = -1;
+function repeater(){
+
+    if( timer_time_out_mqtt > 0 || timer_time_out_mqtt < 0 ){ timer_time_out_mqtt-- }
+    if( timer_time_out_mqtt <= -5 )timer_time_out_mqtt=0;
+
+    show_status_gsm();
+    dbg_mass.innerHTML = timer_time_out_mqtt
+
+}
+setInterval(repeater, 1000);
+
+
+
 let topic_publish = "server/"+serial
 function load_end(){
 
@@ -33,32 +49,39 @@ function mqtt_massage_get( message ){
 
     const obj_esp = JSON.parse(message) ;
 
-    for (let i = 0; i < list_settnig.length; i++) {
+    if( obj_esp.serial == serial){
 
-        var obj_setting = JSON.parse(list_settnig[i][1])
+        timer_time_out_mqtt=time_out;
 
-        for (let j = 0; j < 10; j++) {
+        for (let i = 0; i < list_settnig.length; i++) {
 
-            if(obj_setting.ar == obj_esp["ar"+j] && obj_setting.ad == obj_esp["ad"+j]  ){
+            var obj_setting = JSON.parse(list_settnig[i][1])
 
-                if( obj_esp["da"+j] >= 0 ){
-                    list_settnig[i][2] = "update";
-                    list_settnig[i][3] = obj_esp["da"+j];
+            for (let j = 0; j < 10; j++) {
 
-                    document.getElementById(list_settnig[i][0]).value = obj_esp["da"+j]
+                if(obj_setting.ar == obj_esp["ar"+j] && obj_setting.ad == obj_esp["ad"+j]  ){
+
+                    if( obj_esp["da"+j] >= 0 ){
+                        list_settnig[i][2] = "update";
+                        list_settnig[i][3] = obj_esp["da"+j];
+
+                        document.getElementById(list_settnig[i][0]).value = obj_esp["da"+j]
+                    }
+
                 }
-
             }
         }
+
+        show_status()
+
+        dbg_mass.innerHTML = status
+        kave_chart.data.datasets[0].data[1]=get_count*50;
+        kave_chart.update()
+
+        ajax(message)
+
+        send_mqtt()
     }
-
-    show_status()
-
-    dbg_mass.innerHTML = status
-    kave_chart.data.datasets[0].data[1]=get_count*50;
-    kave_chart.update()
-
-    ajax(message)
 
 }
 
@@ -70,6 +93,8 @@ function upload_download_setting(type) {
 }
 
 function send_mqtt(){
+
+    var send=0;
 
     var obj_send = new Object();
     obj_send.serial = serial;
@@ -86,13 +111,16 @@ function send_mqtt(){
             obj_send["ad"+i] = obj.ad;
             obj_send["ar"+i] = obj.ar;
             obj_send["da"+i] = data.value;
+
+            send=1;
         }
 
     }
 
-    dbg_mass.innerHTML = JSON.stringify(obj_send)
-
-    publishMessage(topic_publish,JSON.stringify(obj_send));
+    if( send == 1 ){
+        dbg_mass.innerHTML = JSON.stringify(obj_send)
+        publishMessage(topic_publish,JSON.stringify(obj_send));
+    }
 
     kave_chart.data.datasets[0].data[0]=massage_count*50;
     kave_chart.update()
@@ -186,6 +214,37 @@ function show_status(){
 
 }
 
+function show_status_gsm(){
+
+    let div_status = document.getElementById("status_connection")
+
+    while (div_status.hasChildNodes()) {
+        div_status.removeChild(div_status.firstChild);
+    }
+
+    var text
+    if(timer_time_out_mqtt>0)text = "connect ";
+    if(timer_time_out_mqtt==0)text = "not connect ";
+    if(timer_time_out_mqtt<0)text = "test ";
+
+    const newButton = document.createElement('button');
+    newButton.textContent = text;
+    if(timer_time_out_mqtt>0)newButton.className = "btn btn-success  ";
+    if(timer_time_out_mqtt==0)newButton.className = "btn btn-danger  ";
+    if(timer_time_out_mqtt<0)newButton.className = "btn btn-light  ";
+
+    newButton.disabled = true
+    div_status.appendChild(newButton);
+
+    var symbol = document.createElement('i')
+    symbol.className = "bi bi-wifi";
+    newButton.appendChild(symbol);
+
+    var spane = document.createElement('span')
+    spane.className = "spinner-grow spinner-grow-sm ";
+    newButton.appendChild(spane);
+
+}
 
 const ctx = document.getElementById('myChart');
 
