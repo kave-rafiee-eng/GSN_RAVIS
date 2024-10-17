@@ -14,8 +14,19 @@ function add_to_table_data(){
     let type = select_type.options[select_type.selectedIndex].text;
     let name = select_name.options[select_name.selectedIndex].text;
     let value =select_name.options[select_name.selectedIndex].value;
-    data_table_mqtt.push([type,name,value]);
-    show_table_data();
+    let status=1;
+
+    let found=0;
+    for (let i = 0; i < data_table_mqtt.length; i++) {
+        if( data_table_mqtt[i][0] == type && data_table_mqtt[i][1] == name ){
+            found=1;
+        }
+    }
+
+    if( found == 0 ){
+        data_table_mqtt.push([type,name,value,status]);
+        show_table_data();
+    }
 
 }
 

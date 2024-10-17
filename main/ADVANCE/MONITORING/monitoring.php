@@ -93,10 +93,9 @@ include "../../../Sidebar.php";
                             <thead>
                             <tr>
                                 <th scope="col">-</th>
+                                <th scope="col">type</th>
                                 <th scope="col">name</th>
-                                <th scope="col">string</th>
-                                <th scope="col">number</th>
-                                <th scope="col">status</th>
+                                <th scope="col">value</th>
                             </tr>
                             </thead>
                             <tbody id="table_esp" >
@@ -108,11 +107,16 @@ include "../../../Sidebar.php";
                             <canvas id="myChart"></canvas>
                         </div>
                     </div>
+
+                    <div id="div_pr">
+
+                    </div>
+
                 </div>
 
 
 
-                    <ul class="list-group">
+                    <ul class="list-group" style="display: none">
                         <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>Connection Status</li>
                         <li class="list-group-item">
                             <div id="div_connection_status">
@@ -122,7 +126,7 @@ include "../../../Sidebar.php";
                         </li>
                     </ul>
 
-                    <ul class="list-group">
+                    <ul class="list-group" style="display: none">
                         <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>on Message Arrived</li>
                         <li class="list-group-item">
                             <div id="div_message_arrived">
@@ -131,7 +135,7 @@ include "../../../Sidebar.php";
                         </li>
                     </ul>
 
-                    <ul class="list-group">
+                    <ul class="list-group" style="display: none">
                         <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>Message Publish</li>
                         <li class="list-group-item">
                             <div id="div_message_publish">

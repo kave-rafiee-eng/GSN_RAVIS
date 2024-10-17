@@ -6,7 +6,7 @@ include "../../read.php"; // $con
 include "../../function.php"; //my_function
 
 $count = 1;
-$num_data_send=2;
+$num_data_send=4;
 
 if ( isset($_GET["json"])  ) {
 
@@ -43,9 +43,9 @@ if ( isset($_GET["json"])  ) {
             $myObj->{"da".$count} = $page["data"] ;
             $myObj->{"st".$count} = "1" ;
 
-            $id =  $page['id'];
+            /*$id =  $page['id'];
             $quary = "UPDATE `data` SET `change`='download' WHERE `id` = '$id'";
-            mysqli_query($con,$quary);
+            mysqli_query($con,$quary);*/
 
             $count++;
             if( $count > $num_data_send )break;
