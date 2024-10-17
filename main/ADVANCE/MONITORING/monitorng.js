@@ -131,6 +131,10 @@ function esp_data(esp_data){
         show_table_esp();
         table_esp_data.splice(0, 200);
         color_pr = 1 - color_pr;
+
+        for (let i = 0; i < data_table_mqtt.length; i++) {
+            data_table_mqtt[i][3] = 1 ;
+        }
     }
 
     let progress =    (progress_passed/step *100) ;
