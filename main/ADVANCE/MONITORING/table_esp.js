@@ -37,7 +37,7 @@ function show_table_esp(){
         for (let i = 0; i < table_esp_data[index].length; i++) {
             var z = document.createElement("TD");
             var t = document.createTextNode(table_esp_data[index][i]);
-            t.s
+            if(i==2)z.style.backgroundColor = "#89ABE3"
             z.appendChild(t);
             document.getElementById("tr_esp"+j).appendChild(z);
         }

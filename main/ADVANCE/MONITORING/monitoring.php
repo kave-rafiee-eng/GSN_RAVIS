@@ -92,10 +92,10 @@ include "../../../Sidebar.php";
                         <table  class="table table-bordered"   >
                             <thead>
                             <tr>
-                                <th scope="col">-</th>
-                                <th scope="col">type</th>
-                                <th scope="col">name</th>
-                                <th scope="col">value</th>
+                                <th style="background-color: #97BC62" scope="col">-</th>
+                                <th style="background-color: #97BC62" scope="col">type</th>
+                                <th style="background-color: #97BC62" scope="col">name</th>
+                                <th style="background-color: #97BC62" scope="col">value</th>
                             </tr>
                             </thead>
                             <tbody id="table_esp" >
