@@ -53,7 +53,7 @@ function show_table_data(){
         z.appendChild(t);
         document.getElementById("tr_mqtt"+j).appendChild(z);
 
-        for (let i = 0; i < data_table_mqtt[j].length; i++) {
+        for (let i = 0; i < data_table_mqtt[j].length-2; i++) {
             var z = document.createElement("TD");
             var t = document.createTextNode(data_table_mqtt[j][i]);
             z.appendChild(t);
@@ -61,7 +61,7 @@ function show_table_data(){
         }
 
         const newButton = document.createElement('button');
-        newButton.textContent = "del="+j;
+        newButton.textContent = "delete";
         newButton.setAttribute("id", "btn"+j);
         newButton.className = "btn btn-danger";
         newButton.value = j;
