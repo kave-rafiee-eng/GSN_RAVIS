@@ -72,7 +72,7 @@ function ajax( json_data){
 
             let topic = "server/"+obj.serial;
 
-            if( this.responseText.search("serial") >= 0 )publishMessage(topic,this.responseText);
+            if( this.responseText.search("serial") >= 0 )publishMessage(topic,JSON.stringify(obj));
 
         }
     };
@@ -100,7 +100,8 @@ function startDisconnect(){
 }
 function publishMessage(topic,msg){
 
-    Message = new Paho.MQTT.Message(msg+"/"+wo+"/"+normal_timer);
+    //Message = new Paho.MQTT.Message(msg+"/"+wo+"/"+normal_timer);
+    Message = new Paho.MQTT.Message(msg);
     Message.destinationName = topic;
     client.send(Message);
     document.getElementById("div_message_publish").innerHTML = msg;
