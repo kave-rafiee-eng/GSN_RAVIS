@@ -6,7 +6,7 @@ include "../../read.php"; // $con
 include "../../function.php"; //my_function
 
 $count = 1;
-$num_data_send=2;
+$num_data_send=4;
 
 if ( isset($_GET["json"])  ) {
 
