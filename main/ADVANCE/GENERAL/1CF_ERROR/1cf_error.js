@@ -66,6 +66,7 @@ function mqtt_massage_get( message ){
                         list_settnig[i][3] = obj_esp["da"+j];
 
                         document.getElementById(list_settnig[i][0]).value = obj_esp["da"+j]
+                        document.getElementById(list_settnig[i][0]).value = obj_esp["da"+j]
                     }
 
                 }

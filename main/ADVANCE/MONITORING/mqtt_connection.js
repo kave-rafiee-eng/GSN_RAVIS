@@ -6,7 +6,9 @@ function startConnect(){
 
     userId = "";
     password = "";
-    client = new Paho.MQTT.Client("84.47.232.10", Number(8080), "/mqtt", clientID);
+   // client = new Paho.MQTT.Client("84.47.232.10", Number(8080), "/mqtt", clientID);
+    //client = new Paho.MQTT.Client("109.125.149.108", Number(9001), "/mqtt", clientID);
+    client = new Paho.MQTT.Client("109.125.149.108", Number(9001), "/mqtt", clientID);
 
     client.onConnectionLost = onConnectionLost;
     client.onMessageArrived = onMessageArrived;
