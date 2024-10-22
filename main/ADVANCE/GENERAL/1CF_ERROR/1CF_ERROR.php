@@ -398,8 +398,9 @@ include "../../../../Sidebar.php";
                     </div>
 
                 </div>
-
             </div>
+
+
         </div>
     </section>
 
@@ -415,8 +416,9 @@ include "../../../../Footer.php";
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
 
-<script  src="./1cf_error.js?v1"></script>
-<script  src="./mqtt_connection.js?v1"></script>
+<script  src="1cf_error.js?v1"></script>
+<script  src="../../mqtt_connection/mqtt_protocol.js?v1"></script>
+<script  src="../../mqtt_connection/mqtt_connection_function.js?v1"></script>
 
 
 <!-- Vendor JS Files -->

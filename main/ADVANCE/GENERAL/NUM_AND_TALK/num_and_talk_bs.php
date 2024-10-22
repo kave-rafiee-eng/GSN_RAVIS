@@ -11,7 +11,6 @@ include "../../../../main/GSM/change_status.php"; //change_status_function
 
 $change="unknown";
 
-
 //-------------------------------------------------NUMBER OF STOP STNG    2
 list($id,$number_of_stop,$change) = post_register_manager($con,"number_of_stop",$serial,"advance_settin","general*",0,2);
 
@@ -101,6 +100,20 @@ $List_TalkChoices = array(
 	"Tr19",
 	"Tr20",
 );
+
+//-------------------------------------------------AUTO REFRESH
+list($id_r,$page_mqtt_enable,$change_r) = read_data($con,$serial,"server","page_mqtt_enable","1",0,0);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if( isset($_POST["page_mqtt_enable"] )  ){
+        if( isset($_POST["page_mqtt_enable_radio"] )  ){
+            update_data($con,$serial,"server","page_mqtt_enable",1,0,0);
+        }
+        else update_data($con,$serial,"server","page_mqtt_enable",0,0,0);
+    }
+}
+
+$page_mqtt_enable=1;
+
 ?>
 
 <!DOCTYPE html>
@@ -138,7 +151,7 @@ $List_TalkChoices = array(
     ======================================================== -->
     <SCRIPT>
 
-        var on_load=0;
+        /*var on_load=0;
 
         function refresh(){
 
@@ -209,7 +222,20 @@ $List_TalkChoices = array(
             let text = '{"progress":"10","command":"refressh"}';
 
         }
-        setInterval(refresh, 500);
+        setInterval(refresh, 500);*/
+
+        function refresh_radio(){
+            let form = document.getElementById("form_refresh");
+            setTimeout(setAlert, 500);
+        }
+        function setAlert() {
+            let form = document.getElementById("form_refresh");
+            form.submit();
+        }
+
+        setTimeout(function(){
+            location.reload();
+        }, 500000);
 
     </SCRIPT>
 </head>
@@ -226,6 +252,21 @@ include "../../../../Sidebar.php";
 ?>
 
 <main  id="main" class="main">
+
+    <div class="row d-flex  ">
+        <h5> <span class="badge bg-dark">
+        <form onchange="refresh_radio()" action="" method="post" id="form_refresh">
+            <div   class="form-check form-switch  ">
+                <label class=" col-form-label ">MQTT Enable</label>
+                <input   value="1" name="page_mqtt_enable_radio" class="form-check-input" type="checkbox" id=""
+                    <?php  if($page_mqtt_enable == "1" )echo "checked";?>
+                >
+            </div>
+
+            <input  style="display:none" value="<?php echo 'a'.$page_mqtt_enable; ?>" name="page_mqtt_enable" class="form-check-input" type="text" id="$page_mqtt_enable_value">
+        </form>
+        </span></h5
+    </div><!-- refresh_radio -->
 
     <div class="pagetitle">
         <h1>Form Elements</h1>
@@ -250,15 +291,15 @@ include "../../../../Sidebar.php";
                             <ul class="list-group">
                                 <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>Read From device</li>
                                 <li class="list-group-item">
-                                    <form method="post" action="">
-                                        <button value="read_register" name="read_register" type="submit" class="btn btn-warning">Read Register</button>
+                                    <form method="get" action="" >
+                                        <button onclick="upload_download_setting('download')" value="read_register" name="read_register" type="reset" class="btn btn-warning">Read Register</button>
                                     </form>
                                 </li>
                             </ul>
                         </div><!-- Read From device -->
 
                         <!-- General Form Elements -->
-                        <form method="post" action="" >
+                        <!-- <form method="post" action="" > -->
 
                             <div class="row mb-3 m-2" >
                                 <ul class="list-group">
@@ -290,7 +331,7 @@ include "../../../../Sidebar.php";
 
 
                                                         echo "<td style='background-color: whitesmoke'>";
-                                                        echo "<select  id=\"select\" name='sl-f$i_floor' class=\"form-select\" >";
+                                                        echo "<select  id=\"sl-f$i_floor\" name='sl-f$i_floor' class=\"form-select\" >";
                                                         list($id,$data,$ch) = only_read_data($con,$serial,"advance_settin","general*num_and_talk*sl-f$i_floor");
                                                         echo "<option selected='selected' value=\"$data\">$List_SegmentChoices[$data]</option>";
                                                         for($i=0; $i<sizeof($List_SegmentChoices); $i++ ){
@@ -300,7 +341,7 @@ include "../../../../Sidebar.php";
                                                         echo "</td>";
 
                                                         echo "<td style='background-color: antiquewhite'>";
-                                                        echo "<select  id=\"select\" name='sr-f$i_floor' class=\"form-select\" >";
+                                                        echo "<select  id=\"sr-f$i_floor\" name='sr-f$i_floor' class=\"form-select\" >";
                                                         list($id,$data,$ch) = only_read_data($con,$serial,"advance_settin","general*num_and_talk*sr-f$i_floor");
                                                         echo "<option selected='selected' value=\"$data\">$List_SegmentChoices[$data]</option>";
                                                         for($i=0; $i<sizeof($List_SegmentChoices); $i++ ){
@@ -310,7 +351,7 @@ include "../../../../Sidebar.php";
                                                         echo "</td>";
 
                                                         echo "<td style='background-color: powderblue'>";
-                                                        echo "<select  id=\"select\" name='talk-f$i_floor' class=\"form-select\" >";
+                                                        echo "<select  id=\"talk-f$i_floor\" name='talk-f$i_floor' class=\"form-select\" >";
                                                         list($id,$data,$ch) = only_read_data($con,$serial,"advance_settin","general*num_and_talk*talk-f$i_floor");
                                                         echo "<option selected='selected' value=\"$data\">$List_TalkChoices[$data]</option>";
                                                         for($i=0; $i<sizeof($List_TalkChoices); $i++ ){
@@ -351,10 +392,10 @@ include "../../../../Sidebar.php";
                             <div class="row mb-3" >
                                 <label id="kave" class="col-sm-6 col-form-label ">SAVE Register</label>
                                 <div class="col-sm-6">
-                                    <button <?php if($change == "download" || $change == "upload"  )//echo "disabled";
-                                        if( $user == "admin" ){}
-                                        else{ if($user_active_time <= 0 )echo "disabled"; }
-                                    ?>  type="submit" class="btn btn-primary">SAVE</button>
+                                    <button <?php
+                                    if( $user == "admin" ){}
+                                    else{ if($user_active_time <= 0 )echo "disabled"; }
+                                    ?>  onclick="upload_download_setting('upload')" type="submit" class="btn btn-primary">SAVE</button>
                                 </div>
                                 <label  style="color: red" class="col-sm-6 col-form-label">
                                     <?php if($change == "download")echo "wait to download complit"?>
@@ -377,35 +418,16 @@ include "../../../../Sidebar.php";
                         <!-- Accordion without outline borders -->
                         <div class="accordion accordion-flush" id="accordionFlushExample">
                             <div class="accordion-item">
-                                <h2 class="accordion-header" id="flush-h1">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-c1" aria-expanded="false" aria-controls="flush-c1">
-                                        SL
+                                <h2 class="accordion-header" id="flush-headingOne">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                        Number Of Stop
                                     </button>
                                 </h2>
-                                <div id="flush-c1" class="accordion-collapse collapse" aria-labelledby="flush-h1" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">نمایشگر خروجی سمت چب"</div>
+                                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">تعداد طبقات</div>
                                 </div>
                             </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="flush-h2">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-c2" aria-expanded="false" aria-controls="flush-c2">
-                                        SR
-                                    </button>
-                                </h2>
-                                <div id="flush-c2" class="accordion-collapse collapse" aria-labelledby="flush-h2" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">نمایشگر خروجی سمت راست"</div>
-                                </div>
-                            </div>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="flush-h3">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-c3" aria-expanded="false" aria-controls="flush-c3">
-                                        TALK
-                                    </button>
-                                </h2>
-                                <div id="flush-c3" class="accordion-collapse collapse" aria-labelledby="flush-h3" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">نمایشگر خروجی سمت راست"</div>
-                                </div>
-                            </div>
+
                         </div><!-- End Accordion without outline borders -->
 
                         <h5 class="card-title">Device</h5>
@@ -413,38 +435,101 @@ include "../../../../Sidebar.php";
                         <!-- Default Tabs -->
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Status</button>
+                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="false">Status</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">reserve</button>
+                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">send&recive</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">reserve</button>
+                                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">debug</button>
                             </li>
                         </ul>
                         <div class="tab-content pt-2" id="myTabContent">
 
-                            <div  id="change_status_name">
-
-                            </div>
-                            <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="home-tab">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                 <?php
-                                show_change_status_progress(0,0);
+                                if($page_mqtt_enable == 0 )show_change_status_progress(0,0);
                                 ?>
+                                <div  id="status_mqtt">
+                                </div>
+
                             </div>
 
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <canvas width="100%" id="myChart"></canvas>
+                                <div  id="status_connection">
+
+                                </div>
                             </div>
 
                             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-code me-1 text-primary"></i>Connection Status</li>
+                                    <li class="list-group-item">
+                                        <div id="div_connection_status">
+                                            div_connection_status
+                                        </div>
+                                        <button type="button" value="0" onclick="send()">send</button>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-collection me-1 text-success"></i>on Message Arrived</li>
+                                    <li class="list-group-item">
+                                        <div id="div_message_arrived">
+                                            div_message_arrived
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-collection me-1 text-success"></i>Message Publish</li>
+                                    <li class="list-group-item">
+                                        <div id="div_message_publish">
+                                            div_message_publish
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <div id="div_serial" style="display: none">
+                                    <?php echo $serial;?>
+                                </div>
+
+                                <div id="json_server" style="display: block">
+                                    <?php
+                                    $myObj = new stdClass();
+                                    $myObj->number_of_stop = $number_of_stop ;
+                                    $myJSON = json_encode($myObj);
+                                    echo $myJSON;
+                                    ?>
+                                </div>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-activity me-1 text-danger"></i>debug</li>
+                                    <li class="list-group-item">
+                                        <div id="deb">
+                                            deb
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-activity me-1 text-danger"></i>ajax</li>
+                                    <li class="list-group-item">
+                                        <div id="div_ajax_responce">
+                                            div_ajax_responce
+                                        </div>
+                                    </li>
+                                </ul>
+
+
                             </div>
 
                         </div><!-- status -->
-
                     </div>
-                </div>
 
-            </div>
+
+
         </div>
     </section>
 
@@ -457,6 +542,12 @@ include "../../../../Footer.php";
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
+
+<script  src="num_and_talk.js?v1"></script>
+<script  src="../../mqtt_connection/mqtt_protocol.js?v1"></script>
+<script  src="../../mqtt_connection/mqtt_connection_function.js?v1"></script>
 
 <!-- Vendor JS Files -->
 <script src="/GSM_RAVIS/assets/vendor/apexcharts/apexcharts.min.js"></script>

@@ -1,8 +1,8 @@
 <?php
 
 
-include "../../../../read.php"; // $con
-include "../../../../function.php"; //my_function
+include "../../../read.php"; // $con
+include "../../../function.php"; //my_function
 
 if ( isset($_GET["json"])  ) {
 
