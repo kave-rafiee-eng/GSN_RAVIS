@@ -12,10 +12,19 @@ include "../../../../main/GSM/change_status.php"; //change_status_function
 //-------------------------------------------------SERVICE TYPE
 list($id,$service_type,$change) = post_register_manager($con,"service_type",$serial,"advance_settin","general*",0,3);
 
+$List_service_type = array(
+    "Collective DN",		//0
+    "Full Collective",		//1
+    "Push Button",		//2
+    "Collective U/D",		//3
+);
+
 //-------------------------------------------------CLEAR $POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/SERVICE_TYPE/service_type_bs.php");
 }
+
+$page_mqtt_enable=1;
 
 ?>
 
@@ -52,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <SCRIPT>
 
-        var on_load=0;
+        /*var on_load=0;
 
         function refresh(){
 
@@ -123,7 +132,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             let text = '{"progress":"10","command":"refressh"}';
 
         }
-        setInterval(refresh, 500);
+        setInterval(refresh, 500);*/
+
+        function refresh_radio(){
+            let form = document.getElementById("form_refresh");
+            setTimeout(setAlert, 500);
+        }
+        function setAlert() {
+            let form = document.getElementById("form_refresh");
+            form.submit();
+        }
+
+        setTimeout(function(){
+            location.reload();
+        }, 60000);
 
     </SCRIPT>
 
@@ -155,105 +177,46 @@ include "../../../../Sidebar.php";
                             <ul class="list-group">
                                 <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>Read From device</li>
                                 <li class="list-group-item">
-                                    <form method="post" action="">
-                                        <button value="read_register" name="read_register" type="submit" class="btn btn-warning">Read Register</button>
+                                    <form method="get" action="" >
+                                        <button onclick="upload_download_setting('download')" value="read_register" name="read_register" type="reset" class="btn btn-warning">Read Register</button>
                                     </form>
                                 </li>
                             </ul>
                         </div><!-- Read From device -->
 
+                        <div class="row mb-3 m-2" >
+                            <ul class="list-group">
+
+                                <li class="list-group-item"><i class="bi bi-activity me-1 text-primary"></i>Write To device</li>
+
+                                <li class="list-group-item"> <!--  Gang Select !-->
+                                    <div class="row ">
+                                        <label class="col-sm-4 col-form-label">Service Type</label>
+                                        <div class="col-sm-6 ">
+                                            <select  style="color: #0a53be" id="service_type" name='service_type' class="form-select ">
+                                                <?php
+                                                show_list($List_service_type,$service_type);
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </li>
+
+                            </ul>
+
+                        </div><!-- Read From device -->
 
                         <!-- General Form Elements -->
-                        <form method="post" action="" >
+                        <!--<form method="post" action="" >-->
 
-                            <fieldset class="row mb-3">
-                                <legend class="col-form-label col-sm-2 pt-0">value</legend>
-                                <div class="col-sm-10">
-
-
-                                    <div class="form-check disabled">
-                                        <input  class="form-check-input" type="radio" name="gridRadios" id="gridRadios" value=" 1 " disabled
-                                            <?php
-                                            if( $service_type == 0)echo "checked";
-                                            ?>
-                                        >
-                                        <label class="form-check-label" for="gridRadios3">
-                                            Collective DN
-                                        </label>
-                                    </div>
-
-
-                                    <div class="form-check disabled">
-                                        <input  class="form-check-input" type="radio" name="gridRadios" id="gridRadios" value=" 1 " disabled
-                                            <?php
-                                            if( $service_type == 1)echo "checked";
-                                            ?>
-                                        >
-                                        <label class="form-check-label" for="gridRadios3">
-                                            Full Collective
-                                        </label>
-                                    </div>
-
-
-                                    <div class="form-check disabled">
-                                        <input  class="form-check-input" type="radio" name="gridRadios" id="gridRadios" value=" 1 " disabled
-                                            <?php
-                                            if( $service_type == 2)echo "checked";
-                                            ?>
-                                        >
-                                        <label class="form-check-label" for="gridRadios3">
-                                            Push Button
-                                        </label>
-                                    </div>
-
-                                    <div class="form-check disabled">
-                                        <input  class="form-check-input" type="radio" name="gridRadios" id="gridRadios" value=" 1 " disabled
-                                            <?php
-                                            if( $service_type == 3)echo "checked";
-                                            ?>
-                                        >
-                                        <label class="form-check-label" for="gridRadios3">
-                                            Collective U/D
-                                        </label>
-                                    </div>
-
-                                </div>
-                            </fieldset>
-
-                            <!--
-                                     char List_ServiceType[][17]=
-                                    {
-                                        "Collective DN", 	//0
-                                        "Full Collective",//1
-                                        "Push Button",   	//2
-                                        "Collective U/D", 			//3
-                                    };
-                             -->
-                            <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label">Select</label>
-                                <div class="col-sm-10">
-                                    <select  onclick="myFunction()" id="service_type" name="service_type" class="form-select" aria-label="Default select example">
-                                        <option value="0">Collective DN</option>
-                                        <option value="1">Full Collective</option>
-                                        <option value="2">Push Button</option>>
-                                        <option value="3">Collective U/D</option>>
-
-                                        <option value="<?php echo $service_type; ?>" selected="selected" hidden="hidden">
-                                            <?php
-                                            echo "select mode";
-                                            ?>
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
 
                             <div class="row mb-3" >
-                                <label id="kave" class="col-sm-3 col-form-label">SAVE Register</label>
-                                <div class="col-sm-3">
-                                    <button <?php if($change == "download" || $change == "upload"  )//echo "disabled";
+                                <label id="kave" class="col-sm-6 col-form-label ">SAVE Register</label>
+                                <div class="col-sm-6">
+                                    <button <?php
                                     if( $user == "admin" ){}
                                     else{ if($user_active_time <= 0 )echo "disabled"; }
-                                    ?>  type="submit" class="btn btn-primary">SAVE</button>
+                                    ?>  onclick="upload_download_setting('upload')" type="submit" class="btn btn-primary">SAVE</button>
                                 </div>
                                 <label  style="color: red" class="col-sm-6 col-form-label">
                                     <?php if($change == "download")echo "wait to download complit"?>
@@ -284,15 +247,7 @@ include "../../../../Sidebar.php";
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="flush-headingOne">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                        Collective DN
-                                    </button>
-                                </h2>
-                                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">تعداد طبقات</div>
-                                </div>
-                                <h2 class="accordion-header" id="flush-headingOne">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                        Collective DN
+                                        Number Of Stop
                                     </button>
                                 </h2>
                                 <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
@@ -307,36 +262,90 @@ include "../../../../Sidebar.php";
                         <!-- Default Tabs -->
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Status</button>
+                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="false">Status</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">reserve</button>
+                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">send&recive</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">reserve</button>
+                                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">debug</button>
                             </li>
                         </ul>
                         <div class="tab-content pt-2" id="myTabContent">
 
-                            <div  id="change_status_name">
-
-                            </div>
-                            <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="home-tab">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                 <?php
-                                show_change_status_progress(0,0);
+                                if($page_mqtt_enable == 0 )show_change_status_progress(0,0);
                                 ?>
+                                <div  id="status_mqtt">
+                                </div>
+
                             </div>
 
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <canvas width="100%" id="myChart"></canvas>
+                                <div  id="status_connection">
+
+                                </div>
                             </div>
 
                             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-code me-1 text-primary"></i>Connection Status</li>
+                                    <li class="list-group-item">
+                                        <div id="div_connection_status">
+                                            div_connection_status
+                                        </div>
+                                        <button type="button" value="0" onclick="send()">send</button>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-collection me-1 text-success"></i>on Message Arrived</li>
+                                    <li class="list-group-item">
+                                        <div id="div_message_arrived">
+                                            div_message_arrived
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-collection me-1 text-success"></i>Message Publish</li>
+                                    <li class="list-group-item">
+                                        <div id="div_message_publish">
+                                            div_message_publish
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <div id="div_serial" style="display: none">
+                                    <?php echo $serial;?>
+                                </div>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-activity me-1 text-danger"></i>debug</li>
+                                    <li class="list-group-item">
+                                        <div id="deb">
+                                            deb
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-activity me-1 text-danger"></i>ajax</li>
+                                    <li class="list-group-item">
+                                        <div id="div_ajax_responce">
+                                            div_ajax_responce
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
 
                         </div><!-- status -->
-
                     </div>
+
                 </div>
+            </div>
 
             </div>
         </div>
@@ -350,6 +359,13 @@ include "../../../../Footer.php";
 ?>
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
+
+<script  src="service_type.js?v1"></script>
+<script  src="../../mqtt_connection/mqtt_protocol.js?v1"></script>
+<script  src="../../mqtt_connection/mqtt_connection_function.js?v1"></script>
 
 
 <!-- Vendor JS Files -->

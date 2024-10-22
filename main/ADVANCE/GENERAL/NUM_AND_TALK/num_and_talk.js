@@ -13,6 +13,9 @@ var json_server = JSON.parse(document.getElementById("json_server").innerHTML)
 
 var number_of_stop = json_server.number_of_stop;
 
+obj.ar = 0; obj.ad = 2; factor = 1; Addition=0; offset=0;
+list_settnig.push(["number_of_stop" , JSON.stringify(obj),"unknown",0 ,factor,Addition,offset ]);
+
 var i=0;
 for(   i=1; i<=number_of_stop; i++  ){
     obj.ar = 1; obj.ad = i*100+5; factor = 1; Addition=0; offset=0;

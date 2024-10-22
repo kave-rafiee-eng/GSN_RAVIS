@@ -224,6 +224,10 @@ $page_mqtt_enable=1;
         }
         setInterval(refresh, 500);*/
 
+       /* var json_server = JSON.parse(document.getElementById("json_server").innerHTML)
+        var number_of_stop_pr = json_server.number_of_stop;
+*/
+
         function refresh_radio(){
             let form = document.getElementById("form_refresh");
             setTimeout(setAlert, 500);
@@ -384,8 +388,9 @@ include "../../../../Sidebar.php";
                                             </table>
                                         </div>
                                     </li>
-
                                 </ul>
+
+                                <input  style="display: none" value="<?php echo $number_of_stop;?>"  name="number_of_stop" type="number" class="form-control" id="number_of_stop" min="0" max="60">
 
                             </div><!-- Read From device -->
 
@@ -420,11 +425,11 @@ include "../../../../Sidebar.php";
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="flush-headingOne">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                        Number Of Stop
+                                        Num And Talk
                                     </button>
                                 </h2>
                                 <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">تعداد طبقات</div>
+                                    <div class="accordion-body">این ریجستر مربوط به تنظیمات نمایشگر و سخنگو میباشد</div>
                                 </div>
                             </div>
 
@@ -549,6 +554,19 @@ include "../../../../Footer.php";
 <script  src="../../mqtt_connection/mqtt_protocol.js?v1"></script>
 <script  src="../../mqtt_connection/mqtt_connection_function.js?v1"></script>
 
+<script>
+
+    var number_os_stop_pr = Number(document.getElementById("number_of_stop").value);
+    var number_of_stop_sec = 0;
+
+    function refresh(){
+        number_of_stop_sec = Number(document.getElementById("number_of_stop").value);
+
+        if( number_os_stop_pr != number_of_stop_sec )location.reload();
+    }
+    setInterval(refresh, 500);
+
+</script>
 <!-- Vendor JS Files -->
 <script src="/GSM_RAVIS/assets/vendor/apexcharts/apexcharts.min.js"></script>
 <script src="/GSM_RAVIS/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
