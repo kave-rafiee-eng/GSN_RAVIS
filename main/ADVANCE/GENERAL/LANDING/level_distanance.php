@@ -38,6 +38,7 @@ $List_speed = array(
     "Fast" 		//3
 );
 
+$page_mqtt_enable=1;
 
 ?>
 
@@ -81,7 +82,7 @@ $List_speed = array(
     ======================================================== -->
     <SCRIPT>
 
-        var on_load=0;
+       /* var on_load=0;
 
         function refresh(){
 
@@ -152,7 +153,11 @@ $List_speed = array(
             let text = '{"progress":"10","command":"refressh"}';
 
         }
-        setInterval(refresh, 500);
+        setInterval(refresh, 500); */
+
+       setTimeout(function(){
+           location.reload();
+       }, 500000);
 
     </SCRIPT>
 </head>
@@ -198,15 +203,15 @@ include "../../../../Sidebar.php";
                             <ul class="list-group">
                                 <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>Read From device</li>
                                 <li class="list-group-item">
-                                    <form method="post" action="">
-                                        <button value="read_register" name="read_register" type="submit" class="btn btn-warning">Read Register</button>
+                                    <form method="get" action="" >
+                                        <button onclick="upload_download_setting('download')" value="read_register" name="read_register" type="reset" class="btn btn-warning">Read Register</button>
                                     </form>
                                 </li>
                             </ul>
                         </div><!-- Read From device -->
 
                         <!-- General Form Elements -->
-                        <form method="post" action="" >
+                        <!-- <form method="post" action="" > -->
 
                             <div class="row mb-3 m-2" >
                                 <ul class="list-group">
@@ -242,7 +247,7 @@ include "../../../../Sidebar.php";
                                                     echo "<div class='col-sm-8'>";
                                                     list($id,$data,$ch) =only_read_data($con,$serial,"advance_settin","general*landing*based_on*distance*f$i_floor");
                                                     $data /= 10;
-                                                    echo "<input  step='0.1' value='$data' name='distance*f$i_floor' type='number' class='form-control'  min='0' max='20'>";
+                                                    echo "<input  step='0.1' value='$data' name='distance*f$i_floor' id='distance*f$i_floor' type='number' class='form-control'  min='0' max='20'>";
                                                     echo '</div>';
 
                                                     echo "<div class='col-sm-3' >";
@@ -272,22 +277,18 @@ include "../../../../Sidebar.php";
 
                             </div><!-- Read From device -->
 
-                            <div class="row mb-3" >
-                                <label id="kave" class="col-sm-6 col-form-label ">SAVE Register</label>
-                                <div class="col-sm-6">
-                                    <button <?php if($change == "download" || $change == "upload"  ){ //echo "disabled";
-                                    }
-                                    if( $user == "admin" ){}
-                                    else if($user_active_time <= 0 )echo "disabled";
-                                    ?>  type="submit" class="btn btn-primary">SAVE</button>
-                                </div>
-                                <label  style="color: red" class="col-sm-6 col-form-label">
-                                    <?php if($change == "download")echo "wait to download complit"?>
-                                </label>
-                                <label  style="color: red" class="col-sm-6 col-form-label">
-                                    <?php  if($user_active_time <= 0 )echo "Push Sw on GSM board"; ?>
-                                </label>
+                        <div class="row mb-3" >
+                            <label id="kave" class="col-sm-6 col-form-label ">SAVE Register</label>
+                            <div class="col-sm-6">
+                                <button <?php
+                                if( $user == "admin" ){}
+                                else{ if($user_active_time <= 0 )echo "disabled"; }
+                                ?>  onclick="upload_download_setting('upload')" type="submit" class="btn btn-primary">SAVE</button>
                             </div>
+                            <label  style="color: red" class="col-sm-6 col-form-label">
+                                <?php if($change == "download")echo "wait to download complit"?>
+                            </label>
+                        </div>
 
                         </form><!-- End General Form Elements -->
 
@@ -298,6 +299,8 @@ include "../../../../Sidebar.php";
 
             <div class="col-lg-5">
 
+                <input  style="display: none" value="<?php echo $number_of_stop;?>"  name="number_of_stop" type="number" class="form-control" id="number_of_stop" min="0" max="60">
+
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">HELP</h5>
@@ -307,11 +310,11 @@ include "../../../../Sidebar.php";
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="flush-headingOne">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                        Number Of Stop
+                                        Num And Talk
                                     </button>
                                 </h2>
                                 <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">تعداد طبقات</div>
+                                    <div class="accordion-body">این ریجستر مربوط به تنظیمات نمایشگر و سخنگو میباشد</div>
                                 </div>
                             </div>
 
@@ -322,39 +325,102 @@ include "../../../../Sidebar.php";
                         <!-- Default Tabs -->
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Status</button>
+                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="false">Status</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">reserve</button>
+                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">send&recive</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">reserve</button>
+                                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">debug</button>
                             </li>
                         </ul>
                         <div class="tab-content pt-2" id="myTabContent">
 
-                            <div  id="change_status_name">
-
-                            </div>
-                            <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="home-tab">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                 <?php
-                                show_change_status_progress(0,0);
+                                if($page_mqtt_enable == 0 )show_change_status_progress(0,0);
                                 ?>
+                                <div  id="status_mqtt">
+                                </div>
+
                             </div>
 
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <canvas width="100%" id="myChart"></canvas>
+                                <div  id="status_connection">
+
+                                </div>
                             </div>
 
                             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-code me-1 text-primary"></i>Connection Status</li>
+                                    <li class="list-group-item">
+                                        <div id="div_connection_status">
+                                            div_connection_status
+                                        </div>
+                                        <button type="button" value="0" onclick="send()">send</button>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-collection me-1 text-success"></i>on Message Arrived</li>
+                                    <li class="list-group-item">
+                                        <div id="div_message_arrived">
+                                            div_message_arrived
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-collection me-1 text-success"></i>Message Publish</li>
+                                    <li class="list-group-item">
+                                        <div id="div_message_publish">
+                                            div_message_publish
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <div id="div_serial" style="display: none">
+                                    <?php echo $serial;?>
+                                </div>
+
+                                <div id="json_server" style="display: block">
+                                    <?php
+                                    $myObj = new stdClass();
+                                    $myObj->number_of_stop = $number_of_stop ;
+                                    $myJSON = json_encode($myObj);
+                                    echo $myJSON;
+                                    ?>
+                                </div>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-activity me-1 text-danger"></i>debug</li>
+                                    <li class="list-group-item">
+                                        <div id="deb">
+                                            deb
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-activity me-1 text-danger"></i>ajax</li>
+                                    <li class="list-group-item">
+                                        <div id="div_ajax_responce">
+                                            div_ajax_responce
+                                        </div>
+                                    </li>
+                                </ul>
+
+
                             </div>
 
                         </div><!-- status -->
-
-
                     </div>
                 </div>
-
             </div>
+
+
         </div>
     </section>
 
@@ -367,6 +433,26 @@ include "../../../../Footer.php";
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
+
+<script  src="level_distance.js?v1"></script>
+<script  src="../../mqtt_connection/mqtt_protocol.js?v1"></script>
+<script  src="../../mqtt_connection/mqtt_connection_function.js?v1"></script>
+
+<script>
+
+    var number_os_stop_pr = Number(document.getElementById("number_of_stop").value);
+    var number_of_stop_sec = 0;
+
+    function refresh(){
+        number_of_stop_sec = Number(document.getElementById("number_of_stop").value);
+
+        if( number_os_stop_pr != number_of_stop_sec )location.reload();
+    }
+    setInterval(refresh, 500);
+
+</script>
 
 <!-- Vendor JS Files -->
 <script src="/GSM_RAVIS/assets/vendor/apexcharts/apexcharts.min.js"></script>
