@@ -532,6 +532,8 @@ include "../../../../Sidebar.php";
 
                         </div><!-- status -->
                     </div>
+                </div>
+            </div>
 
 
 

@@ -38,6 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/DOOR/second_door.php");
 }
 
+$page_mqtt_enable=1;
+
 ?>
 
 <!DOCTYPE html>
@@ -80,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     ======================================================== -->
     <SCRIPT>
 
-        var on_load=0;
+        /*var on_load=0;
 
         function refresh(){
 
@@ -152,7 +154,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         }
         setInterval(refresh, 500);
-
+*/
         setTimeout(function(){
             location.reload();
         }, 60000);
@@ -200,15 +202,16 @@ include "../../../../Sidebar.php";
                             <ul class="list-group">
                                 <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>Read From device</li>
                                 <li class="list-group-item">
-                                    <form method="post" action="">
-                                        <button value="read_register" name="read_register" type="submit" class="btn btn-warning">Read Register</button>
+                                    <form method="get" action="" >
+                                        <button onclick="upload_download_setting('download')" value="read_register" name="read_register" type="reset" class="btn btn-warning">Read Register</button>
                                     </form>
                                 </li>
                             </ul>
                         </div><!-- Read From device -->
 
+
                         <!-- General Form Elements -->
-                        <form method="post" action="" >
+                        <!-- <form method="post" action="" > -->
 
                             <div class="row mb-3 m-2" >
                                 <ul class="list-group">
@@ -219,7 +222,7 @@ include "../../../../Sidebar.php";
                                         <div class="row ">
                                             <label class="col-sm-4 col-form-label">Number Of Door</label>
                                             <div class="col-sm-6">
-                                                <input  step="1" value="<?php echo $number_of_door;?>" name="number_of_door" type="number" class="form-control"  min="0" max="3">
+                                                <input  step="1" value="<?php echo $number_of_door;?>" name="number_of_door" id="number_of_door" type="number" class="form-control"  min="0" max="3">
                                             </div>
                                         </div>
                                     </li>
@@ -254,23 +257,23 @@ include "../../../../Sidebar.php";
 
                                                     echo "<th class=\"table-active\" scope=\"row\">"."$i_floor"."</th>";
 
-                                                    if( $number_of_door > 0 ){
-                                                        echo "<td style='background-color: whitesmoke'>";
-                                                            echo "<select  id=\"select\" name='door_select*d1f$i_floor' class=\"form-select\" >";
+                                                    //if( $number_of_door > 0 ){
+                                                        echo "<td style='background-color: whitesmoke' width='25%'>";
+                                                            echo "<select  id='door_select*d1f$i_floor' name='door_select*d1f$i_floor' class=\"form-select\" >";
                                                             list($id,$data,$ch) = only_read_data($con,$serial,"advance_settin","general*door*door_select*d1f$i_floor");
-                                                            if( $data == 0 && $number_of_door != 1 )echo "<option selected='selected' value=\"$data\">N</option>";
-                                                            if( $data == 1 || $number_of_door == 1  )echo "<option selected='selected' value=\"$data\">Y</option>";
-                                                            if( $data == 2 && $number_of_door != 1  )echo "<option selected='selected' value=\"$data\">S</option>";
-                                                            if( $data != 0 && $number_of_door != 1 )echo "<option value=\"0\">N</option>";
-                                                            if( $data != 1 && $number_of_door != 1 )echo "<option value=\"1\">Y</option>";
-                                                            if( $data != 2 && $number_of_door != 1 )echo "<option value=\"2\">S</option>";
+                                                            if( $data == 0  )echo "<option selected='selected' value=\"$data\">N</option>";
+                                                            if( $data == 1  )echo "<option selected='selected' value=\"$data\">Y</option>";
+                                                            if( $data == 2  )echo "<option selected='selected' value=\"$data\">S</option>";
+                                                            if( $data != 0  )echo "<option value=\"0\">N</option>";
+                                                            if( $data != 1 )echo "<option value=\"1\">Y</option>";
+                                                            if( $data != 2 )echo "<option value=\"2\">S</option>";
                                                             echo "</select>" ;
                                                         echo "</td>";
-                                                    }
+                                                   // }
 
-                                                    if( $number_of_door > 1 ){
-                                                        echo "<td style='background-color: antiquewhite'>";
-                                                        echo "<select  id=\"select\" name='door_select*d2f$i_floor' class=\"form-select\" >";
+                                                    //if( $number_of_door > 1 ){
+                                                        echo "<td style='background-color: antiquewhite' width='25%' >";
+                                                        echo "<select  id='door_select*d2f$i_floor' name='door_select*d2f$i_floor' class=\"form-select\" >";
                                                         list($id,$data,$ch) = only_read_data($con,$serial,"advance_settin","general*door*door_select*d2f$i_floor");
                                                         if( $data == 0 )echo "<option selected='selected' value=\"$data\">N</option>";
                                                         if( $data == 1 )echo "<option selected='selected' value=\"$data\">Y</option>";
@@ -280,11 +283,11 @@ include "../../../../Sidebar.php";
                                                         if( $data != 2 )echo "<option value=\"2\">S</option>";
                                                         echo "</select>" ;
                                                         echo "</td>";
-                                                    }
+                                                    //}
 
-                                                    if( $number_of_door > 2 ){
-                                                        echo "<td style='background-color: powderblue'>";
-                                                        echo "<select  id=\"select\" name='door_select*d3f$i_floor' class=\"form-select\" >";
+                                                    //if( $number_of_door > 2 ){
+                                                        echo "<td style='background-color: powderblue' width='25%' >";
+                                                        echo "<select  id='door_select*d3f$i_floor' name='door_select*d3f$i_floor' class=\"form-select\" >";
                                                         list($id,$data,$ch) = only_read_data($con,$serial,"advance_settin","general*door*door_select*d3f$i_floor");
                                                         if( $data == 0 )echo "<option selected='selected' value=\"$data\">N</option>";
                                                         if( $data == 1 )echo "<option selected='selected' value=\"$data\">Y</option>";
@@ -294,7 +297,7 @@ include "../../../../Sidebar.php";
                                                         if( $data != 2 )echo "<option value=\"2\">S</option>";
                                                         echo "</select>" ;
                                                         echo "</td>";
-                                                    }
+                                                    //}
 
 
                                                     echo "</tr>";
@@ -308,20 +311,22 @@ include "../../../../Sidebar.php";
 
                                 </ul>
 
+                                <input  style="display: none" value="<?php echo $number_of_stop;?>"  name="number_of_stop" type="number" class="form-control" id="number_of_stop" min="0" max="60">
+
                             </div><!-- Read From device -->
 
-                            <div class="row mb-3" >
-                                <label id="kave" class="col-sm-6 col-form-label ">SAVE Register</label>
-                                <div class="col-sm-6">
-                                    <button <?php if($change == "download" || $change == "upload"  )echo "disabled";
-                                    if( $user == "admin" ){}
-                                    else{ if($user_active_time <= 0 )echo "disabled"; }
-                                    ?>  type="submit" class="btn btn-primary">SAVE</button>
-                                </div>
-                                <label  style="color: red" class="col-sm-6 col-form-label">
-                                    <?php if($change == "download")echo "wait to download complit"?>
-                                </label>
+                        <div class="row mb-3" >
+                            <label id="kave" class="col-sm-6 col-form-label ">SAVE Register</label>
+                            <div class="col-sm-6">
+                                <button <?php
+                                if( $user == "admin" ){}
+                                else{ if($user_active_time <= 0 )echo "disabled"; }
+                                ?>  onclick="upload_download_setting('upload')" type="submit" class="btn btn-primary">SAVE</button>
                             </div>
+                            <label  style="color: red" class="col-sm-6 col-form-label">
+                                <?php if($change == "download")echo "wait to download complit"?>
+                            </label>
+                        </div>
 
                         </form><!-- End General Form Elements -->
 
@@ -341,11 +346,11 @@ include "../../../../Sidebar.php";
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="flush-headingOne">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                        Number Of Stop
+                                        Num And Talk
                                     </button>
                                 </h2>
                                 <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">تعداد طبقات</div>
+                                    <div class="accordion-body">این ریجستر مربوط به تنظیمات نمایشگر و سخنگو میباشد</div>
                                 </div>
                             </div>
 
@@ -356,38 +361,103 @@ include "../../../../Sidebar.php";
                         <!-- Default Tabs -->
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Status</button>
+                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="false">Status</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">reserve</button>
+                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">send&recive</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">reserve</button>
+                                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">debug</button>
                             </li>
                         </ul>
                         <div class="tab-content pt-2" id="myTabContent">
 
-                            <div  id="change_status_name">
-
-                            </div>
-                            <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="home-tab">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                 <?php
-                                show_change_status_progress(0,0);
+                                if($page_mqtt_enable == 0 )show_change_status_progress(0,0);
                                 ?>
+                                <div  id="status_mqtt">
+                                </div>
+
                             </div>
 
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <canvas width="100%" id="myChart"></canvas>
+                                <div  id="status_connection">
+
+                                </div>
                             </div>
 
                             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-code me-1 text-primary"></i>Connection Status</li>
+                                    <li class="list-group-item">
+                                        <div id="div_connection_status">
+                                            div_connection_status
+                                        </div>
+                                        <button type="button" value="0" onclick="send()">send</button>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-collection me-1 text-success"></i>on Message Arrived</li>
+                                    <li class="list-group-item">
+                                        <div id="div_message_arrived">
+                                            div_message_arrived
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-collection me-1 text-success"></i>Message Publish</li>
+                                    <li class="list-group-item">
+                                        <div id="div_message_publish">
+                                            div_message_publish
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <div id="div_serial" style="display: none">
+                                    <?php echo $serial;?>
+                                </div>
+
+                                <div id="json_server" style="display: block">
+                                    <?php
+                                    $myObj = new stdClass();
+                                    $myObj->number_of_stop = $number_of_stop ;
+                                    $myObj->number_of_door = $number_of_door ;
+                                    $myJSON = json_encode($myObj);
+                                    echo $myJSON;
+                                    ?>
+                                </div>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-activity me-1 text-danger"></i>debug</li>
+                                    <li class="list-group-item">
+                                        <div id="deb">
+                                            deb
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-activity me-1 text-danger"></i>ajax</li>
+                                    <li class="list-group-item">
+                                        <div id="div_ajax_responce">
+                                            div_ajax_responce
+                                        </div>
+                                    </li>
+                                </ul>
+
+
                             </div>
 
                         </div><!-- status -->
-
                     </div>
                 </div>
-
             </div>
+
+
         </div>
     </section>
 
@@ -400,7 +470,82 @@ include "../../../../Footer.php";
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
 
+<script  src="second_door.js?v1"></script>
+<script  src="../../mqtt_connection/mqtt_protocol.js?v1"></script>
+<script  src="../../mqtt_connection/mqtt_connection_function.js?v1"></script>
+
+<script>
+
+    var number_os_stop_pr = Number(document.getElementById("number_of_stop").value);
+    var number_of_stop_sec = 0;
+
+    var number_of_door_pr = Number(document.getElementById("number_of_door").value);
+    var number_of_door_sec = 0;
+
+    var obj_ajax = new Object();
+    obj_ajax.serial = Number(document.getElementById("div_serial").textContent );
+
+    var ch=0;
+
+    var id;
+    function refresh(){
+
+
+        number_of_stop_sec = Number(document.getElementById("number_of_stop").value);
+        if( number_os_stop_pr != number_of_stop_sec )location.reload();
+
+        number_of_door_sec = Number(document.getElementById("number_of_door").value);
+        //if( number_of_door_pr != number_of_door_sec ) {
+
+            for(let i=1; i<=number_of_stop; i++){
+                id = "door_select*d1f"+i;
+                if( number_of_door_sec > 0 )document.getElementById(id).style.display = "block";
+                else document.getElementById(id).style.display = "none";
+
+                id = "door_select*d2f"+i;
+                if( number_of_door_sec > 1 )document.getElementById(id).style.display = "block";
+                else document.getElementById(id).style.display = "none";
+
+                id = "door_select*d3f"+i;
+                if( number_of_door_sec > 2 )document.getElementById(id).style.display = "block";
+                else document.getElementById(id).style.display = "none";
+
+                if( number_of_door_sec < 2 ){
+                    id = "door_select*d1f"+i;
+                    document.getElementById(id).value = 1;
+                }
+            }
+        //}
+
+        /*
+
+            var xhttp;
+
+            xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    //document.getElementById("div_ajax_responce").innerHTML = this.responseText ;
+                    location.reload();
+                }
+            };
+
+            obj_ajax.ar1 = 0; obj_ajax.ad1 = 22;
+            obj_ajax.da1 = number_of_door_sec-1;
+
+            var str = "json="+JSON.stringify(obj_ajax);
+            xhttp.open("GET","/GSM_RAVIS/main/ADVANCE/mqtt_connection/sql_save_ajax.php?"+str, true);
+            xhttp.send();
+
+        }*/
+
+
+    }
+    setInterval(refresh, 500);
+
+</script>
 <!-- Vendor JS Files -->
 <script src="/GSM_RAVIS/assets/vendor/apexcharts/apexcharts.min.js"></script>
 <script src="/GSM_RAVIS/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

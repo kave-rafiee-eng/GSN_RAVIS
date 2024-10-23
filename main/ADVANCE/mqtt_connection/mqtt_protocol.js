@@ -24,9 +24,16 @@ function load_end(){
 
     startConnect()
 
+    dbg_mass.innerHTML = topic_publish
+
+    for (let i = 0; i < list_settnig.length; i++) {
+        list_settnig[i][2] = "download"
+    }
+
     show_status()
 
-    dbg_mass.innerHTML = topic_publish
+    send_mqtt();
+
 }
 
 window.addEventListener("load", load_end);

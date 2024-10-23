@@ -36,12 +36,13 @@ list($id,$debouncer_68,$change) = post_register_manager($con,"debouncer_68",$ser
 list($id,$open_time,$change) = post_register_manager($con,"open_time",$serial,"advance_settin","general*door*",0,27);
 
 
-
-
 //-------------------------------------------------CLEAR $POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/DOOR/door_time.php");
 }
+
+$page_mqtt_enable=1;
+
 
 ?>
 
@@ -85,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     ======================================================== -->
     <SCRIPT>
 
-        var on_load=0;
+       /* var on_load=0;
 
         function refresh(){
 
@@ -156,7 +157,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             let text = '{"progress":"10","command":"refressh"}';
 
         }
-        setInterval(refresh, 500);
+        setInterval(refresh, 500);*/
 
         setTimeout(function(){
             location.reload();
@@ -206,15 +207,15 @@ include "../../../../Sidebar.php";
                             <ul class="list-group">
                                 <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>Read From device</li>
                                 <li class="list-group-item">
-                                    <form method="post" action="">
-                                        <button value="read_register" name="read_register" type="submit" class="btn btn-warning">Read Register</button>
+                                    <form method="get" action="" >
+                                        <button onclick="upload_download_setting('download')" value="read_register" name="read_register" type="reset" class="btn btn-warning">Read Register</button>
                                     </form>
                                 </li>
                             </ul>
                         </div><!-- Read From device -->
 
                         <!-- General Form Elements -->
-                        <form method="post" action="" >
+                        <!-- <form method="post" action="" > -->
 
                             <div class="row mb-3 m-2" >
                                 <ul class="list-group">
@@ -225,7 +226,7 @@ include "../../../../Sidebar.php";
                                         <div class="row ">
                                             <label class="col-sm-4 col-form-label">Open Delay</label>
                                             <div class="col-sm-6">
-                                                <input  step=".1" value="<?php echo $open_delay;?>" name="open_delay" type="number" class="form-control"  min="0" max="200">
+                                                <input  step=".1" value="<?php echo $open_delay;?>" name="open_delay" id="open_delay" type="number" class="form-control"  min="0" max="200">
                                             </div>
                                             <label class="col-sm-2 col-form-label text-danger ">sec</label>
                                         </div>
@@ -235,7 +236,7 @@ include "../../../../Sidebar.php";
                                         <div class="row ">
                                             <label class="col-sm-4 col-form-label">Close Delay</label>
                                             <div class="col-sm-6">
-                                                <input  step=".1" value="<?php echo $close_delay;?>" name="close_delay" type="number" class="form-control"  min="0" max="200">
+                                                <input  step=".1" value="<?php echo $close_delay;?>" name="close_delay" id="close_delay" type="number" class="form-control"  min="0" max="200">
                                             </div>
                                             <label class="col-sm-2 col-form-label text-danger ">sec</label>
                                         </div>
@@ -245,7 +246,7 @@ include "../../../../Sidebar.php";
                                         <div class="row ">
                                             <label class="col-sm-4 col-form-label">End Door Time</label>
                                             <div class="col-sm-6">
-                                                <input  value="<?php echo $end_door_time;?>" name="end_door_time" type="number" class="form-control"  min="0" max="200">
+                                                <input  value="<?php echo $end_door_time;?>" name="end_door_time" id="end_door_time" type="number" class="form-control"  min="0" max="200">
                                             </div>
                                             <label class="col-sm-2 col-form-label text-danger ">sec</label>
                                         </div>
@@ -255,7 +256,7 @@ include "../../../../Sidebar.php";
                                         <div class="row ">
                                             <label class="col-sm-4 col-form-label">Close Time Out</label>
                                             <div class="col-sm-6">
-                                                <input  value="<?php echo $close_time_out;?>" name="close_time_out" type="number" class="form-control"  min="0" max="200">
+                                                <input  value="<?php echo $close_time_out;?>" name="close_time_out" id="close_time_out" type="number" class="form-control"  min="0" max="200">
                                             </div>
                                             <label class="col-sm-2 col-form-label text-danger ">sec</label>
                                         </div>
@@ -265,7 +266,7 @@ include "../../../../Sidebar.php";
                                         <div class="row ">
                                             <label class="col-sm-4 col-form-label">Door Park</label>
                                             <div class="col-sm-6">
-                                                <input  value="<?php echo $door_park;?>" name="door_park" type="number" class="form-control"  min="0" max="200">
+                                                <input  value="<?php echo $door_park;?>" name="door_park" id="door_park" type="number"  class="form-control"  min="0" max="200">
                                             </div>
                                             <label class="col-sm-2 col-form-label text-danger ">sec</label>
                                         </div>
@@ -275,7 +276,7 @@ include "../../../../Sidebar.php";
                                         <div class="row ">
                                             <label class="col-sm-4 col-form-label">69 Debouncer</label>
                                             <div class="col-sm-6">
-                                                <input step=".1" value="<?php echo $debouncer_69;?>" name="debouncer_69" type="number" class="form-control"  min="0" max="200">
+                                                <input step=".1" value="<?php echo $debouncer_69;?>" name="debouncer_69" id="debouncer_69" type="number" class="form-control"  min="0" max="200">
                                             </div>
                                             <label class="col-sm-2 col-form-label text-danger ">sec</label>
                                         </div>
@@ -285,7 +286,7 @@ include "../../../../Sidebar.php";
                                         <div class="row ">
                                             <label class="col-sm-4 col-form-label">68 Debouncer</label>
                                             <div class="col-sm-6">
-                                                <input step=".1" value="<?php echo $debouncer_68;?>" name="debouncer_68" type="number" class="form-control"  min="0" max="200">
+                                                <input step=".1" value="<?php echo $debouncer_68;?>" name="debouncer_68" id="debouncer_68" type="number" class="form-control"  min="0" max="200">
                                             </div>
                                             <label class="col-sm-2 col-form-label text-danger ">sec</label>
                                         </div>
@@ -295,7 +296,7 @@ include "../../../../Sidebar.php";
                                         <div class="row ">
                                             <label class="col-sm-4 col-form-label">Open Time</label>
                                             <div class="col-sm-6">
-                                                <input  value="<?php echo $open_time;?>" name="open_time" type="number" class="form-control"  min="0" max="200">
+                                                <input  value="<?php echo $open_time;?>" name="open_time" id="open_time" type="number" class="form-control"  min="0" max="200">
                                             </div>
                                             <label class="col-sm-2 col-form-label text-danger ">sec</label>
                                         </div>
@@ -308,10 +309,10 @@ include "../../../../Sidebar.php";
                             <div class="row mb-3" >
                                 <label id="kave" class="col-sm-6 col-form-label ">SAVE Register</label>
                                 <div class="col-sm-6">
-                                    <button <?php if($change == "download" || $change == "upload"  )echo "disabled";
+                                    <button <?php
                                     if( $user == "admin" ){}
                                     else{ if($user_active_time <= 0 )echo "disabled"; }
-                                    ?>  type="submit" class="btn btn-primary">SAVE</button>
+                                    ?>  onclick="upload_download_setting('upload')" type="submit" class="btn btn-primary">SAVE</button>
                                 </div>
                                 <label  style="color: red" class="col-sm-6 col-form-label">
                                     <?php if($change == "download")echo "wait to download complit"?>
@@ -354,38 +355,101 @@ include "../../../../Sidebar.php";
                         <!-- Default Tabs -->
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Status</button>
+                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="false">Status</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">reserve</button>
+                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">send&recive</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">reserve</button>
+                                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">debug</button>
                             </li>
                         </ul>
                         <div class="tab-content pt-2" id="myTabContent">
 
-                            <div  id="change_status_name">
-
-                            </div>
-                            <div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="home-tab">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                 <?php
-                                show_change_status_progress(0,0);
+                                if($page_mqtt_enable == 0 )show_change_status_progress(0,0);
                                 ?>
+                                <div  id="status_mqtt">
+                                </div>
+
                             </div>
 
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <canvas width="100%" id="myChart"></canvas>
+                                <div  id="status_connection">
+
+                                </div>
                             </div>
 
                             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-code me-1 text-primary"></i>Connection Status</li>
+                                    <li class="list-group-item">
+                                        <div id="div_connection_status">
+                                            div_connection_status
+                                        </div>
+                                        <button type="button" value="0" onclick="send()">send</button>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-collection me-1 text-success"></i>on Message Arrived</li>
+                                    <li class="list-group-item">
+                                        <div id="div_message_arrived">
+                                            div_message_arrived
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-collection me-1 text-success"></i>Message Publish</li>
+                                    <li class="list-group-item">
+                                        <div id="div_message_publish">
+                                            div_message_publish
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <div id="div_serial" style="display: none">
+                                    <?php echo $serial;?>
+                                </div>
+
+                                <div id="json_server" style="display: block">
+                                    <?php
+                                    $myObj = new stdClass();
+                                    $myObj->serial = $serial ;
+                                    $myJSON = json_encode($myObj);
+                                    echo $myJSON;
+                                    ?>
+                                </div>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-activity me-1 text-danger"></i>debug</li>
+                                    <li class="list-group-item">
+                                        <div id="deb">
+                                            deb
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-group">
+                                    <li class="list-group-item"><i class="bi bi-activity me-1 text-danger"></i>ajax</li>
+                                    <li class="list-group-item">
+                                        <div id="div_ajax_responce">
+                                            div_ajax_responce
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
 
                         </div><!-- status -->
-
                     </div>
-                </div>
 
+                </div>
             </div>
+
+
         </div>
     </section>
 
@@ -397,6 +461,13 @@ include "../../../../Footer.php";
 ?>
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
+
+<script  src="door_time.js?v1"></script>
+<script  src="../../mqtt_connection/mqtt_protocol.js?v1"></script>
+<script  src="../../mqtt_connection/mqtt_connection_function.js?v1"></script>
 
 
 <!-- Vendor JS Files -->
