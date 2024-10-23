@@ -124,7 +124,7 @@ function send_mqtt(){
 
             obj_send["ar"+j] = obj.ar;
             obj_send["ad"+j] = obj.ad;
-            obj_send["da"+j] = data.value * factor + Addition +  offset ;
+            obj_send["da"+j] = Math.round(data.value * factor + Addition +  offset )
 
             if(list_settnig[i-1][2] == "upload")obj_send["st"+j] = 1;
             if(list_settnig[i-1][2] == "download")obj_send["st"+j] = 0;
