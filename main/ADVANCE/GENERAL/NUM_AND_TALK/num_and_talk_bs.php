@@ -314,7 +314,7 @@ include "../../../../Sidebar.php";
                                     <li class="list-group-item"><!--  Open Delay !-->
                                         <div class="row ">
                                             <label class="col-sm-4 col-form-label">Num And Talk</label>
-                                            <table  class="table datatable text-center  ">
+                                            <table  class="table  text-center  ">
                                                 <thead>
                                                 <tr>
                                                     <th>FLOOR</th>

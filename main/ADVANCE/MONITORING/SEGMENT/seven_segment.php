@@ -63,8 +63,8 @@ include "../../../../function.php"; //my_function
         display.segmentDistance = 0.2;
         display.segmentCount    = SegmentDisplay.SevenSegment;
         display.cornerType      = SegmentDisplay.RoundedCorner;
-        display.colorOn         = 'rgb(0, 0, 0)';
-        display.colorOff        = 'rgb(255,255,255)';
+        display.colorOn         = 'rgb(230,60,60)';
+        display.colorOff        = 'rgb(239,239,237)';
 
         //display.draw();
 
@@ -89,55 +89,9 @@ include "../../../../function.php"; //my_function
             location.reload();
         }, 60000);
 
-        /*color: #ffffff;
-        background: #008cff;
-        border: 1px solid #008cff;
-        text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff;
-        box-shadow: 0 0 5px #008cff, 0 0 20px #008cff, 0 0 50px #008cff,
-            0 0 100px #008cff;*/
 
-        var ch=0;
 
-        setInterval(function(){
 
-            ch = 1 - ch;
-
-           // btn.style.background = "#babfc1"
-
-            if( ch == 0 ){
-                const btn = document.getElementById("btn_test")
-                btn.textContent = "in 68   "
-                btn.style.background = "#008cff"
-                btn.style.color = "#ffffff"
-                btn.style.border = "1px solid #008cff"
-                btn.style.textShadowColor = "text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff"
-                btn.style.boxShadow = "0 0 2px #008cff, 0 0 5px #008cff, 0 0 10px #008cff, 0 0 20px #008cff"
-
-                var symbol = document.createElement('i')
-                symbol.className = "bi bi-1-circle-fill";
-                symbol.style.color = "#e1df6b"
-                btn.appendChild(symbol);
-
-            }
-            else{
-                const btn = document.getElementById("btn_test")
-                btn.textContent = "in 68    "
-                btn.style.background = "#e2e7ea"
-                btn.style.color = "#000000"
-                btn.style.border = "1px solid #babfc1"
-                btn.style.textShadowColor = "text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff"
-                btn.style.boxShadow = "0 0 2px #babfc1, 0 0 5px #babfc1, 0 0 10px #babfc1, 0 0 20px #babfc1"
-
-                var symbol = document.createElement('i')
-                symbol.className = "bi bi-0-circle-fill";
-                symbol.style.color = "#f30b61"
-                btn.appendChild(symbol);
-
-                //btn.style.backgroundImage = "url('im1.jpg')";
-
-            }
-
-        }, 1000);
     </script>
 
 </head>
@@ -172,34 +126,42 @@ include "../../../../Sidebar.php";
     <section class="section">
         <div class="row">
 
-            <div class="col-lg-6" ">
-            <button id="btn_test" class="btn btn-primary btn-lg">Button </button>
-            </div>
-
-            <div class="col-lg-7">
+            <div class="col-6">
 
                 <div class="card"  >
 
                     <div class="card-body ">
                         <h5 class="card-title">Display</h5>
 
-                        <div class="row mb-3 m-2" >
                             <ul class="list-group">
-                                <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>Read From device</li>
+                                <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>Segment</li>
                                 <li class="list-group-item">
-                                    <form method="get" action="" >
-                                        <button onclick="upload_download_setting('download')" value="read_register" name="read_register" type="reset" class="btn btn-warning">Read Register</button>
-                                    </form>
+
+                                    <canvas id="myCanvas" style=" height: 40px; width: 80px; margin-left: 50%; margin-bottom: 10% ">
+                                        Sorry, your browser does not support canvas.
+                                    </canvas>
+
+                                    <div class="row"  style="background-color: rgb(255, 255, 255)">
+
+                                        <div class="col-11 "  >
+                                            <canvas id="display" width="260" height="140">
+                                                Your browser is unfortunately not supported.
+                                            </canvas>
+                                        </div>
+                                    </div>
+
                                 </li>
+
+                                <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>dir</li>
+                                <li class="list-group-item">
+                                    <div class="row" style="background-color: #919191" >
+
+
+                                    </div>
+                                </li>
+
                             </ul>
-                        </div><!-- Read From device -->
 
-                    </div>
-
-                    <div class="col-lg-6" width="260" height="140" style="background-color: rgb(255, 255, 255)">
-                        <canvas id="display" width="260" height="140">
-                            Your browser is unfortunately not supported.
-                        </canvas>
                     </div>
 
 
@@ -207,7 +169,9 @@ include "../../../../Sidebar.php";
 
             </div>
 
-            <div class="col-lg-5">
+
+
+            <div class="col-5">
 
                 <div class="card">
                     <div class="card-body">
@@ -347,7 +311,54 @@ include "../../../../Footer.php";
 
 <SCRIPT>
 
-    display.setValue('22');
+    display.setValue('01');
+
+    let canvas = document.querySelector("#myCanvas");
+    let context = canvas.getContext("2d");
+
+    var w = canvas.width;
+    var h = canvas.height;
+
+    function drawTriangle() {
+
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        context.fillStyle = "#FFFFFF";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        let height = 100 * Math.cos(Math.PI / 6);
+
+        let size = 1
+        context.beginPath();
+        context.moveTo(+10, canvas.height/size);
+        context.lineTo(canvas.height/size, 10);
+        context.lineTo(canvas.height*2/size-10, canvas.height/size);
+        context.closePath();
+
+        // the outline
+        context.lineWidth = 10;
+        context.strokeStyle = '#504e51';
+        context.stroke();
+
+        // the fill color
+        context.fillStyle = "#504e51";
+        context.fill();
+    }
+    drawTriangle();
+
+    var ch = 0;
+    function refresh(){
+
+        ch = 1 - ch;
+        if( ch == 0 ){
+            drawTriangle();
+        }
+        else{
+            context.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+    }
+    setInterval(refresh, 1000);
 
 </SCRIPT>
 

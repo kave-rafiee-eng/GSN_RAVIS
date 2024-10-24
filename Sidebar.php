@@ -6,10 +6,32 @@
         <li class="nav-heading">IOT Parameter</li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/GSM_RAVIS/main/ADVANCE/MONITORING/monitoring.php">
-                <i class="bi bi-bezier2 "></i>
-                <span>Monitoring</span>
+            <a class="nav-link collapsed" data-bs-target="#Monitoring-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi bi-gear"></i><span>Monitoring</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
+            <ul id="Monitoring-nav" class="nav-content collapse " >
+                <li>
+                    <a href="/GSM_RAVIS/main/ADVANCE/MONITORING/ALL/monitoring.php">
+                        <i class="bi bi-circle"></i>
+                        <i class="bi bi-circle"></i><span>Numerical</span>
+                    </a>
+                </li><!-- End Door Time Time -->
+
+                <li>
+                    <a href="/GSM_RAVIS/main/ADVANCE/MONITORING/SEGMENT/seven_segment.php">
+                        <i class="bi bi-circle"></i>
+                        <i class="bi bi-circle"></i><span>Segment</span>
+                    </a>
+                </li><!-- End Cotrol Type Time -->
+
+                <li>
+                    <a href="/GSM_RAVIS/main/ADVANCE/MONITORING/FLAG/flag.php">
+                        <i class="bi bi-circle"></i>
+                        <i class="bi bi-circle"></i><span>Flag</span>
+                    </a>
+                </li> <!-- End Second Door Time -->
+            </ul>
+
         </li><!-- End Dashboard Nav -->
 
         <li class="nav-item">
@@ -17,6 +39,7 @@
                 <i class="bi bi-bezier2 "></i>
                 <span>GSM</span>
             </a>
+
         </li><!-- End Dashboard Nav -->
 
         <li class="nav-item">

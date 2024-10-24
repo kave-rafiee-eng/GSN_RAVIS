@@ -1,9 +1,9 @@
 
 <?php
 
-include "../../../read.php"; // $con
+include "../../../../read.php"; // $con
 
-include "../../../login/login_check.php"; //LOGIN_CHECK
+include "../../../../login/login_check.php"; //LOGIN_CHECK
 
 ?>
 
@@ -55,11 +55,11 @@ include "../../../login/login_check.php"; //LOGIN_CHECK
 <body id=""  >
 
 <?php
-include "../../../header.php";
+include "../../../../header.php";
 ?>
 
 <?php
-include "../../../Sidebar.php";
+include "../../../../Sidebar.php";
 ?>
 
 <main  id="main" class="main">
@@ -204,7 +204,7 @@ include "../../../Sidebar.php";
 
 
 <?php
-include "../../../Footer.php";
+include "../../../../Footer.php";
 ?>
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
@@ -214,12 +214,12 @@ include "../../../Footer.php";
 
 
 <!-- Vendor JS Files -->
-<script  src="./table_esp.js?v1"></script>
-<script  src="./mqtt_connection.js?v1"></script>
-<script  src="./table_mqtt.js?v1"></script>
-<script  src="./list.js?v1"></script>
-<script  src="./select.js?v1"></script>
-<script  src="./monitorng.js?v1"></script>
+<script  src="table_esp.js"></script>
+<script  src="mqtt_connection.js"></script>
+<script  src="table_mqtt.js"></script>
+<script  src="list.js"></script>
+<script  src="select.js"></script>
+<script  src="monitorng.js"></script>
 
 <script src="/GSM_RAVIS/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/GSM_RAVIS/assets/vendor/quill/quill.js"></script>
