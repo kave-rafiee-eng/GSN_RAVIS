@@ -132,14 +132,15 @@ include "../Sidebar.php";
                 <div class="card">
                     <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-                        <img src="/GSM_RAVIS/assets/img/bear.jpg" alt="Profile" class="rounded-circle">
-                        <h2>Kave Rafiee</h2>
-                        <h3>Electronic ENG</h3>
+                        <img src="/GSM_RAVIS/login/PIC/Logo Ravis01.jpg" alt="Profile" class="rounded-circle">
+                        <h2>Ravis Control</h2>
+                        <h3>iot</h3>
                         <div class="social-links mt-2">
                             <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
                             <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
                             <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
                             <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+                            <a href="#" class="linkedin"><i class="bi bi-person-vcard"></i></a>
                         </div>
                     </div>
                 </div>
