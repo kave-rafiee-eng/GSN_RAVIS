@@ -99,9 +99,9 @@ function show_table_flag(){
         }
         else{
 
-            newButton.style.background = "#b4b6ba"
+            newButton.style.background = "#dcdbdb"
             newButton.style.color = "#000000"
-            newButton.style.border = "1px solid #dbe0e6"
+            newButton.style.border = "1px solid #dcdbdb"
             newButton.style.textShadowColor = "text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff"
             //newButton.style.boxShadow = "0 0 2px #babfc1, 0 0 5px #babfc1, 0 0 10px #babfc1, 0 0 20px #babfc1"
 
