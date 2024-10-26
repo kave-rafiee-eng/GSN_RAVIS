@@ -7,6 +7,10 @@ include "../../../../login/login_check.php"; //LOGIN_CHECK
 
 include "../../../../function.php"; //my_function
 
+//-------------------------------------------------NUMBER OF STOP STNG    2
+list($id,$number_of_stop,$change) = post_register_manager($con,"number_of_stop",$serial,"advance_settin","general*",0,2);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -260,6 +264,15 @@ include "../../../../Sidebar.php";
                                     <?php echo $serial;?>
                                 </div>
 
+                                <div id="json_server" style="display: block">
+                                    <?php
+                                    $myObj = new stdClass();
+                                    $myObj->number_of_stop = $number_of_stop ;
+                                    $myJSON = json_encode($myObj);
+                                    echo $myJSON;
+                                    ?>
+                                </div>
+
                                 <ul class="list-group">
                                     <li class="list-group-item"><i class="bi bi-activity me-1 text-danger"></i>debug</li>
                                     <li class="list-group-item">
@@ -318,7 +331,8 @@ include "../../../../Footer.php";
 
 <SCRIPT>
 
-
+    var json_server = JSON.parse(document.getElementById("json_server").innerHTML)
+    var number_of_stop = json_server.number_of_stop;
 
     let canvas = document.querySelector("#myCanvas");
     let context = canvas.getContext("2d");
@@ -388,9 +402,8 @@ include "../../../../Footer.php";
         if( dir == 0 )segment++;
         else segment--;
 
-        if( segment >= 14 )dir=1;
+        if( segment >= number_of_stop )dir=1;
         if( segment == 1 )dir=0;
-
 
         if( segment<10)display.setValue('0'+segment.toString());
         else{
@@ -399,7 +412,6 @@ include "../../../../Footer.php";
 
     }
     setInterval(timer, 1000);
-
 
 
 </SCRIPT>
