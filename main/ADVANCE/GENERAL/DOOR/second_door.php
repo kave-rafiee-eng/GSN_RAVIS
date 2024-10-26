@@ -490,12 +490,17 @@ include "../../../../Footer.php";
 
     var ch=0;
 
+    var reload = 0;
+
     var id;
     function refresh(){
 
 
         number_of_stop_sec = Number(document.getElementById("number_of_stop").value);
-        if( number_os_stop_pr != number_of_stop_sec )location.reload();
+        if( number_os_stop_pr != number_of_stop_sec && reload == 0 ){
+            location.reload();
+            reload=1;
+        }
 
         number_of_door_sec = Number(document.getElementById("number_of_door").value);
         //if( number_of_door_pr != number_of_door_sec ) {
