@@ -66,8 +66,6 @@ function show_table_flag(){
         const textNode = document.createTextNode(list_input[j][0]);
         h1.appendChild(textNode);
 
-
-
         tr.setAttribute("id", "tr_flag"+j);
         table_flag.appendChild(tr);
         td.appendChild(h1);
@@ -87,11 +85,11 @@ function show_table_flag(){
         newButton.className = "btn btn-primary btn-lg"
         if( list_input[j][3] == 0 ){
 
-            newButton.style.background = "#f3ca20"
+            newButton.style.background = "#dd5151"
             newButton.style.color = "#ffffff"
-            newButton.style.border = "1px solid #f3ca20"
+            newButton.style.border = "1px solid #dd5151"
             newButton.style.textShadowColor = "text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff"
-            newButton.style.boxShadow = " 0 0 20px #f3ca20"
+            newButton.style.boxShadow = " 0 0 20px #dd5151"
 
             var symbol = document.createElement('i')
             symbol.className = "bi bi-1-circle-fill";
@@ -101,16 +99,16 @@ function show_table_flag(){
         }
         else{
 
-            newButton.style.background = "#408ec6"
-            newButton.style.color = "#ffffff"
-            newButton.style.border = "1px solid #babfc1"
+            newButton.style.background = "#b4b6ba"
+            newButton.style.color = "#000000"
+            newButton.style.border = "1px solid #dbe0e6"
             newButton.style.textShadowColor = "text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff"
             //newButton.style.boxShadow = "0 0 2px #babfc1, 0 0 5px #babfc1, 0 0 10px #babfc1, 0 0 20px #babfc1"
 
-            var symbol = document.createElement('i')
+           /* var symbol = document.createElement('i')
             symbol.className = "bi bi-0-circle-fill";
             symbol.style.color = "#ffffff"
-            newButton.appendChild(symbol);
+            newButton.appendChild(symbol);*/
         }
 
 

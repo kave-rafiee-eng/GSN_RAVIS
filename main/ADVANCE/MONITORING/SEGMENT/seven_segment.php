@@ -318,7 +318,7 @@ include "../../../../Footer.php";
 
 <SCRIPT>
 
-    display.setValue('01');
+
 
     let canvas = document.querySelector("#myCanvas");
     let context = canvas.getContext("2d");
@@ -326,7 +326,7 @@ include "../../../../Footer.php";
     var w = canvas.width;
     var h = canvas.height;
 
-    function drawTriangle() {
+    function drawTriangle(dir) {
 
         context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -335,12 +335,21 @@ include "../../../../Footer.php";
 
         let height = 100 * Math.cos(Math.PI / 6);
 
-        let size = 1
-        context.beginPath();
-        context.moveTo(+10, canvas.height/size);
-        context.lineTo(canvas.height/size, 10);
-        context.lineTo(canvas.height*2/size-10, canvas.height/size);
-        context.closePath();
+        if(dir == 0 ){
+            context.beginPath();
+            context.moveTo(+10, canvas.height);
+            context.lineTo(canvas.height, 10);
+            context.lineTo(canvas.height*2-10, canvas.height);
+            context.closePath();
+        }
+        else{
+            context.beginPath();
+            context.moveTo(10, 10);
+            context.lineTo(canvas.height , canvas.height);
+            context.lineTo(canvas.height*2-10 , 10);
+            context.closePath();
+        }
+
 
         // the outline
         context.lineWidth = 10;
@@ -351,14 +360,16 @@ include "../../../../Footer.php";
         context.fillStyle = "#504e51";
         context.fill();
     }
-    drawTriangle();
+
+
+
 
     var ch = 0;
     function refresh(){
 
         ch = 1 - ch;
         if( ch == 0 ){
-            drawTriangle();
+            drawTriangle(dir);
         }
         else{
             context.clearRect(0, 0, canvas.width, canvas.height);
@@ -368,6 +379,27 @@ include "../../../../Footer.php";
         x.play();*/
     }
     setInterval(refresh, 1000);
+
+    var dir=0;
+    var segment=1;
+
+    function timer(){
+
+        if( dir == 0 )segment++;
+        else segment--;
+
+        if( segment >= 14 )dir=1;
+        if( segment == 1 )dir=0;
+
+
+        if( segment<10)display.setValue('0'+segment.toString());
+        else{
+            display.setValue(segment.toString());
+        }
+
+    }
+    setInterval(timer, 1000);
+
 
 
 </SCRIPT>
