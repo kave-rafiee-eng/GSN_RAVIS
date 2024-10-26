@@ -561,10 +561,14 @@ include "../../../../Footer.php";
     var number_os_stop_pr = Number(document.getElementById("number_of_stop").value);
     var number_of_stop_sec = 0;
 
+    var reload = 0;
     function refresh(){
         number_of_stop_sec = Number(document.getElementById("number_of_stop").value);
 
-        if( number_os_stop_pr != number_of_stop_sec )location.reload();
+        if( number_os_stop_pr != number_of_stop_sec && reload == 0  ){
+            location.reload();
+            reload=1;
+        }
     }
     setInterval(refresh, 500);
 
