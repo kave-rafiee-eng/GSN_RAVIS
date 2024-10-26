@@ -132,7 +132,7 @@ include "../Sidebar.php";
                 <div class="card">
                     <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-                        <img src="/GSM_RAVIS/login/PIC/Logo Ravis01.jpg" alt="Profile" class="rounded-circle">
+                        <img src="/GSM_RAVIS/login/PIC/Logo Ravis01.jpg" alt="Profile" class="rounded">
                         <h2>Ravis Control</h2>
                         <h3>iot</h3>
                         <div class="social-links mt-2">
