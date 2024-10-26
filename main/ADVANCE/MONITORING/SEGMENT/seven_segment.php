@@ -111,6 +111,11 @@ include "../../../../Sidebar.php";
 
     <div class="pagetitle">
 
+        <audio id="myAudio">
+            <source src="a1.wav" type="audio/mpeg">
+            Your browser does not support the audio elemen
+        </audio>
+
         <h1>branch</h1>
         <nav>
             <ol class="breadcrumb">
@@ -283,6 +288,8 @@ include "../../../../Sidebar.php";
         </div>
     </section>
 
+
+
 </main><!-- End #main -->
 
 
@@ -357,8 +364,11 @@ include "../../../../Footer.php";
             context.clearRect(0, 0, canvas.width, canvas.height);
         }
 
+       /* var x = document.getElementById("myAudio");
+        x.play();*/
     }
     setInterval(refresh, 1000);
+
 
 </SCRIPT>
 
