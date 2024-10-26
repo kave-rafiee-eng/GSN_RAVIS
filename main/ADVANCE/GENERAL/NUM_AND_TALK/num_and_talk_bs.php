@@ -257,20 +257,7 @@ include "../../../../Sidebar.php";
 
 <main  id="main" class="main">
 
-    <div class="row d-flex  ">
-        <h5> <span class="badge bg-dark">
-        <form onchange="refresh_radio()" action="" method="post" id="form_refresh">
-            <div   class="form-check form-switch  ">
-                <label class=" col-form-label ">MQTT Enable</label>
-                <input   value="1" name="page_mqtt_enable_radio" class="form-check-input" type="checkbox" id=""
-                    <?php  if($page_mqtt_enable == "1" )echo "checked";?>
-                >
-            </div>
 
-            <input  style="display:none" value="<?php echo 'a'.$page_mqtt_enable; ?>" name="page_mqtt_enable" class="form-check-input" type="text" id="$page_mqtt_enable_value">
-        </form>
-        </span></h5
-    </div><!-- refresh_radio -->
 
     <div class="pagetitle">
         <h1>Form Elements</h1>
