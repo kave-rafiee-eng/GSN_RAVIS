@@ -25,10 +25,22 @@ function startConnect(){
 }
 
 function onConnect(){
+    //document.getElementById("div_connection_status").innerHTML = "connect";
+
     document.getElementById("div_connection_status").innerHTML = "connect";
 
-    topic = "gsm";
+    // Get JSON data from the hidden div
+    var jsonData = document.getElementById("json_server").innerText;
+    // Parse JSON into a JavaScript object
+    var data = JSON.parse(jsonData);
+    // Store the serial value in a variable
+    var serial = data.serial;
+    // Log the serial number for debugging
+    console.log("Serial_json:", serial);
+
+    topic = "gsm/"+serial;
     client.subscribe(topic);
+    console.log("subscribe to:", topic);
 }
 function onConnectionLost(responseObject){
     document.getElementById("div_connection_status").innerHTML += "<span> ERROR: Connection is lost.</span><br>";

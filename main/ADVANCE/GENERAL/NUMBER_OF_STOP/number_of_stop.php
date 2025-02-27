@@ -14,11 +14,10 @@ list($id,$number_of_stop,$change) = post_register_manager($con,"number_of_stop",
 
 //-------------------------------------------------CLEAR $POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
     header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/NUMBER_OF_STOP/number_of_stop.php");
 }
 
-//-------------------------------------------------AUTO REFRESH
+//-------------------------------------------------MQTT Enable
 list($id_r,$page_mqtt_enable,$change_r) = read_data($con,$serial,"server","page_mqtt_enable","1",0,0);
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if( isset($_POST["page_mqtt_enable"] )  ){
@@ -350,6 +349,15 @@ include "../../../../Sidebar.php";
 
                                 <div id="div_serial" style="display: none">
                                     <?php echo $serial;?>
+                                </div>
+
+                                <div id="json_server" style="display: block">
+                                    <?php
+                                    $myObj = new stdClass();
+                                    $myObj->serial = $serial ;
+                                    $myJSON = json_encode($myObj);
+                                    echo $myJSON;
+                                    ?>
                                 </div>
 
                                 <ul class="list-group">

@@ -1,6 +1,9 @@
+
 function startConnect(){
 
     clientID = "clientID - "+parseInt(Math.random() * 100);
+
+    console.log("server: "+"ravis-gsm.ir:9001");
 
     userId = "";
     password = "";
@@ -8,7 +11,6 @@ function startConnect(){
     //client = new Paho.MQTT.Client("109.125.149.108", Number(9001), "/mqtt", clientID);
     client = new Paho.MQTT.Client("ravis-gsm.ir", Number(9001), "/mqtt", clientID);
 
-    console.log("server: "+"ravis-gsm.ir:9001");
 
     console.log("clientID: "+clientID);
 
@@ -56,11 +58,28 @@ function ajax( json_data){
     xhttp.send();
 
 }
+
+var serial = 100;
+var topic_publish = "s";
 function onMessageArrived(message){
     console.log("OnMessageArrived: "+message.payloadString);
     document.getElementById("div_message_arrived").innerHTML = "<span> Topic:"+message.destinationName+"| Message : "+message.payloadString + "</span><br>";
 
-    ajax(message.payloadString);
+    // Parse JSON into a JavaScript object
+    var data = JSON.parse(message.payloadString);
+    // Store the serial value in a variable
+
+    if (data["serial"] >= 0){
+        serial = data.serial;
+        if (data["TEST"] >= 0) {
+            topic_publish = "server/"+serial
+            publishMessage(topic_publish,"{\"SERVER_TEST\":1}")
+        }
+
+        if(data["en_user"] >= 0){
+            ajax(message.payloadString);
+        }
+    }
 
 }
 
@@ -68,11 +87,10 @@ function startDisconnect(){
     client.disconnect();
     document.getElementById("messages").innerHTML += "<span> Disconnected. </span><br>";
 }
-function publishMessage(){
-    msg = document.getElementById("Message").value;
-    topic = document.getElementById("topic_p").value;
+function publishMessage(topic,msg){
+
     Message = new Paho.MQTT.Message(msg);
     Message.destinationName = topic;
     client.send(Message);
-    document.getElementById("messages").innerHTML += "<span> Message to topic "+topic+" is sent </span><br>";
+    document.getElementById("div_message_publish").innerHTML = msg + "/";
 }

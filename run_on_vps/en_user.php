@@ -1,7 +1,7 @@
 
 <?php
 
-//http://localhost:82/GSM_RAVIS/mqtt/mqtt_to_sql_gsm/mqtt_to_sql_gsm.php?
+//http://localhost:82/GSM_RAVIS/run_on_vps/en_user.php?
 
 ?>
 
@@ -17,7 +17,6 @@
     <meta content="" name="keywords">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
-
 
 
     <!-- Favicons -->
@@ -103,6 +102,15 @@
                                 <li class="list-group-item">
                                     <div id="div_message_arrived">
                                         div_message_arrived
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <ul class="list-group">
+                                <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>div message publish</li>
+                                <li class="list-group-item">
+                                    <div id="div_message_publish">
+                                        div_message_publish
                                     </div>
                                 </li>
                             </ul>
