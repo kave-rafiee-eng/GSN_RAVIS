@@ -388,6 +388,15 @@ include "../../../../Sidebar.php";
                                     <?php echo $serial;?>
                                 </div>
 
+                                <div id="json_server" style="display: block">
+                                    <?php
+                                    $myObj = new stdClass();
+                                    $myObj->serial = $serial ;
+                                    $myJSON = json_encode($myObj);
+                                    echo $myJSON;
+                                    ?>
+                                </div>
+
                                 <ul class="list-group">
                                     <li class="list-group-item"><i class="bi bi-activity me-1 text-danger"></i>debug</li>
                                     <li class="list-group-item">

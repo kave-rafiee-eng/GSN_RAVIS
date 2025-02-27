@@ -1,6 +1,7 @@
 
 //------------------------------------------------------------------
 
+/*
 // Get JSON data from the hidden div
 var jsonData = document.getElementById("json_server").innerText;
 // Parse JSON into a JavaScript object
@@ -8,9 +9,11 @@ var data = JSON.parse(jsonData);
 // Store the serial value in a variable
 var serial = data.serial;
 // Log the serial number for debugging
+console.log("Serial_json:", serial);*/
+
+var serial = Number(document.getElementById("div_serial").textContent )
 console.log("Serial_json:", serial);
 
-//var serial = Number(document.getElementById("div_serial").textContent )
 var dbg_mass = document.getElementById("deb")
 
 const time_out = 8;
