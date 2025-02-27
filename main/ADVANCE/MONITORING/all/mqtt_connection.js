@@ -26,8 +26,12 @@ function startConnect(){
 function onConnect(){
     document.getElementById("div_connection_status").innerHTML = "connect";
 
-    topic = "gsm";
+    var serial = Number(document.getElementById("div_serial").textContent )
+
+    topic = "gsm/"+serial;
     client.subscribe(topic);
+    console.log("subscribe to:", topic);
+
 }
 function onConnectionLost(responseObject){
     document.getElementById("div_connection_status").innerHTML += "<span> ERROR: Connection is lost.</span><br>";
