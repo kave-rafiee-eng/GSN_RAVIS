@@ -27,8 +27,23 @@ function repeater(){
     show_status_gsm();
     dbg_mass.innerHTML = timer_time_out_mqtt
 
+
 }
 setInterval(repeater, 1000);
+
+// ذخیره شناسه تایمر
+let TIMER_first_send = setInterval(first_send, 500);
+
+function first_send() {
+    if (mqtt_connect == 1) {
+        console.log("First send");
+        send_mqtt();
+        console.log("⏳ تایمر متوقف شد!");
+
+        // خاموش کردن تایمر
+        clearInterval(TIMER_first_send);
+    }
+}
 
 
 let topic_publish = "server/"+serial
@@ -44,7 +59,7 @@ function load_end(){
 
     show_status()
 
-    send_mqtt();
+
 
 }
 
@@ -122,7 +137,7 @@ function send_mqtt(){
 
     let j=0;
 
-    for (let i = 1; i < list_settnig.length+1 && j<3 ; i++) {
+    for (let i = 1; i < list_settnig.length+1 && j<2 ; i++) {
 
         let data = document.getElementById(list_settnig[i-1][0])
 

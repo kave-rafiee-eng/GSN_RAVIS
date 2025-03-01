@@ -24,6 +24,8 @@ function startConnect(){
     document.getElementById("div_connection_status").innerHTML = "try to connect...";
 }
 
+var mqtt_connect=0;
+
 function onConnect(){
     //document.getElementById("div_connection_status").innerHTML = "connect";
 
@@ -43,6 +45,8 @@ function onConnect(){
     topic = "gsm/"+serial;
     client.subscribe(topic);
     console.log("subscribe to:", topic);
+
+    mqtt_connect=1;
 }
 function onConnectionLost(responseObject){
     document.getElementById("div_connection_status").innerHTML += "<span> ERROR: Connection is lost.</span><br>";
