@@ -108,15 +108,10 @@ include "../../../../Sidebar.php";
 
 
                 </div>
-
-
             </div>
 
             <div class="col-lg-5">
-
                 <div class="row">
-
-
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">HELP</h5>

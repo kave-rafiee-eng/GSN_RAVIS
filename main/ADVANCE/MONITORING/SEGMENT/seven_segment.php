@@ -152,126 +152,126 @@ include "../../../../Sidebar.php";
 
             </div>
 
+            <div class="col-lg-5">
+                <div class="row">
+                    <div class="card">
+                        <div class="card-body">
 
+                            <h5 class="card-title">HELP</h5>
 
-            <div class="col-5">
-
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">HELP</h5>
-
-                        <!-- Accordion without outline borders -->
-                        <div class="accordion accordion-flush" id="accordionFlushExample">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="flush-headingOne">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                        segment
-                                    </button>
-                                </h2>
-                                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">تعداد طبقات</div>
-                                </div>
-                            </div>
-
-                        </div><!-- End Accordion without outline borders -->
-
-                        <h5 class="card-title">Device</h5>
-
-                        <!-- Default Tabs -->
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="false">Status</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">send&recive</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">debug</button>
-                            </li>
-                        </ul>
-                        <div class="tab-content pt-2" id="myTabContent">
-
-                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-
-                                <div  id="status_mqtt">
+                            <!-- Accordion without outline borders -->
+                            <div class="accordion accordion-flush" id="accordionFlushExample">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-headingOne">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                            segment
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">تعداد طبقات</div>
+                                    </div>
                                 </div>
 
-                            </div>
+                            </div><!-- End Accordion without outline borders -->
 
-                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                <canvas width="100%" id="myChart_com"></canvas>
-                                <div  id="status_connection">
+                            <h5 class="card-title">Device</h5>
+
+                            <!-- Default Tabs -->
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="false">Status</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">send&recive</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">debug</button>
+                                </li>
+                            </ul>
+                            <div class="tab-content pt-2" id="myTabContent">
+
+                                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+                                    <div  id="status_mqtt">
+                                    </div>
 
                                 </div>
-                            </div>
 
-                            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                                <ul class="list-group">
-                                    <li class="list-group-item"><i class="bi bi-code me-1 text-primary"></i>Connection Status</li>
-                                    <li class="list-group-item">
-                                        <div id="div_connection_status">
-                                            div_connection_status
-                                        </div>
-                                        <button type="button" value="0" onclick="send()">send</button>
-                                    </li>
-                                </ul>
+                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                    <canvas width="100%" id="myChart_com"></canvas>
+                                    <div  id="status_connection">
 
-                                <ul class="list-group">
-                                    <li class="list-group-item"><i class="bi bi-collection me-1 text-success"></i>on Message Arrived</li>
-                                    <li class="list-group-item">
-                                        <div id="div_message_arrived">
-                                            div_message_arrived
-                                        </div>
-                                    </li>
-                                </ul>
-
-                                <ul class="list-group">
-                                    <li class="list-group-item"><i class="bi bi-collection me-1 text-success"></i>Message Publish</li>
-                                    <li class="list-group-item">
-                                        <div id="div_message_publish">
-                                            div_message_publish
-                                        </div>
-                                    </li>
-                                </ul>
-
-                                <div id="div_serial" style="display: none">
-                                    <?php echo $serial;?>
+                                    </div>
                                 </div>
 
-                                <div id="json_server" style="display: block">
-                                    <?php
-                                    $myObj = new stdClass();
-                                    $myObj->number_of_stop = $number_of_stop ;
-                                    $myJSON = json_encode($myObj);
-                                    echo $myJSON;
-                                    ?>
+                                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><i class="bi bi-code me-1 text-primary"></i>Connection Status</li>
+                                        <li class="list-group-item">
+                                            <div id="div_connection_status">
+                                                div_connection_status
+                                            </div>
+                                            <button type="button" value="0" onclick="send()">send</button>
+                                        </li>
+                                    </ul>
+
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><i class="bi bi-collection me-1 text-success"></i>on Message Arrived</li>
+                                        <li class="list-group-item">
+                                            <div id="div_message_arrived">
+                                                div_message_arrived
+                                            </div>
+                                        </li>
+                                    </ul>
+
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><i class="bi bi-collection me-1 text-success"></i>Message Publish</li>
+                                        <li class="list-group-item">
+                                            <div id="div_message_publish">
+                                                div_message_publish
+                                            </div>
+                                        </li>
+                                    </ul>
+
+                                    <div id="div_serial" style="display: none">
+                                        <?php echo $serial;?>
+                                    </div>
+
+                                    <div id="json_server" style="display: block">
+                                        <?php
+                                        $myObj = new stdClass();
+                                        $myObj->number_of_stop = $number_of_stop ;
+                                        $myJSON = json_encode($myObj);
+                                        echo $myJSON;
+                                        ?>
+                                    </div>
+
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><i class="bi bi-activity me-1 text-danger"></i>debug</li>
+                                        <li class="list-group-item">
+                                            <div id="deb">
+                                                deb
+                                            </div>
+                                        </li>
+                                    </ul>
+
+                                    <ul class="list-group">
+                                        <li class="list-group-item"><i class="bi bi-activity me-1 text-danger"></i>ajax</li>
+                                        <li class="list-group-item">
+                                            <div id="div_ajax_responce">
+                                                div_ajax_responce
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </div>
 
-                                <ul class="list-group">
-                                    <li class="list-group-item"><i class="bi bi-activity me-1 text-danger"></i>debug</li>
-                                    <li class="list-group-item">
-                                        <div id="deb">
-                                            deb
-                                        </div>
-                                    </li>
-                                </ul>
+                            </div><!-- status -->
 
-                                <ul class="list-group">
-                                    <li class="list-group-item"><i class="bi bi-activity me-1 text-danger"></i>ajax</li>
-                                    <li class="list-group-item">
-                                        <div id="div_ajax_responce">
-                                            div_ajax_responce
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-
-                        </div><!-- status -->
+                        </div>
                     </div>
-
                 </div>
-
             </div>
+
         </div>
     </section>
 
