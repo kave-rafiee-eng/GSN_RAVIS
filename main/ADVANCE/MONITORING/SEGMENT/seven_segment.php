@@ -315,6 +315,9 @@ include "../../../../Footer.php";
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
 
+<script  src="SEG_list_data.js"></script>
+<script  src="SEG_mqtt_fun.js"></script>
+<script  src="seven_segment.js"></script>
 
 <!-- Vendor JS Files -->
 <script src="/GSM_RAVIS/assets/vendor/apexcharts/apexcharts.min.js"></script>
@@ -329,92 +332,7 @@ include "../../../../Footer.php";
 <!-- Template Main JS File -->
 <script src="/GSM_RAVIS/assets/js/main.js"></script>
 
-<SCRIPT>
 
-    var json_server = JSON.parse(document.getElementById("json_server").innerHTML)
-    var number_of_stop = json_server.number_of_stop;
-
-    let canvas = document.querySelector("#myCanvas");
-    let context = canvas.getContext("2d");
-
-    var w = canvas.width;
-    var h = canvas.height;
-
-    function drawTriangle(dir) {
-
-        context.clearRect(0, 0, canvas.width, canvas.height);
-
-        context.fillStyle = "#FFFFFF";
-        context.fillRect(0, 0, canvas.width, canvas.height);
-
-        let height = 100 * Math.cos(Math.PI / 6);
-
-        if(dir == 0 ){
-            context.beginPath();
-            context.moveTo(+10, canvas.height);
-            context.lineTo(canvas.height, 10);
-            context.lineTo(canvas.height*2-10, canvas.height);
-            context.closePath();
-        }
-        else{
-            context.beginPath();
-            context.moveTo(10, 10);
-            context.lineTo(canvas.height , canvas.height);
-            context.lineTo(canvas.height*2-10 , 10);
-            context.closePath();
-        }
-
-
-        // the outline
-        context.lineWidth = 10;
-        context.strokeStyle = '#504e51';
-        context.stroke();
-
-        // the fill color
-        context.fillStyle = "#504e51";
-        context.fill();
-    }
-
-
-
-
-    var ch = 0;
-    function refresh(){
-
-        ch = 1 - ch;
-        if( ch == 0 ){
-            drawTriangle(dir);
-        }
-        else{
-            context.clearRect(0, 0, canvas.width, canvas.height);
-        }
-
-       /* var x = document.getElementById("myAudio");
-        x.play();*/
-    }
-    setInterval(refresh, 1000);
-
-    var dir=0;
-    var segment=1;
-
-    function timer(){
-
-        if( dir == 0 )segment++;
-        else segment--;
-
-        if( segment >= number_of_stop )dir=1;
-        if( segment == 1 )dir=0;
-
-        if( segment<10)display.setValue('0'+segment.toString());
-        else{
-            display.setValue(segment.toString());
-        }
-
-    }
-    setInterval(timer, 1000);
-
-
-</SCRIPT>
 
 </body>
 

@@ -5,6 +5,9 @@ include "../../../../read.php"; // $con
 
 include "../../../../login/login_check.php"; //LOGIN_CHECK
 
+include "../../../../function.php"; //my_function
+
+include "../../../../main/GSM/change_status.php"; //change_status_function
 ?>
 
 <!DOCTYPE html>
@@ -80,7 +83,7 @@ include "../../../../Sidebar.php";
         <div class="row">
 
             <div id="deb">
-                deb
+
             </div>
 
             <div class="col-lg-7">
@@ -101,50 +104,12 @@ include "../../../../Sidebar.php";
                             </tbody>
                         </table>
 
-                        <div class="col-5">
-                            <canvas id="myChart"></canvas>
-                        </div>
                     </div>
 
-                    <div id="div_pr">
 
-                    </div>
 
                 </div>
 
-
-
-                <ul class="list-group" style="display: none">
-                    <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>Connection Status</li>
-                    <li class="list-group-item">
-                        <div id="div_connection_status">
-                            div_connection_status
-                        </div>
-                        <button type="button" value="0" onclick="send()">send</button>
-                    </li>
-                </ul>
-
-                <ul class="list-group" style="display: none">
-                    <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>on Message Arrived</li>
-                    <li class="list-group-item">
-                        <div id="div_message_arrived">
-                            div_message_arrived
-                        </div>
-                    </li>
-                </ul>
-
-                <ul class="list-group" style="display: none">
-                    <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>Message Publish</li>
-                    <li class="list-group-item">
-                        <div id="div_message_publish">
-                            div_message_publish
-                        </div>
-                    </li>
-                </ul>
-
-                <div id="div_serial" style="display: none">
-                    <?php echo $serial;?>
-                </div>
 
             </div>
 
@@ -159,15 +124,12 @@ include "../../../../Sidebar.php";
 
                             <div class="row mb-3 m-2" >
                                 <ul class="list-group">
-                                    <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>type</li>
+                                    <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>Type</li>
                                     <li class="list-group-item">
-                                        <select  onchange="shiw_list_name()" onload="" id="select_type"  class="form-select" aria-label="Default select example">
+                                        <select  onchange="list_type_change()" onload="" id="select_type"  class="form-select" aria-label="Default select example">
                                         </select>
                                     </li>
 
-                                    <li class="list-group-item">
-                                        <button id="btn_save" onclick="add_to_table_data()" type="submit" class="btn btn-primary">SAVE</button>
-                                    </li
 
                                 </ul>
                             </div><!-- Read From device -->
@@ -204,12 +166,17 @@ include "../../../../Sidebar.php";
                             <div class="tab-content pt-2" id="myTabContent">
 
                                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                    <div  id="status_mqtt">
+
+                                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+                                        <div  id="status_mqtt">
+                                        </div>
                                     </div>
+
                                 </div>
 
                                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                    <canvas width="100%" id="myChart"></canvas>
+                                    <canvas width="100%" id="myChart_com"></canvas>
                                     <div  id="status_connection">
 
                                     </div>
@@ -261,7 +228,7 @@ include "../../../../Sidebar.php";
                                         <li class="list-group-item"><i class="bi bi-activity me-1 text-danger"></i>debug</li>
                                         <li class="list-group-item">
                                             <div id="deb">
-                                                deb
+
                                             </div>
                                         </li>
                                     </ul>
@@ -306,6 +273,7 @@ include "../../../../Footer.php";
 <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
 
 <!-- Vendor JS Files -->
+<script  src="Flag_Mqtt_Function.js"></script>
 <script  src="list_type.js"></script>
 <script  src="flag.js"></script>
 

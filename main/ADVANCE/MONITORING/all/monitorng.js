@@ -28,9 +28,11 @@ setInterval(refresh, 100);
 
 function send(){
 
+    let serial = Number(document.getElementById("div_serial").textContent )
+
     var obj_send = new Object();
 
-    obj_send.serial = "100";
+    obj_send.serial = serial;
 
     let all_one=1;
     for (let i = 0; i < data_table_mqtt.length; i++) {
@@ -63,7 +65,7 @@ function send(){
 
     }
 
-    let serial = Number(document.getElementById("div_serial").textContent )
+
     let topic = "server/"+serial
 
     //document.getElementById("deb").innerHTML = topic
