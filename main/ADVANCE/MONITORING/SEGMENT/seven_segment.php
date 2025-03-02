@@ -225,7 +225,7 @@ include "../../../../Sidebar.php";
                             </div>
 
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                <canvas width="100%" id="myChart"></canvas>
+                                <canvas width="100%" id="myChart_com"></canvas>
                                 <div  id="status_connection">
 
                                 </div>

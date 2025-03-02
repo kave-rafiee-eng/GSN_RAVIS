@@ -23,6 +23,7 @@ SegmentDisplay.SquaredCorner   = 1;
 SegmentDisplay.RoundedCorner   = 2;
 
 
+
 function SegmentDisplay(displayId) {
   this.displayId       = displayId;
   this.pattern         = '##:##:##';
