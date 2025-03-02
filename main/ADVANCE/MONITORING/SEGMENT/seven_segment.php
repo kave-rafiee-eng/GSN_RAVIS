@@ -70,30 +70,13 @@ list($id,$number_of_stop,$change) = post_register_manager($con,"number_of_stop",
         display.colorOn         = 'rgb(230,60,60)';
         display.colorOff        = 'rgb(239,239,237)';
 
-        //display.draw();
-
         function animate() {
-
             window.setTimeout('animate()', 100);
         }
-
-       /* function animate() {
-            var time    = new Date();
-            var hours   = time.getHours();
-            var minutes = time.getMinutes();
-            var seconds = time.getSeconds();
-            var value   = ((hours < 10) ? ' ' : '') + hours
-                + ':' + ((minutes < 10) ? '0' : '') + minutes
-                + ':' + ((seconds < 10) ? '0' : '') + seconds;
-            display.setValue(value);
-            window.setTimeout('animate()', 100);
-        }*/
 
         setTimeout(function(){
             location.reload();
         }, 60000);
-
-
 
 
     </script>
@@ -115,11 +98,6 @@ include "../../../../Sidebar.php";
 
     <div class="pagetitle">
 
-        <audio id="myAudio">
-            <source src="a1.wav" type="audio/mpeg">
-            Your browser does not support the audio elemen
-        </audio>
-
         <h1>branch</h1>
         <nav>
             <ol class="breadcrumb">
@@ -135,10 +113,8 @@ include "../../../../Sidebar.php";
     <section class="section">
         <div class="row">
 
-            <div class="col-6">
-
+            <div class="col-lg-7">
                 <div class="card"  >
-
                     <div class="card-body ">
                         <h5 class="card-title">Display</h5>
 
@@ -151,7 +127,6 @@ include "../../../../Sidebar.php";
                                     </canvas>
 
                                     <div class="row"  style="background-color: rgb(255, 255, 255)">
-
                                         <div class="col-11 "  >
                                             <canvas id="display" width="260" height="140">
                                                 Your browser is unfortunately not supported.
@@ -164,7 +139,6 @@ include "../../../../Sidebar.php";
                                 <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>dir</li>
                                 <li class="list-group-item">
                                     <div class="row" style="background-color: #919191" >
-
 
                                     </div>
                                 </li>
@@ -191,7 +165,7 @@ include "../../../../Sidebar.php";
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="flush-headingOne">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                        Number Of Stop
+                                        segment
                                     </button>
                                 </h2>
                                 <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">

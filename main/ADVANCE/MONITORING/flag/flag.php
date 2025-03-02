@@ -87,7 +87,6 @@ include "../../../../Sidebar.php";
             </div>
 
             <div class="col-lg-7">
-
                 <div class="card"  >
                     <div class="card-body ">
                         <h5 class="card-title">CHart</h5>
