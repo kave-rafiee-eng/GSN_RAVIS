@@ -227,7 +227,10 @@ var timer_send=5;
 function red(){
 
     if( timer_send > 0 )timer_send--;
-    else send();
+    else {
+        send();
+        timer_send=5;
+    }
 
 }
 setInterval(red, 1000);

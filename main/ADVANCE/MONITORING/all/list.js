@@ -22,9 +22,11 @@ list_voltage.push(["welcome" , JSON.stringify(obj) ]);
 
 var list_current = [[],];
 list_current.splice(0, 1);
-obj.ar = 2; obj.ad = 2;
+obj.ar = 0; obj.ad = 3;
 list_current.push(["R" , JSON.stringify(obj) ]);
-obj.ar = 2; obj.ad = 3;
+obj.ar = 1; obj.ad = 3;
 list_current.push(["S" , JSON.stringify(obj) ]);
-obj.ar = 2; obj.ad = 4;
+obj.ar = 1; obj.ad = 4;
 list_current.push(["T" , JSON.stringify(obj) ]);
+obj.ar = 1; obj.ad = 5;
+list_current.push(["y" , JSON.stringify(obj) ]);

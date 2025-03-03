@@ -137,7 +137,7 @@ function send_mqtt(){
 
     let j=0;
 
-    for (let i = 1; i < list_settnig.length+1 && j<2 ; i++) {
+    for (let i = 1; i < list_settnig.length+1 && j<3 ; i++) {
 
         let data = document.getElementById(list_settnig[i-1][0])
 
