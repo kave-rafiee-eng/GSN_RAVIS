@@ -283,8 +283,8 @@ function FLAG_mqtt_massage_get(DATA){
 
             if(DATA_List.ar == DATA_Recive["ar"+j] && DATA_List.ad == DATA_Recive["ad"+j] ){
 
-                if( DATA_Recive["da"+j] & (1 << DATA_List.bit ) )list_data[i][4] =1;
-                else list_data[i][4] =0;
+                if( DATA_Recive["da"+j] & (1 << DATA_List.bit ) )list_data[i][4] =  1 - DATA_List.not;
+                else list_data[i][4] = DATA_List.not - 0;
                 list_data[i][3] = "update";
                 console.log(DATA_List);
             }

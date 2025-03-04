@@ -2,7 +2,12 @@ var json_server = JSON.parse(document.getElementById("json_server").innerHTML)
 var number_of_stop = json_server.number_of_stop;
 
 var dir=0;
+var dir_UP=0;
+var dir_DN = 0;
+
 var segment=1;
+var segment_l="0";
+var segment_r="0";
 
 function load_end(){
 
@@ -121,7 +126,14 @@ function SEG_mqtt_massage_get(DATA){
     for (let i = 0; i < SEG_list_data.length; i++) {
 
         if( SEG_list_data[i][1] == "seg_l"  ){
-            segment = SEG_list_data[i][5];
+            segment_l = decodeSevenSegment(Number(SEG_list_data[i][5])) ;
+            if( Number(SEG_list_data[i][5]) & 127 )dir_UP=1;
+            else dir_UP=0;
+        }
+        if( SEG_list_data[i][1] == "seg_r"  ){
+            segment_r = decodeSevenSegment(Number(SEG_list_data[i][5])) ;
+            if( Number(SEG_list_data[i][5]) & 127 )dir_DN=1
+            else dir_DN=0
         }
 
     }
@@ -151,10 +163,7 @@ function SEG_UPDATE(){
     }
 
     if( all_one ){
-        if( segment<10 ) display.setValue('0'+segment.toString());
-        else{
-            display.setValue(segment.toString());
-        }
+        display.setValue(segment_l+segment_r);
     }
 
 }
@@ -245,10 +254,7 @@ function refresh(){
     }
 
     if( all_one ){
-        if( segment<10 ) display.setValue('0'+segment.toString());
-        else{
-            display.setValue(segment.toString());
-        }
+        SEG_UPDATE();
     }
 
     ch = 1 - ch;
@@ -278,14 +284,14 @@ function drawTriangle(dir) {
 
     let height = 100 * Math.cos(Math.PI / 6);
 
-    if(dir == 0 ){
+    if(dir_UP == 1 ){
         context.beginPath();
         context.moveTo(+10, canvas.height);
         context.lineTo(canvas.height, 10);
         context.lineTo(canvas.height*2-10, canvas.height);
         context.closePath();
     }
-    else{
+    else if (dir_DN == 1 ){
         context.beginPath();
         context.moveTo(10, 10);
         context.lineTo(canvas.height , canvas.height);
@@ -334,3 +340,38 @@ const kave_chart = new Chart(ctx, {
         }
     }
 });
+
+
+
+
+function decodeSevenSegment(number) {
+    // تبدیل عدد به باینری ۷ بیتی
+    let bits = number.toString(2).padStart(7, '0');
+
+    // جدول نگاشت باینری به اعداد و حروف
+    const segmentMap = {
+        "0000000": "0",
+        "0111111": "0",
+        "0000110": "1",
+        "1011011": "2",
+        "1001111": "3",
+        "1100110": "4",
+        "1101101": "5",
+        "1111101": "6",
+        "0000111": "7",
+        "1111111": "8",
+        "1101111": "9",
+        "1110111": "A",
+        "1111100": "B",
+        "0111001": "C",
+        "1011110": "D",
+        "1111001": "E",
+        "1110001": "F",
+        "1111101": "G",  // اضافه شد
+        "1110110": "H",  // اضافه شد
+        "1110011": "P"   // اضافه شد
+    };
+
+    // جستجو در جدول و بازگرداندن مقدار معادل
+    return segmentMap[bits] || "Invalid Input";
+}
