@@ -30,6 +30,13 @@
                         <i class="bi bi-circle"></i><span>Flag</span>
                     </a>
                 </li> <!-- End Second Door Time -->
+
+                <li>
+                    <a href="/GSM_RAVIS/main/ADVANCE/MONITORING/Error/Error.php">
+                        <i class="bi bi-circle"></i>
+                        <i class="bi bi-circle"></i><span>Error</span>
+                    </a>
+                </li> <!-- End Second Door Time -->
             </ul>
 
         </li><!-- End Dashboard Nav -->
