@@ -103,7 +103,7 @@ include "../../Sidebar.php";
                         <h5 class="card-title">Last Connection</h5>
 
                         <!-- last connect -->
-                        <table class="table  ">
+                        <table class="table">
                             <thead>
                             <tr>
                                 <th>Serial</th>
@@ -116,6 +116,7 @@ include "../../Sidebar.php";
                             <tbody>
                             <?php
 
+                            include "../../read.php";
 
                             $quary = "SELECT `id`, `serial`, `name`, `date`, `time` FROM `date_time` WHERE `serial` = '$serial'";
                             $resault=mysqli_query($con,$quary);
@@ -123,9 +124,11 @@ include "../../Sidebar.php";
                             $data_found=0;
                             while( $page = mysqli_fetch_assoc($resault) ) {
 
-                                $last_date = $page['date'];
-                                $last_time = $page['time'];
-                                $data_found=1;
+                                if ($page['name'] == "last_gsm_connection") {
+                                    $last_date = $page['date'];
+                                    $last_time = $page['time'];
+                                    $data_found = 1;
+                                }
                             }
 
                             if($data_found){
@@ -135,6 +138,8 @@ include "../../Sidebar.php";
                                 echo "<td>".$last_time."</td>";
                                 echo "</tr> ";
                             }
+
+
                             ?>
 
                             </tbody>
@@ -167,8 +172,6 @@ include "../../Sidebar.php";
                                 </tr>
                             </thead>
                             <tbody>
-
-
 
                             <?php
 
