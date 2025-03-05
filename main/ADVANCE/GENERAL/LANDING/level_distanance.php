@@ -185,7 +185,7 @@ include "../../../../Sidebar.php";
                 <li class="breadcrumb-item">General</li>
                 <li class="breadcrumb-item">Landing</li>
                 <li class="breadcrumb-item">Based On</li>
-                <li class="breadcrumb-item active">Jump1 Speed</li>
+                <li class="breadcrumb-item active">Level Distanance</li>
             </ol>
 
         </nav>
@@ -310,11 +310,11 @@ include "../../../../Sidebar.php";
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="flush-headingOne">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                        Num And Talk
+                                        Level Distance
                                     </button>
                                 </h2>
                                 <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">این ریجستر مربوط به تنظیمات نمایشگر و سخنگو میباشد</div>
+                                    <div class="accordion-body">فاصله طبقات بر حسب متر</div>
                                 </div>
                             </div>
 

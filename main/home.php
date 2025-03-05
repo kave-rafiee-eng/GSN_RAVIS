@@ -151,9 +151,11 @@
                                     $data_found=0;
                                     while( $page = mysqli_fetch_assoc($resault) ) {
 
-                                        $last_date = $page['date'];
-                                        $last_time = $page['time'];
-                                        $data_found=1;
+                                        if ($page['name'] == "last_gsm_connection") {
+                                            $last_date = $page['date'];
+                                            $last_time = $page['time'];
+                                            $data_found = 1;
+                                        }
                                     }
 
                                     if($data_found){
@@ -171,7 +173,7 @@
                         </table>
                         <!-- END last connect -->
 
-                        <h5 class="card-title">Table Connection</h5>
+                        <h5 class="card-title">Request connection permission</h5>
 
                         <table class="table datatable">
                             <thead>
@@ -187,16 +189,20 @@
 
                             include "../read.php";
 
-                            $quary = "SELECT `id`, `serial`, `name`, `date`, `time` FROM `date_time` WHERE `serial` = '$serial'";
+                            $quary = "SELECT `id`, `serial`, `name`, `date`, `time` FROM `date_time` WHERE `serial` = '$serial'  ORDER BY `id` DESC";
                             $resault=mysqli_query($con,$quary);
 
                             while( $page = mysqli_fetch_assoc($resault) ) {
 
-                                echo "<tr>";
-                                echo "<td>".$serial."</td>";
-                                echo "<td>".$page['date']."</td>";
-                                echo "<td>".$page['time']."</td>";
-                                echo "</tr> ";
+                                if ($page['name'] == "last_en_user") {
+
+                                    echo "<tr>";
+                                    echo "<td>".$serial."</td>";
+                                    echo "<td>".$page['date']."</td>";
+                                    echo "<td>".$page['time']."</td>";
+                                    echo "</tr> ";
+                                }
+
                             }
                             ?>
 

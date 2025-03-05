@@ -168,7 +168,7 @@ include "../../../../Sidebar.php";
                                         </button>
                                     </h2>
                                     <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                        <div class="accordion-body">تعداد طبقات</div>
+                                        <div class="accordion-body">نمایشگر</div>
                                     </div>
                                 </div>
 

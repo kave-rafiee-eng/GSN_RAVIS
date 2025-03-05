@@ -8,7 +8,7 @@ if ( isset($_GET["json"])  ) {
     $jsonobj = $_GET["json"];
     $obj = json_decode($jsonobj);
 
-    if( isset($obj->serial) && isset($obj->en_user) ){
+    if( isset($obj->serial)  ){
 
         date_default_timezone_set("Asia/Tehran");
 
@@ -20,7 +20,7 @@ if ( isset($_GET["json"])  ) {
         $quary = "SELECT `id`, `serial`, `name`, `date`, `time` FROM `date_time` WHERE `serial` = '$obj->serial'";
         $resault=mysqli_query($con,$quary);
         while( $page = mysqli_fetch_assoc($resault) ) {
-            if ($page['name'] == "user_enable_change") {
+            if ($page['name'] == "last_gsm_connection") {
                 $id_found=1;
                 $id = $page['id'];
 
@@ -31,12 +31,10 @@ if ( isset($_GET["json"])  ) {
         }
 
         if( $id_found == 0 ){
-            $quary = "INSERT INTO `date_time`(`id`, `serial`, `name`, `date`, `time`) VALUES ('0','$obj->serial','user_enable_change','$date','$time')";
+            $quary = "INSERT INTO `date_time`(`id`, `serial`, `name`, `date`, `time`) VALUES ('0','$obj->serial','last_gsm_connection','$date','$time')";
             $resault=mysqli_query($con,$quary);
         }
 
-        $quary = "INSERT INTO `date_time`(`id`, `serial`, `name`, `date`, `time`) VALUES ('0','$obj->serial','last_en_user','$date','$time')";
-        $resault=mysqli_query($con,$quary);
 
         echo "OK";
 

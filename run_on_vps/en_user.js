@@ -59,6 +59,26 @@ function ajax( json_data){
 
 }
 
+function ajax_server_test( json_data){
+
+    var xhttp;
+
+    xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+
+            document.getElementById("div_ajax_responce").innerHTML = this.responseText ;
+
+        }
+    };
+
+    var str = "json="+json_data;
+
+    xhttp.open("GET", "Server_Test_Ajax.php?"+str, true);
+    xhttp.send();
+
+}
+
 var serial = 100;
 var topic_publish = "s";
 function onMessageArrived(message){
@@ -74,6 +94,7 @@ function onMessageArrived(message){
         if (data["TEST"] >= 0) {
             topic_publish = "server/"+serial
             publishMessage(topic_publish,"{\"SERVER_TEST\":1}")
+            ajax_server_test(message.payloadString);
         }
 
         if(data["en_user"] >= 0){
