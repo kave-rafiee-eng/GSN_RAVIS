@@ -86,7 +86,7 @@ var color_pr=0;
 
 function esp_data(esp_data){
 
-    timer_send = 5;
+
 
     const obj_esp = JSON.parse(esp_data) ;
 
@@ -107,6 +107,8 @@ function esp_data(esp_data){
                         table_esp_data.push([type,name,value]);
                         data_table_mqtt[i][3]=2;
                     }
+
+                    timer_send = 5;
 
                 }
             //}

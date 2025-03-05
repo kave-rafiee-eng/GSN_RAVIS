@@ -200,18 +200,18 @@ function send(){
 
 }
 
-var timer_send=5;
+var timer_send=50;
 
 function red(){
 
     if( timer_send > 0 )timer_send--;
     else {
         send();
-        timer_send=5;
+        timer_send=50;
     }
 
 }
-setInterval(red, 1000);
+setInterval(red, 100);
 
 
 const ctx = document.getElementById('myChart_com');
@@ -248,7 +248,7 @@ const kave_chart = new Chart(ctx, {
 let color_pr=0;
 function FLAG_mqtt_massage_get(DATA){
 
-    timer_send = 5;
+
     console.log("DATA GET");
 
     var DATA_Recive = JSON.parse(DATA) ;
@@ -265,6 +265,7 @@ function FLAG_mqtt_massage_get(DATA){
                 else list_data[i][4] = DATA_List.not - 0;
                 list_data[i][3] = "update";
                 console.log(DATA_List);
+                timer_send = 5;
             }
 
         }
@@ -273,7 +274,7 @@ function FLAG_mqtt_massage_get(DATA){
 
     show_table_flag();
 
-    send();
+    //send();
 
     kave_chart.data.datasets[0].data[1]=get_count*50;
     kave_chart.update()
@@ -291,12 +292,21 @@ function show_status(){
     let step=0;
     let progress_passed=0;
 
-    let all_osend=1;
+    /*let all_osend=1;
     for (let i = 0; i < uniqueArAdPairs.length; i++) {
         step++;
         if ( uniqueArAdPairs[i][1] == 1 ) {
             progress_passed++;
         }
+    }*/
+    for (let i = 0; i < list_data.length; i++) {
+
+        step++;
+
+        if ( list_data[i][3] == "update" ) {
+            progress_passed++;
+        }
+
     }
 
     if( progress_passed == step )color_pr = 1 - color_pr

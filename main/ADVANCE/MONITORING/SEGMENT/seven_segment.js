@@ -22,16 +22,17 @@ window.addEventListener("load", load_end);
 
 // -------------------------------------------------------------------- Timer Send MQTT
 
+let timer_send=50;
 function red(){
 
     if( timer_send > 0 )timer_send--;
     else {
         send();
-        timer_send=5;
+        timer_send=50;
     }
 
 }
-setInterval(red, 1000);
+setInterval(red, 100);
 
 // -------------------------------------------------------------------- Send MQTT
 
@@ -100,7 +101,7 @@ function SEG_mqtt_massage_get(DATA){
 
     SegmentDisplay.colorOn = 'rgb(62,233,15)';
 
-    timer_send = 5;
+
     console.log("DATA GET");
 
     var DATA_Recive = JSON.parse(DATA) ;
@@ -116,6 +117,8 @@ function SEG_mqtt_massage_get(DATA){
                 SEG_list_data[i][3] = "update";
                 SEG_list_data[i][5] = DATA_Recive["da"+j];
                 console.log(DATA_List);
+
+                timer_send = 5;
 
             }
 
@@ -142,7 +145,7 @@ function SEG_mqtt_massage_get(DATA){
 
     show_status();
 
-    send();
+    //send();
 
     kave_chart.data.datasets[0].data[1]=get_count*50;
     kave_chart.update()
