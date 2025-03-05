@@ -318,7 +318,8 @@ include "../../../../Sidebar.php";
 
                                                     echo "<tr >";
 
-                                                    echo "<th class=\"table-active\" scope=\"row\">"."$i_floor"."</th>";
+                                                    $put_floor = $i_floor-1;
+                                                    echo "<th class=\"table-active\" scope=\"row\">"."$put_floor"."</th>";
 
 
                                                         echo "<td style='background-color: whitesmoke'>";

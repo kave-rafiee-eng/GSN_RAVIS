@@ -117,7 +117,7 @@
                         $i=0;
                         for($i=0;$i<10;$i++ ){
                             echo "<tr >";
-                            $floor = $i;
+                            $floor = $i-1;
                             echo "<th scope=\"row\">"."$floor"."</th>";
 
                             echo "<td>";
