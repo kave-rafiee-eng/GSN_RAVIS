@@ -1,31 +1,13 @@
 
 <?php
 
-include "../../../../read.php"; // $con
+include "../read.php"; // $con
 
-include "../../../../login/login_check.php"; //LOGIN_CHECK
+include "../login/login_check.php"; //LOGIN_CHECK
 
-include "../../../../function.php"; //my_function
+include "../function.php"; //my_function
 
-include "../../../../main/GSM/change_status.php"; //change_status_function
-
-//-------------------------------------------------SERVICE TYPE
-list($id,$service_type,$change) = post_register_manager($con,"service_type",$serial,"advance_settin","general*",0,3);
-
-$List_service_type = array(
-    "Collective DN",		//0
-    "Full Collective",		//1
-    "Keypad",		//2
-    "Collective U/D",		//3
-);
-
-//-------------------------------------------------CLEAR $POST
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    header("location: /GSM_RAVIS/main/ADVANCE/GENERAL/SERVICE_TYPE/service_type_bs.php");
-}
-
-$page_mqtt_enable=1;
-
+$change="unknown";
 ?>
 
 <!DOCTYPE html>
@@ -38,6 +20,8 @@ $page_mqtt_enable=1;
     <title>Ravis</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 
     <!-- Favicons -->
     <link href="/GSM_RAVIS/assets/img/favicon.png" rel="icon">
@@ -59,110 +43,73 @@ $page_mqtt_enable=1;
     <!-- Template Main CSS File -->
     <link href="/GSM_RAVIS/assets/css/style.css" rel="stylesheet">
 
+    <!-- =======================================================
+    * Template Name: NiceAdmin
+    * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+    * Updated: Apr 20 2024 with Bootstrap v5.3.3
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
+
+
     <SCRIPT>
-
-        /*var on_load=0;
-
-        function refresh(){
-
-            var change = document.getElementById("change_status_name");
-            var progress_status = document.getElementById("progress-status");
-
-            var show_uploading = document.getElementById("show-uploading");
-            var show_download = document.getElementById("show-download");
-            var show_update = document.getElementById("show-update");
-            var show_unknown = document.getElementById("show-unknown");
-
-            var xhttp;
-
-            xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-
-                    //document.getElementById("txtHint").innerHTML = this.responseText +"@"+on_load ;
-
-                    const obj = JSON.parse(this.responseText)  ;
-
-                    if( on_load == 0 ){ on_load++;
-                        change.innerHTML = obj.change;
-                    }
-                    else{
-                        progress_status.style.width = obj.progress+"%";
-                        progress_status.innerHTML = obj.progress;
-
-                        if( obj.command.search("refresh") >= 0){
-                            location.reload();
-                        }
-                        if( obj.command.search("normal") >= 0){
-                            change.innerHTML = obj.change;
-                        }
-                    }
-                }
-            };
-
-            var str = "status=update";
-
-            if( change.textContent.search("download") >= 0 ){
-                var str = "status=download";
-                show_download.style.display="block";
-            }
-            else show_download.style.display="none";
-
-            if( change.textContent.search("upload") >= 0 ){
-                var str = "status=upload";
-                show_uploading.style.display="block";
-            }
-            else show_uploading.style.display="none";
-
-            if( change.textContent.search("update") >= 0 ){
-                var str = "status=update";
-                show_update.style.display="block";
-            }
-            else show_update.style.display="none";
-
-            if( change.textContent.search("unknown") >= 0 ){
-                var str = "status=unknown";
-                show_unknown.style.display="block";
-            }
-            else show_unknown.style.display="none";
-
-            xhttp.open("GET", "service_type_ajax.php?"+str, true);
-            xhttp.send();
-
-            let text = '{"progress":"10","command":"refressh"}';
-
-        }
-        setInterval(refresh, 500);*/
-
-        function refresh_radio(){
-            let form = document.getElementById("form_refresh");
-            setTimeout(setAlert, 500);
-        }
-        function setAlert() {
-            let form = document.getElementById("form_refresh");
-            form.submit();
-        }
 
         setTimeout(function(){
             location.reload();
         }, 60000);
 
     </SCRIPT>
-
 </head>
 
-<body  >
+<body onload="myFunction()" >
+
 
 <?php
-include "../../../../header.php";
+include "../header.php";
 ?>
 
 <?php
-include "../../../../Sidebar.php";
+include "../Sidebar.php";
 ?>
 
 <main  id="main" class="main">
 
+    <!-- Modal -->
+    <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="modalTitle">در حال پردازش...</h5>
+                </div>
+                <div class="modal-body">
+                    <p id="modalMessage">لطفاً صبر کنید، عملیات در حال انجام است.</p>
+
+                    <!-- Progress Bar -->
+                    <div class="progress" style="height: 25px;">
+                        <div id="progressBar_Madal" class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                             role="progressbar" style="width: 0%;">0%</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="closeButton" disabled>بستن</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pagetitle">
+
+        <h1>branch</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/GSM_RAVIS/main/home.php">Home</a></li>
+                <li class="breadcrumb-item">Advance</li>
+                <li class="breadcrumb-item active">test</li>
+            </ol>
+
+        </nav>
+
+    </div><!-- End Page Title -->
 
     <section class="section">
         <div class="row">
@@ -170,19 +117,22 @@ include "../../../../Sidebar.php";
 
                 <div class="card"  >
                     <div class="card-body ">
-
-                        <h5 class="card-title">Service Type</h5>
+                        <h5 class="card-title">Test</h5>
 
                         <div class="row mb-3 m-2" >
                             <ul class="list-group">
                                 <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>Read From device</li>
                                 <li class="list-group-item">
-                                    <form method="get" action="" >
-                                        <button onclick="upload_download_setting('download')" value="read_register" name="read_register" type="reset" class="btn btn-warning">Read Register</button>
-                                    </form>
+                                    <button class="btn btn-success mb-3" onclick="button_TABLE_creat()">ایجاد جدول</button>
+
+                                    <!-- دکمه حذف جدول -->
+                                    <button class="btn btn-danger mb-3" onclick="deleteTable()">حذف جدول</button>
                                 </li>
                             </ul>
                         </div><!-- Read From device -->
+
+                        <!-- General Form Elements -->
+                        <!-- <form method="post" action="" > -->
 
                         <div class="row mb-3 m-2" >
                             <ul class="list-group">
@@ -191,45 +141,25 @@ include "../../../../Sidebar.php";
 
                                 <li class="list-group-item"> <!--  Gang Select !-->
                                     <div class="row ">
-                                        <label class="col-sm-4 col-form-label">Service Type</label>
+
                                         <div class="col-sm-6 ">
-                                            <select  style="color: #0a53be" id="service_type" name='service_type' class="form-select ">
-                                                <?php
-                                                show_list($List_service_type,$service_type);
-                                                ?>
-                                            </select>
+
+                                            <div id="tableContainer"></div>
+
+                                            <div id="selectContainer"></div>
+
+                                            <div id="inputContainer"></div>
                                         </div>
+
+                                        <div id="btn_save_read"></div>
                                     </div>
                                 </li>
+
+
 
                             </ul>
 
                         </div><!-- Read From device -->
-
-                        <!-- General Form Elements -->
-                        <!--<form method="post" action="" >-->
-
-
-                            <div class="row mb-3" >
-                                <label id="kave" class="col-sm-6 col-form-label ">SAVE Register</label>
-                                <div class="col-sm-6">
-                                    <button <?php
-                                    if( $user == "admin" ){}
-                                    else{ if($user_active_time <= 0 )echo "disabled"; }
-                                    ?>  onclick="upload_download_setting('upload')" type="submit" class="btn btn-primary">SAVE</button>
-                                </div>
-                                <label  style="color: red" class="col-sm-6 col-form-label">
-                                    <?php if($change == "download")echo "wait to download complit"?>
-                                </label>
-                            </div>
-
-                        </form><!-- End General Form Elements -->
-
-
-                        <div style="display: none;" id="alert" class="alert alert-primary bg-primary text-light border-0 alert-dismissible fade show" role="alert">
-                            <div id="alert_text">A simple primary alert with solid color—check it out! </div>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
 
                     </div>
                 </div>
@@ -247,11 +177,11 @@ include "../../../../Sidebar.php";
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="flush-headingOne">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                        Service Type
+                                        1CF Error
                                     </button>
                                 </h2>
                                 <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">نحوه سرویس دهی طبقات بیرون</div>
+                                    <div class="accordion-body">خطای ندیدن سنسور لول طبقات</div>
                                 </div>
                             </div>
 
@@ -275,7 +205,7 @@ include "../../../../Sidebar.php";
 
                             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                 <?php
-                                if($page_mqtt_enable == 0 )show_change_status_progress(0,0);
+                                //if($page_mqtt_enable == 0 )show_change_status_progress(0,0);
                                 ?>
                                 <div  id="status_mqtt">
                                 </div>
@@ -319,7 +249,8 @@ include "../../../../Sidebar.php";
                                 </ul>
 
                                 <div id="div_serial" style="display: none">
-                                    <?php echo $serial;?>
+                                    <?php echo $serial;
+                                    ?>
                                 </div>
 
                                 <div id="json_server" style="display: block">
@@ -351,12 +282,13 @@ include "../../../../Sidebar.php";
                             </div>
 
                         </div><!-- status -->
+
                     </div>
 
                 </div>
             </div>
 
-            </div>
+
         </div>
     </section>
 
@@ -364,7 +296,7 @@ include "../../../../Sidebar.php";
 
 
 <?php
-include "../../../../Footer.php";
+include "../Footer.php";
 ?>
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
@@ -372,10 +304,10 @@ include "../../../../Footer.php";
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
 
-<script  src="service_type.js?v1"></script>
-<script  src="../../mqtt_connection/mqtt_protocol.js?v1"></script>
-<script  src="../../mqtt_connection/mqtt_connection_function.js?v1"></script>
-
+<script src="advance_mqtt_fun.js"></script> <!-- اضافه کردن فایل JavaScript -->
+<script src="list_data_advance.js"></script> <!-- اضافه کردن فایل JavaScript -->
+<script src="fun_create.js"></script> <!-- اضافه کردن فایل JavaScript -->
+<script src="test1.js"></script> <!-- اضافه کردن فایل JavaScript -->
 
 <!-- Vendor JS Files -->
 <script src="/GSM_RAVIS/assets/vendor/apexcharts/apexcharts.min.js"></script>
@@ -390,8 +322,17 @@ include "../../../../Footer.php";
 <!-- Template Main JS File -->
 <script src="/GSM_RAVIS/assets/js/main.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 
 
 </body>
 
 </html>
+
+
+
+
+
+
+

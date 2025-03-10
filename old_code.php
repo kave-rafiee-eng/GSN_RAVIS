@@ -60,3 +60,49 @@ if (x.style.display === "none") {
 x.style.display = "block";
 }
 }*/
+
+
+<!-- دکمه‌ای برای باز کردن مودال -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#numberInputModal">
+    دریافت مقدار عددی
+</button>
+
+<!-- `Modal` برای دریافت مقدار عددی -->
+<div class="modal fade" id="numberInputModal" tabindex="-1" aria-labelledby="numberInputModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="numberInputModalLabel">لطفاً مقدار عددی وارد کنید</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label for="userInputNumber" class="form-label">عدد خود را وارد کنید:</label>
+                <input type="number" class="form-control" id="userInputNumber" placeholder="مثلاً 50" min="0" max="100">
+                <div id="error-message" class="text-danger mt-2" style="display: none;">لطفاً یک عدد معتبر بین 0 تا 100 وارد کنید!</div>
+
+                <!-- Progress Bar -->
+                <div class="progress mt-3">
+                    <div id="progressBar" class="progress-bar bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">لغو</button>
+                <button type="button" class="btn btn-success" id="submitNumber">تأیید</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<p>امروز تاریخ:
+    <?php echo date("Y-m-d"); ?>
+    است.</p>
+
+<?php
+$username = "کاربر مهمان";
+echo "<p>نام کاربری: $username</p>";
+?>
+
+
+

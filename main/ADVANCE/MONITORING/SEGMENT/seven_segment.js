@@ -130,12 +130,12 @@ function SEG_mqtt_massage_get(DATA){
 
         if( SEG_list_data[i][1] == "seg_l"  ){
             segment_l = decodeSevenSegment(Number(SEG_list_data[i][5])) ;
-            if( Number(SEG_list_data[i][5]) & 127 )dir_UP=1;
+            if( Number(SEG_list_data[i][5]) & 128 )dir_UP=1;
             else dir_UP=0;
         }
         if( SEG_list_data[i][1] == "seg_r"  ){
             segment_r = decodeSevenSegment(Number(SEG_list_data[i][5])) ;
-            if( Number(SEG_list_data[i][5]) & 127 )dir_DN=1
+            if( Number(SEG_list_data[i][5]) & 128 )dir_DN=1
             else dir_DN=0
         }
 
