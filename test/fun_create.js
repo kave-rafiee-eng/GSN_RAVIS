@@ -166,17 +166,17 @@ function createMultySelect( Data ) {
 
     const tableContainer = document.getElementById("tableContainer");
 
-    // ایجاد `div` برای قرار دادن `label` و `select`
+    // ایجاد `div` برای قرار دادن `label` و `tablr`
     const div = document.createElement("div");
     div.className = "mb-3";
-    div.id = "div_dynamicSelect"
+    div.id = "div_MultySelect"
 
     // ایجاد `label`
     const label = document.createElement("label");
-    label.setAttribute("for", "dynamicSelect");
+    label.setAttribute("for", "dynamicTable");
     label.className = "form-label";
-    label.textContent = data[1];
-    
+    label.textContent = Data[1];
+
 
     // ایجاد عنصر <table>
     const table = document.createElement("table");
@@ -184,15 +184,13 @@ function createMultySelect( Data ) {
     table.className = "table table-bordered table-striped text-center";
 
 
-
     // ایجاد <thead>
     const thead = document.createElement("thead");
     thead.className = "table-dark";
     thead.innerHTML = `
                 <tr>
-                    <th>ردیف</th>
-                    <th>نام دکمه</th>
-                    <th>عملیات</th>
+                    <th>board</th>
+                    <th>Prog</th>
                 </tr>
             `;
     table.appendChild(thead);
@@ -206,9 +204,9 @@ function createMultySelect( Data ) {
         <tr>
             <!--<td>${index + 1}</td>-->
             <td>
-                <select id="multy_s${index}" class="form-select">
-                    <option selected disabled>انتخاب کنید</option>
-                    ${arrays_list[Data[3]].map(option => `<option value="${option}">${option}</option>`).join("")}
+                <select id="${Data[1]}${index}" class="form-select">
+                    ${arrays_list[Data[3]].map((option, index2) => `<option value="${index2}">${option}</option>`).join("")}
+                   
                 </select>
             </td>
             <td>
@@ -219,8 +217,13 @@ function createMultySelect( Data ) {
     `)
         .join(""); // تبدیل `map` به رشته و مقداردهی `innerHTML`
 
+    div.appendChild(label);
+    div.appendChild(table);
+
     // اضافه کردن جدول به صفحه
-    tableContainer.appendChild(table);
+    tableContainer.appendChild(div);
+
+    createBTN_save_read();
 
 }
 
