@@ -17,12 +17,31 @@ window.addEventListener("load", load_end);
 
 
 
+
+
+
+let address = [];
+var activeArray
+
 function button_TABLE_creat(  ) {
+    address.length=0;
     buttonAction("mian_menu");
 }
+function button_BACK(){
 
-var activeArray
+    let last_ad = address[address.length-2];
+    address.pop();
+    address.pop();
+
+    buttonAction(last_ad)
+
+}
+
 function buttonAction(name) {
+
+    address.push(name);
+
+    document.getElementById("addrress").innerHTML = address;
 
     // نمایش دیتای دریافتی تابع
     //alert(arrays[name]);  // خروجی: ["A", "B", "C"]
@@ -47,10 +66,14 @@ function buttonAction(name) {
         input.remove(); // حذف جدول
     }
 
+
+
+
     if( arrays[name] ){
         activeArray = structuredClone(arrays[name])
     }
     else{
+        address.length=0;
         activeArray = structuredClone(arrays["mian_menu"])
     }
 
@@ -121,7 +144,10 @@ function send_mqtt(){
             obj_send["ar1"] = activeArray[0].ar;
             if( activeArray[0].status == "upload" ){
                 obj_send["st1"] = 1;
-                obj_send["da1"] = document.getElementById(activeArray[1]).value;
+                obj_send["da1"] = Math.round(document.getElementById(activeArray[1]).value * activeArray[0].factor + activeArray[0].Addition +  activeArray[0].offset )
+
+
+
             }
             else{
                 obj_send["st1"] = 0;
@@ -213,7 +239,7 @@ function ADVANCE_mqtt_massage_get(DATA){
 
             if(activeArray[0].ar == DATA_Recive["ar"+j] && activeArray[0].ad == DATA_Recive["ad"+j] ){
 
-                activeArray[0].data = DATA_Recive["da"+j]
+                activeArray[0].data = (DATA_Recive["da" + j] - activeArray[0].offset) /activeArray[0].factor - activeArray[0].Addition;
                 activeArray[0].status = "update"
 
                 updateProgress(100);

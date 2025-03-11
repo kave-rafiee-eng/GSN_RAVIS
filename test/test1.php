@@ -56,7 +56,7 @@ $change="unknown";
 
         setTimeout(function(){
             location.reload();
-        }, 60000);
+        }, 400000);
 
     </SCRIPT>
 </head>
@@ -121,12 +121,18 @@ include "../Sidebar.php";
 
                         <div class="row mb-3 m-2" >
                             <ul class="list-group">
-                                <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>Read From device</li>
+                                <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>Address</li>
                                 <li class="list-group-item">
-                                    <button class="btn btn-success mb-3" onclick="button_TABLE_creat()">ایجاد جدول</button>
+
+                                    <button class="btn btn-success mb-3" onclick="button_TABLE_creat()">Home</button>
 
                                     <!-- دکمه حذف جدول -->
-                                    <button class="btn btn-danger mb-3" onclick="deleteTable()">حذف جدول</button>
+                                    <button class="btn btn-danger mb-3" onclick="button_BACK()">back</button>
+
+                                    <div id="addrress"></div>
+
+                                    <div id="tableContainer"></div>
+
                                 </li>
                             </ul>
                         </div><!-- Read From device -->
@@ -144,7 +150,7 @@ include "../Sidebar.php";
 
                                         <div class="col-sm-6 ">
 
-                                            <div id="tableContainer"></div>
+                                            <div id="multySlectContainer"></div>
 
                                             <div id="selectContainer"></div>
 

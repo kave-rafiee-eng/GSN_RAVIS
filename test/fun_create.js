@@ -1,4 +1,5 @@
 
+
 // تابع ایجاد جدول
 function createTable( Names ) {
 
@@ -21,8 +22,6 @@ function createTable( Names ) {
     thead.className = "table-dark";
     thead.innerHTML = `
                 <tr>
-                    <th>ردیف</th>
-                    <th>نام دکمه</th>
                     <th>عملیات</th>
                 </tr>
             `;
@@ -32,14 +31,17 @@ function createTable( Names ) {
     const tbody = document.createElement("tbody");
     table.appendChild(tbody);
 
+    /*
+                        <td>${index + 1}</td>
+                    <td>${name.split('$').pop()}</td>
+     */
     // ایجاد ردیف‌های جدول بر اساس آرایه
     Names.forEach((name, index) => {
         let row = document.createElement("tr");
         row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${name}</td>
+
                     <td>
-                        <button class="btn btn-primary" onclick="buttonAction('${name}')">${name}</button>
+                        <button class="btn btn-primary" onclick="buttonAction('${name}')">${name.split('$').pop().replaceAll('_', ' ')}</button>
                     </td>
                 `;
         tbody.appendChild(row);
@@ -164,7 +166,7 @@ function createSelect( data ) {
 
 function createMultySelect( Data ) {
 
-    const tableContainer = document.getElementById("tableContainer");
+    const multySlectContainer = document.getElementById("multySlectContainer");
 
     // ایجاد `div` برای قرار دادن `label` و `tablr`
     const div = document.createElement("div");
@@ -221,7 +223,7 @@ function createMultySelect( Data ) {
     div.appendChild(table);
 
     // اضافه کردن جدول به صفحه
-    tableContainer.appendChild(div);
+    multySlectContainer.appendChild(div);
 
     createBTN_save_read();
 
