@@ -129,12 +129,12 @@ function SEG_mqtt_massage_get(DATA){
     for (let i = 0; i < SEG_list_data.length; i++) {
 
         if( SEG_list_data[i][1] == "seg_l"  ){
-            segment_l = decodeSevenSegment(Number(SEG_list_data[i][5])) ;
+            segment_r = decodeSevenSegment(Number(SEG_list_data[i][5])&127) ;
             if( Number(SEG_list_data[i][5]) & 128 )dir_UP=1;
             else dir_UP=0;
         }
         if( SEG_list_data[i][1] == "seg_r"  ){
-            segment_r = decodeSevenSegment(Number(SEG_list_data[i][5])) ;
+            segment_l = decodeSevenSegment(Number(SEG_list_data[i][5])&127) ;
             if( Number(SEG_list_data[i][5]) & 128 )dir_DN=1
             else dir_DN=0
         }
@@ -261,8 +261,15 @@ function refresh(){
     }
 
     ch = 1 - ch;
-    if( ch == 0 && all_one ){
-        drawTriangle(dir);
+    if( ch == 0 && all_one  ){
+
+        if( dir_UP || dir_DN ){
+            drawTriangle(dir);
+        }
+        else {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
     }
     else{
         context.clearRect(0, 0, canvas.width, canvas.height);
@@ -301,6 +308,7 @@ function drawTriangle(dir) {
         context.lineTo(canvas.height*2-10 , 10);
         context.closePath();
     }
+    else{context.clearRect(0, 0, canvas.width, canvas.height);}
 
 
     // the outline
@@ -346,7 +354,7 @@ const kave_chart = new Chart(ctx, {
 
 
 
-
+/*
 function decodeSevenSegment(number) {
     // تبدیل عدد به باینری ۷ بیتی
     let bits = number.toString(2).padStart(7, '0');
@@ -372,9 +380,65 @@ function decodeSevenSegment(number) {
         "1110001": "F",
         "1111101": "G",  // اضافه شد
         "1110110": "H",  // اضافه شد
-        "1110011": "P"   // اضافه شد
+        "1110011": "P",   // اضافه شد
+        "1010000": "R"
     };
 
     // جستجو در جدول و بازگرداندن مقدار معادل
     return segmentMap[bits] || "Invalid Input";
 }
+*/
+
+
+// جدول مقادیر معادل برای سون سگمنت
+const segmentMap = {
+    0x00: " ",
+    0x3F: "0",
+    0x06: "1",
+    0x5B: "2",
+    0x4F: "3",
+    0x66: "4",
+    0x6D: "5",
+    0x7D: "6",
+    0x07: "7",
+    0x7F: "8",
+    0x6F: "9",
+    0x3D: "G",
+    0x73: "P",
+    0x7C: "B",
+    0x50: "r",
+    0x01: "a",
+    0x02: "b",
+    0x04: "c",
+    0x08: "d",
+    0x10: "e",
+    0x20: "f",
+    0x40: "g",
+    0x80: "h",
+    0x49: "Day Counter Mark",
+    0x54: "n (CF3 & 1CF Error)",
+    0x1B: "Start Mode Mark",
+    0x79: "E (Error)",
+    0x71: "F (Fire & FTO)",
+    0x76: "H (Emergency)",
+    0x39: "C (Calibration)"
+};
+
+// تابع تبدیل باینری به مقدار معادل در جدول
+function decodeSevenSegment(number) {
+    // اطمینان از اینکه عدد ورودی در محدوده مجاز قرار دارد
+    if (number < 0 || number > 0x7F) {
+        return " ";
+    }
+
+    // بررسی جدول و بازگرداندن کاراکتر معادل
+    return segmentMap[number] || "Invalid Input";
+}
+
+// تست نمونه‌ها
+const testNumbers = [0x3F, 0x5B, 0x4F, 0x3D, 0x79, 0x76];
+
+testNumbers.forEach(num => {
+    console.log(`0x${num.toString(16).toUpperCase()} → ${decodeSevenSegment(num)}`);
+});
+

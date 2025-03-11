@@ -76,7 +76,7 @@ list($id,$number_of_stop,$change) = post_register_manager($con,"number_of_stop",
 
         setTimeout(function(){
             location.reload();
-        }, 60000);
+        }, 120000);
 
 
     </script>

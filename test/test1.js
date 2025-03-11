@@ -4,7 +4,7 @@ function load_end(){
 
     startConnect();
 
-    buttonAction("inputs");
+    buttonAction("mian_menu");
 
     //createMultySelect(arrays.multy_SELECT)
 
@@ -128,10 +128,10 @@ function send_mqtt(){
                 obj_send["da1"] = 0;
             }
 
-            if( j>1){
+
                 console.log(JSON.stringify(obj_send));
                 publishMessage(topic,JSON.stringify(obj_send));
-            }
+
 
             activeArray[0].send = 1;
 

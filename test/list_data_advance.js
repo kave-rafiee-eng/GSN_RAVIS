@@ -66,6 +66,13 @@ arrays_list.list_hw_input_select = [
     "H7", "H8", "H9", "H10", "H11", "H12"
 ];
 
+arrays_list.list_type_elevator = [
+    "3VF",    // 0
+    "HYD",    // 1
+    "2Speed", // 2
+    "HEVOS"   // 3
+];
+
 arrays_list.List_service_type = ["Collective DN", "Full Collective","Keypad","Collective U/D"];
 
 //---------------------------------------------------
@@ -83,11 +90,11 @@ arrays.num_of_stop = [{ type: "input",ar:0,ad:2,status:0,data:0,send:0},"num_of_
 arrays.service_type = [{ type: "select",ar:0,ad:3,status:0,data:0,send:0},"service_type","List_service_type"];
 
 //------------------------------
-arrays.advance = [{ type: "table"},"select", "name" , "inputs"];
+arrays.advance = [{ type: "table"},"Type_Elevator", "inputs" ];
 
-arrays.name = [{ type: "select"},"resa", "ali"];
+arrays.Type_Elevator = [{ type: "select",ar:0,ad:1,status:0,data:0,send:0},"Type_Elevator","list_type_elevator"];
 
-arrays.input = [{ type: "input"}," write your Name", "ali"];
+
 
 arrays.inputs = [{ type: "multy_SELECT",ar:0,ad:241,status:0,data:0},"hw_input","list_hw_input", "list_hw_input_select"];
 for (let i = 1; i <= arrays_list[arrays.inputs[2]].length; i++) {
