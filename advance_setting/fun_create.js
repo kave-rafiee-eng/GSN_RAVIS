@@ -30,15 +30,26 @@ function createTable(Names) {
   //  tbody.className  = "table table-warning";
     table.appendChild(tbody);
 
-    // ایجاد ردیف‌های جدول بر اساس آرایه
+// تشخیص نوع دستگاه
+    const device = /mobile|android|iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase()) ? "mobile" : "desktop";
+
+// ایجاد ردیف‌های جدول بر اساس آرایه
     Names.forEach((name, index) => {
         let row = document.createElement("tr");
-        row.innerHTML = `
 
-                    <td>
-                        <button class="btn btn-primary text-light w-50 fw-semibold fs-5 " onclick="buttonAction('${name}')">${name.split('$').pop().replaceAll('_', ' ')}</button>
-                    </td>
-                `;
+        // تعیین کلاس مناسب بر اساس نوع دستگاه
+        const buttonClass = device === "mobile" ? "w-100" : "w-50";
+        const text_size = device === "mobile" ? "fs-5" : "fs-7";
+
+        row.innerHTML = `
+        <td>
+            <button class="btn btn-primary text-light ${buttonClass} fw-semibold ${text_size}" 
+                    onclick="buttonAction('${name}')">
+                ${name.split('$').pop().replaceAll('_', ' ')}
+            </button>
+        </td>
+    `;
+
         tbody.appendChild(row);
     });
 

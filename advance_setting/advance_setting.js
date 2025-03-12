@@ -2,15 +2,12 @@
 function load_end(){
 
 
+    detectDevice();
+
     startConnect();
 
     buttonAction("mian_menu");
 
-    //createMultySelect(arrays.multy_SELECT)
-
-    //document.getElementById(arrays.multy_SELECT[1]+"1").value=2;
-
-    //console.log(arrays.multy_SELECT[1]+"1");
 
 }
 window.addEventListener("load", load_end);
@@ -319,6 +316,18 @@ function ADVANCE_mqtt_massage_get(DATA){
 
 }
 
+var device = "computer";
+function detectDevice() {
+    if (window.matchMedia("(max-width: 768px)").matches) {
+        device = "mobile"
+        alert("📱 دستگاه: موبایل");
+        return "mobile";
+    } else {
+        device = "computer"
+        alert("💻 دستگاه: کامپیوتر");
+        return "desktop";
+    }
+}
 
 
 

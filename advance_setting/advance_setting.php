@@ -131,12 +131,12 @@ include "../Sidebar.php";
                                     </nav>
 
                                     <!-- دکمه HOME -->
-                                    <button class="btn btn-outline-dark  btn-home me-4" onclick="button_TABLE_creat()">
+                                    <button class="btn btn-outline-dark  btn-home me-4 my-4" onclick="button_TABLE_creat()">
                                         <i class="fas fa-home"></i> Home
                                     </button>
 
                                     <!-- دکمه بازگشت -->
-                                    <button class="btn btn-outline-danger btn-back me-4" onclick="button_BACK()">
+                                    <button class="btn btn-outline-danger btn-back me-4 my-4 " onclick="button_BACK()">
                                         <i class="fas fa-arrow-left"></i> Back
                                     </button>
 
