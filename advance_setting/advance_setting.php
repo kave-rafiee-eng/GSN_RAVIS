@@ -155,7 +155,7 @@ include "../Sidebar.php";
                         <div class="row mb-3 m-2 d-flex justify-content-center " >
                             <ul class="list-group d-flex justify-content-center ">
 
-                                <li class="list-group-item"><i class="bi bi-activity me-1 text-primary"></i><div class="bg-success-subtle text-center rounded " id="register_name"></div></li>
+                                <li class="list-group-item"><i class="bi bi-activity me-1 text-primary"></i><div class="bg-primary-subtle text-center rounded " id="register_name"></div></li>
 
                                 <li class="list-group-item"> <!--  Gang Select !-->
                                     <div class="row d-flex justify-content-center">
