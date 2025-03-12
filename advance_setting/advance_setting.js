@@ -7,6 +7,16 @@ var data = JSON.parse(jsonData);
 var serial = data.serial;
 var user = data.user;
 
+function refresh(){
+
+    if( mqtt_connect ){
+        if (Mqtt_alertModal) Mqtt_alertModal.hide();
+    }
+
+}
+setInterval(refresh, 1000);
+
+
 
 function load_end(){
 

@@ -50,7 +50,7 @@ function onConnect(){
 
     mqtt_connect=1;
 
-    if (Mqtt_alertModal) Mqtt_alertModal.hide();
+
 }
 function onConnectionLost(responseObject){
     console.log("lost****")
