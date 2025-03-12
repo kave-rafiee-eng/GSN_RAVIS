@@ -154,11 +154,11 @@ function createBTN_save_read() {
     const device = /mobile|android|iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase()) ? "mobile" : "desktop";
 
 // تعیین کلاس‌های مناسب بر اساس نوع دستگاه
-    const buttonSizeClass = device === "mobile" ? "btn-sm" : "btn-lg";
+    const buttonSizeClass = device === "mobile" ? "btn-md me-1 " : "btn-lg me-4";
 
 // دکمه ذخیره (Save)
     const button_save = document.createElement("button");
-    button_save.className = `btn btn-primary ${buttonSizeClass} me-4`;
+    button_save.className = `btn btn-primary ${buttonSizeClass} `;
     button_save.innerHTML = `<i class="fas fa-save"></i> Save`;
     button_save.addEventListener('click', save);
 
