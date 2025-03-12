@@ -377,7 +377,6 @@ function showProgressModal(title, message) {
     closeButton.removeEventListener('click', closeModalHandler); // جلوگیری از چندین بار افزودن
     closeButton.addEventListener('click', closeModalHandler);
 
-
 }
 
 function closeModalHandler() {
@@ -436,4 +435,32 @@ function show_addrress(pathArray) {
             ? `<li class="breadcrumb-item active" aria-current="page">${cleanPart}</li>`
             : `<li class="breadcrumb-item"><a href="#" onclick="button_GOTO('${part}')">${cleanPart}</a></li>`;
     });
+}
+
+
+var Mqtt_alertModal;
+function showMqtt_modal() {
+
+    const mqtt_closeButton = document.getElementById('mqtt_closeButton');
+
+    if (!Mqtt_alertModal) {
+        Mqtt_alertModal = new bootstrap.Modal(document.getElementById('mqtt_alertModal'));
+
+        // تنظیم عنوان و پیام به صورت پویا
+        mqtt_closeButton.disabled = false;
+
+    }
+
+    // نمایش مودال
+    Mqtt_alertModal.show();
+
+    mqtt_closeButton.removeEventListener('click', close_mqtt_alert_Handler); // جلوگیری از چندین بار افزودن
+    mqtt_closeButton.addEventListener('click', close_mqtt_alert_Handler);
+
+}
+
+function close_mqtt_alert_Handler() {
+
+    window.location.assign("/GSM_RAVIS/main/home.php");
+
 }

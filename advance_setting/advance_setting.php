@@ -100,6 +100,25 @@ include "../Sidebar.php";
         </div>
     </div>
 
+
+    <!-- Modal -->
+    <div class="modal fade" id="mqtt_alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="">در حال اتصال به سرور ravis</h5>
+                </div>
+                <div class="modal-body">
+                    <p id="">لطفاً صبر کنید، عملیات در حال انجام است.</p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="mqtt_closeButton" disabled>بستن</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="pagetitle">
 
         <h1>branch</h1>
@@ -330,11 +349,12 @@ include "../Footer.php";
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
 
-<script src="advance_mqtt_fun.js"></script> <!-- اضافه کردن فایل JavaScript -->
+
 <script src="list_data_advance.js"></script> <!-- اضافه کردن فایل JavaScript -->
 <script src="advance_list_HW_main.js"></script> <!-- اضافه کردن فایل JavaScript -->
 <script src="fun_create.js"></script> <!-- اضافه کردن فایل JavaScript -->
 <script src="advance_setting.js"></script> <!-- اضافه کردن فایل JavaScript -->
+<script src="advance_mqtt_fun.js"></script> <!-- اضافه کردن فایل JavaScript -->
 
 <!-- Vendor JS Files -->
 <script src="/GSM_RAVIS/assets/vendor/apexcharts/apexcharts.min.js"></script>

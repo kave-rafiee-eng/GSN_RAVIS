@@ -18,6 +18,7 @@ function load_end(){
     buttonAction("mian_menu");
 
 
+
 }
 window.addEventListener("load", load_end);
 

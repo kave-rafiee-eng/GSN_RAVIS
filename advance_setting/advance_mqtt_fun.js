@@ -22,6 +22,8 @@ function startConnect(){
     });
 
     document.getElementById("div_connection_status").innerHTML = "try to connect...";
+
+    showMqtt_modal();
 }
 
 var mqtt_connect=0;
@@ -47,8 +49,11 @@ function onConnect(){
     console.log("subscribe to:", topic);
 
     mqtt_connect=1;
+
+    if (Mqtt_alertModal) Mqtt_alertModal.hide();
 }
 function onConnectionLost(responseObject){
+    console.log("lost****")
     document.getElementById("div_connection_status").innerHTML += "<span> ERROR: Connection is lost.</span><br>";
     if(responseObject !=0){
         document.getElementById("div_connection_status").innerHTML += "<span> ERROR:"+ responseObject.errorMessage +"</span><br>";
