@@ -58,6 +58,19 @@ arrays_list.List_SegmentsOutputs = [
     "LA","LB","LC","LD","LE","LF","LG"
 ];
 
+//---------------------------- List_DriveConnection LIST
+arrays_list.List_DriveConnection = [
+    "Parallel", "Analog", "MOD-YSKAWA",
+    "MOD-GEFRAN", "MOD-QMA"
+];
+
+//---------------------------- List_Baudrate LIST
+arrays_list.List_Baudrate = [
+    "9600", "19200", "38400",
+    "57600", "115200", "128000", "256000"
+];
+
+
 
 //------------------------------ HW Main_Board Table
 arrays.HW_Main_Board = [{ type: "table"},"HW_Main_Board$Inputs", "HW_Main_Board$Outputs","HW_Main_Board$Inputs_Type","HW_Main_Board$Outputs_Type","HW_Main_Board$Push_Buttons","HW_Main_Board$Numrator","HW_Main_Board$Drive" ];
@@ -68,16 +81,74 @@ arrays.HW_Main_Board$Numrator = [{ type: "table"},"HW_Main_Board$Numrator$Type",
 //------------------------------ HW_Main_Board$Push_Buttons Table
 arrays.HW_Main_Board$Push_Buttons = [{ type: "table"},"HW_Main_Board$Push_Buttons$Type", "HW_Main_Board$Push_Buttons$ParallelSetting", "HW_Main_Board$Push_Buttons$Canceller" ];
 
+//------------------------------ HW_Main_Board$Drive Table
+arrays.HW_Main_Board$Drive = [
+    { type: "table" },
+    "HW_Main_Board$Drive$Connection", "HW_Main_Board$Drive$ParallelSetting",
+    "HW_Main_Board$Drive$Serial_Setting"
+];
+
+//------------------------------ HW_Main_Board$Drive Table
+arrays.HW_Main_Board$Drive$Serial_Setting = [
+    { type: "table" },
+    "HW_Main_Board$Drive$Serial_Setting$Baudrate",
+    "HW_Main_Board$Drive$Serial_Setting$Max_Freq", "HW_Main_Board$Drive$Serial_Setting$Slow_Freq",
+    "HW_Main_Board$Drive$Serial_Setting$Rev_Freq", "HW_Main_Board$Drive$Serial_Setting$Medium_Freq",
+    "HW_Main_Board$Drive$Serial_Setting$Learn_Freq", "HW_Main_Board$Drive$Serial_Setting$0To50Hz_Acc",
+    "HW_Main_Board$Drive$Serial_Setting$50To0Hz_Decc"
+];
+
+//--------------------------------------------- HW_Main_Board$Drive$Serial_Setting$50To0Hz_Decc input
+arrays.HW_Main_Board$Drive$Serial_Setting$50To0Hz_Decc = [{ type: "input",ar:0,ad:77,status:0,data:0,send:0},"HW_Main_Board$Drive$Serial_Setting$50To0Hz_Decc", "5"];
+Object.assign(arrays.HW_Main_Board$Drive$Serial_Setting$50To0Hz_Decc[0], { offset: 0, factor: 10, Addition: 0 , step:0.1 , min :0 , max:10 });
+
+//--------------------------------------------- HW_Main_Board$Drive$Serial_Setting$0To50Hz_Acc input
+arrays.HW_Main_Board$Drive$Serial_Setting$0To50Hz_Acc = [{ type: "input",ar:0,ad:76,status:0,data:0,send:0},"HW_Main_Board$Drive$Serial_Setting$0To50Hz_Acc", "5"];
+Object.assign(arrays.HW_Main_Board$Drive$Serial_Setting$0To50Hz_Acc[0], { offset: 0, factor: 10, Addition: 0 , step:0.1 , min :0 , max:10 });
+
+//--------------------------------------------- HW_Main_Board$Drive$Serial_Setting$Medium_Freq input
+arrays.HW_Main_Board$Drive$Serial_Setting$Medium_Freq = [{ type: "input",ar:0,ad:75,status:0,data:0,send:0},"HW_Main_Board$Drive$Serial_Setting$Medium_Freq", "5"];
+Object.assign(arrays.HW_Main_Board$Drive$Serial_Setting$Medium_Freq[0], { offset: 0, factor: 1, Addition: 0 , step:1 , min :0 , max:50 });
+
+//--------------------------------------------- HW_Main_Board$Drive$Serial_Setting$Slow_Freq input
+arrays.HW_Main_Board$Drive$Serial_Setting$Slow_Freq = [{ type: "input",ar:0,ad:74,status:0,data:0,send:0},"HW_Main_Board$Drive$Serial_Setting$Slow_Freq", "5"];
+Object.assign(arrays.HW_Main_Board$Drive$Serial_Setting$Slow_Freq[0], { offset: 0, factor: 1, Addition: 0 , step:1 , min :0 , max:50 });
+
+//--------------------------------------------- HW_Main_Board$Drive$Serial_Setting$Learn_Freq input
+arrays.HW_Main_Board$Drive$Serial_Setting$Learn_Freq = [{ type: "input",ar:0,ad:73,status:0,data:0,send:0},"HW_Main_Board$Drive$Serial_Setting$Learn_Freq", "5"];
+Object.assign(arrays.HW_Main_Board$Drive$Serial_Setting$Learn_Freq[0], { offset: 0, factor: 1, Addition: 0 , step:1 , min :0 , max:50 });
+
+//--------------------------------------------- HW_Main_Board$Drive$Serial_Setting$Max_Freq input
+arrays.HW_Main_Board$Drive$Serial_Setting$Max_Freq = [{ type: "input",ar:0,ad:71,status:0,data:0,send:0},"HW_Main_Board$Drive$Serial_Setting$Max_Freq", "5"];
+Object.assign(arrays.HW_Main_Board$Drive$Serial_Setting$Max_Freq[0], { offset: 0, factor: 1, Addition: 0 , step:1 , min :0 , max:50 });
+
+//--------------------------------------------- HW_Main_Board$Drive$Serial_Setting$Rev_Freq input
+arrays.HW_Main_Board$Drive$Serial_Setting$Rev_Freq = [{ type: "input",ar:0,ad:72,status:0,data:0,send:0},"HW_Main_Board$Drive$Serial_Setting$Rev_Freq", "5"];
+Object.assign(arrays.HW_Main_Board$Drive$Serial_Setting$Rev_Freq[0], { offset: 0, factor: 1, Addition: 0 , step:1 , min :0 , max:50 });
+
+//--------------------------------------------- HW_Main_Board$Numrator$Active_Light input
+arrays.HW_Main_Board$Numrator$Active_Light = [{ type: "input",ar:0,ad:63,status:0,data:0,send:0},"HW_Main_Board$Numrator$Active_Light", "5"];
+Object.assign(arrays.HW_Main_Board$Numrator$Active_Light[0], { offset: 0, factor: 0.2, Addition: 0 , step:5 , min :0 , max:100 });
+
 //--------------------------------------------- HW_Main_Board$Numrator$Sleep_Light input
 arrays.HW_Main_Board$Numrator$Sleep_Light = [{ type: "input",ar:0,ad:62,status:0,data:0,send:0},"HW_Main_Board$Numrator$Sleep_Light", "5"];
 Object.assign(arrays.HW_Main_Board$Numrator$Sleep_Light[0], { offset: 0, factor: 0.2, Addition: 0 , step:5 , min :0 , max:100 });
+
+
+//--------------------------------------------- HW_Main_Board$Drive$Serial_Setting$Baudrate select
+arrays.HW_Main_Board$Drive$Serial_Setting$Baudrate = [{ type: "select",ar:0,ad:70,status:0,data:0,send:0},"HW_Main_Board$Drive$Serial_Setting$Baudrate","List_Baudrate"];
+Object.assign(arrays.HW_Main_Board$Drive$Serial_Setting$Baudrate[0], { offset: 0, factor: 1, Addition: 0 });
+
+//--------------------------------------------- HW_Main_Board$Drive$Connection select
+arrays.HW_Main_Board$Drive$Connection = [{ type: "select",ar:0,ad:53,status:0,data:0,send:0},"HW_Main_Board$Drive$Connection","List_DriveConnection"];
+Object.assign(arrays.HW_Main_Board$Drive$Connection[0], { offset: 0, factor: 1, Addition: 0 });
 
 //--------------------------------------------- HW_Main_Board$Numrator$Type select
 arrays.HW_Main_Board$Numrator$Type = [{ type: "select",ar:0,ad:51,status:0,data:0,send:0},"HW_Main_Board$Numrator$Type","List_HW_Main_Num_Type"];
 Object.assign(arrays.HW_Main_Board$Numrator$Type[0], { offset: 0, factor: 1, Addition: 0 });
 
 //--------------------------------------------- HW_Main_Board$Push_Buttons$Type select
-arrays.HW_Main_Board$Push_Buttons$Type = [{ type: "select",ar:0,ad:49,status:0,data:0,send:0},"HW_Main_Board$Push_Buttons$Type","List_HW_Main_Num_Type"];
+arrays.HW_Main_Board$Push_Buttons$Type = [{ type: "select",ar:0,ad:49,status:0,data:0,send:0},"HW_Main_Board$Push_Buttons$Type","List_HW_Main_PB_Type"];
 Object.assign(arrays.HW_Main_Board$Push_Buttons$Type[0], { offset: 0, factor: 1, Addition: 0 });
 
 //--------------------------------------------- HW_Main_Board$Push_Buttons$Canceller select

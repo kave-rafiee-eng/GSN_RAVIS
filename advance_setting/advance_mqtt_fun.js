@@ -23,7 +23,7 @@ function startConnect(){
 
     document.getElementById("div_connection_status").innerHTML = "try to connect...";
 
-    showMqtt_modal();
+    //showMqtt_modal();
 }
 
 var mqtt_connect=0;
