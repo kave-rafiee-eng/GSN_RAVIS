@@ -1,0 +1,79 @@
+body {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* دکمه بازگشت با انیمیشن لغزشی */
+.btn-back:hover {
+    transform: translateX(-5px);
+    background-color: #495057;
+    color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+/* دکمه دانلود با افکت چرخشی */
+.btn-download:hover i {
+    transform: rotate(360deg);
+    transition: transform 0.4s ease;
+}
+
+/* دکمه آپلود با افکت پرشی */
+.btn-upload:hover {
+    animation: bounce 0.5s infinite alternate;
+}
+@keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-5px); }
+}
+
+/* دکمه خانه با افکت موج */
+.btn-home {
+    position: relative;
+    overflow: hidden;
+}
+.btn-home::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: width 0.4s, height 0.4s, top 0.4s, left 0.4s;
+    border-radius: 50%;
+    z-index: 0;
+    transform: translate(-50%, -50%);
+}
+.btn-home:hover::before {
+    width: 0;
+    height: 0;
+}
+.btn-home > i {
+    position: relative;
+    z-index: 1;
+}
+
+
+#addrress {
+    display: inline; /* نمایش پشت سر هم در یک خط */
+}
+
+.breadcrumb-item {
+    display: inline;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: " / ";
+    color: #6c757d; /* رنگ خط جداکننده */
+}
+
+ .custom-table tbody tr:hover {
+     background-color: #17a2b8; /* رنگ آبی سفارشی */
+     color: #fff; /* رنگ متن در حالت هاور */
+     transition: background-color 0.3s ease;
+ }

@@ -22,6 +22,8 @@ $change="unknown";
     <meta content="" name="keywords">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 
     <!-- Favicons -->
     <link href="/GSM_RAVIS/assets/img/favicon.png" rel="icon">
@@ -52,6 +54,8 @@ $change="unknown";
     ======================================================== -->
 
 
+    <link rel="stylesheet" href="styles.css">
+
     <SCRIPT>
 
         setTimeout(function(){
@@ -61,8 +65,7 @@ $change="unknown";
     </SCRIPT>
 </head>
 
-<body onload="myFunction()" >
-
+<body onload="" >
 
 <?php
 include "../header.php";
@@ -104,7 +107,7 @@ include "../Sidebar.php";
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/GSM_RAVIS/main/home.php">Home</a></li>
                 <li class="breadcrumb-item">Advance</li>
-                <li class="breadcrumb-item active">test</li>
+                <li class="breadcrumb-item active">Advance</li>
             </ol>
 
         </nav>
@@ -121,15 +124,24 @@ include "../Sidebar.php";
 
                         <div class="row mb-3 m-2" >
                             <ul class="list-group">
-                                <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>Address</li>
+                                <li class="list-group-item"><i class="bi bi-geo-alt me-1 text-primary"></i>
+
+                                    <nav aria-label="breadcrumb">
+                                        <ol id="addrress" class="breadcrumb bg-light p-3 rounded-3"></ol>
+                                    </nav>
+
+                                    <!-- دکمه HOME -->
+                                    <button class="btn btn-outline-dark  btn-home me-4" onclick="button_TABLE_creat()">
+                                        <i class="fas fa-home"></i> Home
+                                    </button>
+
+                                    <!-- دکمه بازگشت -->
+                                    <button class="btn btn-outline-danger btn-back me-4" onclick="button_BACK()">
+                                        <i class="fas fa-arrow-left"></i> Back
+                                    </button>
+
+                                </li>
                                 <li class="list-group-item">
-
-                                    <button class="btn btn-success mb-3" onclick="button_TABLE_creat()">Home</button>
-
-                                    <!-- دکمه حذف جدول -->
-                                    <button class="btn btn-danger mb-3" onclick="button_BACK()">back</button>
-
-                                    <div id="addrress"></div>
 
                                     <div id="tableContainer"></div>
 
@@ -140,25 +152,31 @@ include "../Sidebar.php";
                         <!-- General Form Elements -->
                         <!-- <form method="post" action="" > -->
 
-                        <div class="row mb-3 m-2" >
-                            <ul class="list-group">
+                        <div class="row mb-3 m-2 d-flex justify-content-center " >
+                            <ul class="list-group d-flex justify-content-center ">
 
-                                <li class="list-group-item"><i class="bi bi-activity me-1 text-primary"></i>Write To device</li>
+                                <li class="list-group-item"><i class="bi bi-activity me-1 text-primary"></i><div class="bg-success-subtle text-center rounded " id="register_name"></div></li>
 
                                 <li class="list-group-item"> <!--  Gang Select !-->
-                                    <div class="row ">
+                                    <div class="row d-flex justify-content-center">
 
-                                        <div class="col-sm-6 ">
+                                        <div class="col-sm-12 my-3 ">
 
                                             <div id="multySlectContainer"></div>
 
                                             <div id="selectContainer"></div>
 
-                                            <div id="inputContainer"></div>
+                                            <div class="d-flex justify-content-center " id="inputContainer"></div>
                                         </div>
 
-                                        <div id="btn_save_read"></div>
+                                        <div class="col-sm-12 d-flex justify-content-center">
+                                            <div id="btn_save_read"></div>
+                                        </div>
+
+
                                     </div>
+
+
                                 </li>
 
 
@@ -183,11 +201,11 @@ include "../Sidebar.php";
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="flush-headingOne">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                        1CF Error
+                                        Advance Setting
                                     </button>
                                 </h2>
                                 <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">خطای ندیدن سنسور لول طبقات</div>
+                                    <div class="accordion-body">تنظیمات</div>
                                 </div>
                             </div>
 
@@ -314,7 +332,7 @@ include "../Footer.php";
 <script src="list_data_advance.js"></script> <!-- اضافه کردن فایل JavaScript -->
 <script src="advance_list_HW_main.js"></script> <!-- اضافه کردن فایل JavaScript -->
 <script src="fun_create.js"></script> <!-- اضافه کردن فایل JavaScript -->
-<script src="test1.js"></script> <!-- اضافه کردن فایل JavaScript -->
+<script src="advance_setting.js"></script> <!-- اضافه کردن فایل JavaScript -->
 
 <!-- Vendor JS Files -->
 <script src="/GSM_RAVIS/assets/vendor/apexcharts/apexcharts.min.js"></script>
@@ -328,8 +346,6 @@ include "../Footer.php";
 
 <!-- Template Main JS File -->
 <script src="/GSM_RAVIS/assets/js/main.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
 

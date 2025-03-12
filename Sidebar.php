@@ -49,6 +49,7 @@
 
         </li><!-- End Dashboard Nav -->
 
+
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#General-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi bi-gear"></i><span>General</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -240,7 +241,13 @@
             </ul>
         </li><!-- End Components Nav -->
 
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/GSM_RAVIS/advance_setting/advance_setting.php">
+                <i class="bi bi-gear "></i>
+                <span>ADVANCE</span>
+            </a>
 
+        </li><!-- End Dashboard Nav -->
 
         <li class="nav-heading">----</li>
 

@@ -29,11 +29,28 @@ function button_TABLE_creat(  ) {
 }
 function button_BACK(){
 
-    let last_ad = address[address.length-2];
-    address.pop();
-    address.pop();
+    if( address.length > 1 ){
+        let last_ad = address[address.length-2];
+        address.pop();
+        address.pop();
 
-    buttonAction(last_ad)
+        buttonAction(last_ad)
+    }
+}
+
+function button_GOTO(selectedValue){
+
+    const index = address.indexOf(selectedValue);
+
+    if (index !== -1) {
+        // حذف از انتها تا مقدار کلیک شده
+        address = address.slice(0, index );
+
+        // بروزرسانی دوباره مسیر در صفحه
+        show_addrress(address);
+
+        buttonAction(selectedValue)
+    }
 
 }
 
@@ -41,10 +58,10 @@ function buttonAction(name) {
 
     address.push(name);
 
-    document.getElementById("addrress").innerHTML = address;
-
+    //document.getElementById("addrress").innerHTML = address;
+    show_addrress(address)
     // نمایش دیتای دریافتی تابع
-    //alert(arrays[name]);  // خروجی: ["A", "B", "C"]
+    //alert(address);  // خروجی: ["A", "B", "C"]
 
     let btn = document.getElementById("div_BTN_save_read");
     if (btn) {
@@ -66,14 +83,18 @@ function buttonAction(name) {
         input.remove(); // حذف جدول
     }
 
+    let register_name = document.getElementById("register_name");
+    register_name.innerHTML=""
+
 
     if( arrays[name] ){
         activeArray = structuredClone(arrays[name])
     }
     else{
         address.length=0;
-        document.getElementById("addrress").innerHTML = address;
+        show_addrress(address)
         activeArray = structuredClone(arrays["mian_menu"])
+
     }
 
     if( activeArray[0].type == "table" ){
