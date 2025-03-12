@@ -39,7 +39,7 @@ arrays.advance = [{ type: "table"},"Type_Elevator", "Hardware" ,"Timer_Setting",
 arrays.Hardware = [{ type: "table"},"HW_Main_Board", "HW_Carcodec" ];
 
 //------------------------------ Timer_Setting Table
-arrays.Timer_Setting = [{ type: "table"},"UD_ReleaseDel", "TC_ReleaseDel" ,"1CF_Delay","Leveling_Time", "Standby_Time", "URA_Delay", "Relay_Time"];
+arrays.Timer_Setting = [{ type: "table"},"UD_ReleaseDel", "TC_ReleaseDel" ,"_1CF_Delay","Leveling_Time", "Standby_Time", "URA_Delay", "Relay_Time"];
 
 //------------------------------ Phase_Control Table
 arrays.Phase_Control = [{ type: "table"},"Phase_Reverse", "Phase_Fault", "One_Phase" ];
@@ -47,6 +47,13 @@ arrays.Phase_Control = [{ type: "table"},"Phase_Reverse", "Phase_Fault", "One_Ph
 //------------------------------ Relay_Time Table
 arrays.Relay_Time = [{ type: "table"},"Relay_Time$ON_Delay", "Relay_Time$ON_Time" ];
 
+//------------------------------ _1CF_Delay Table
+arrays._1CF_Delay = [{ type: "table"},"_1CF_Delay$All_Floors", "_1CF_Delay_Up/Down_Del" ];
+
+
+//--------------------------------------------- _1CF_Delay$All_Floors input
+arrays._1CF_Delay$All_Floors = [{ type: "input",ar:0,ad:48,status:0,data:0,send:0},"_1CF_Delay$All_Floors", "0"];
+Object.assign(arrays._1CF_Delay$All_Floors[0], { offset: 0, factor: 20, Addition: 0 , step:0.05 , min :0 , max:10 });
 
 
 
