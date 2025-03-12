@@ -150,17 +150,22 @@ function createBTN_save_read() {
     div.id = "div_BTN_save_read";
     div.className = "mb-3";
 
-// ایجاد `button`
+// تشخیص نوع دستگاه
+    const device = /mobile|android|iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase()) ? "mobile" : "desktop";
+
+// تعیین کلاس‌های مناسب بر اساس نوع دستگاه
+    const buttonSizeClass = device === "mobile" ? "btn-sm" : "btn-lg";
+
+// دکمه ذخیره (Save)
     const button_save = document.createElement("button");
-    button_save.className = "btn btn-primary btn-lg me-4 ";
+    button_save.className = `btn btn-primary ${buttonSizeClass} me-4`;
     button_save.innerHTML = `<i class="fas fa-save"></i> Save`;
-    //button_save.textContent = "Save";
     button_save.addEventListener('click', save);
 
+// دکمه خواندن (Read)
     const button_read = document.createElement("button");
-    button_read.className = "btn btn-secondary btn-lg me-4 ";
+    button_read.className = `btn btn-secondary ${buttonSizeClass} me-4`;
     button_read.innerHTML = `<i class="fas fa-download"></i> Read`;
-    // button_read.textContent = "Read";
     button_read.addEventListener('click', read);
 
     div.appendChild(button_save);
