@@ -120,7 +120,7 @@ include "../Sidebar.php";
 
                 <div class="card"  >
                     <div class="card-body ">
-                        <h5 class="card-title">Test</h5>
+                        <h5 class="card-title">Advance</h5>
 
                         <div class="row mb-3 m-2" >
                             <ul class="list-group">
@@ -281,6 +281,8 @@ include "../Sidebar.php";
                                     <?php
                                     $myObj = new stdClass();
                                     $myObj->serial = $serial ;
+                                    $myObj->user = $user ;
+                                    $myObj->user_active_time = $user_active_time ;
                                     $myJSON = json_encode($myObj);
                                     echo $myJSON;
                                     ?>

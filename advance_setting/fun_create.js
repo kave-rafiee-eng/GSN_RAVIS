@@ -74,7 +74,7 @@ function createInput(data) {
     const label = document.createElement("label");
     label.setAttribute("for", "dynamicInput");
     label.className = "form-label fs-5 fw-semibold text-dark";
-    label.textContent = data[1];
+    label.textContent = data[1].split('$').pop().replaceAll('_', ' ');
     div_register_name.appendChild(label)
 
 // ایجاد `input`
@@ -158,13 +158,21 @@ function createBTN_save_read() {
 
 // دکمه ذخیره (Save)
     const button_save = document.createElement("button");
-    button_save.className = `btn btn-primary ${buttonSizeClass} `;
+    if(user != "admin") {
+        button_save.className = `btn btn-secodry ${buttonSizeClass} `;
+        button_save.disabled = true;
+    }
+    else{
+        button_save.className = `btn btn-primary ${buttonSizeClass} `;
+    }
+
     button_save.innerHTML = `<i class="fas fa-save"></i> Save`;
     button_save.addEventListener('click', save);
 
+
 // دکمه خواندن (Read)
     const button_read = document.createElement("button");
-    button_read.className = `btn btn-secondary ${buttonSizeClass} me-4`;
+    button_read.className = `btn btn-warning ${buttonSizeClass} me-4`;
     button_read.innerHTML = `<i class="fas fa-download"></i> Read`;
     button_read.addEventListener('click', read);
 
@@ -204,7 +212,7 @@ function createSelect(data) {
     const label = document.createElement("label");
     label.setAttribute("for", "dynamicInput");
     label.className = "form-label fs-5 fw-semibold text-dark";
-    label.textContent = data[1];
+    label.textContent = data[1].split('$').pop().replaceAll('_', ' ');
     div_register_name.appendChild(label)
 
     // ایجاد `select`
@@ -247,7 +255,7 @@ function createMultySelect(Data) {
     const label = document.createElement("label");
     label.setAttribute("for", "dynamicInput");
     label.className = "form-label fs-5 fw-semibold text-dark";
-    label.textContent = Data[1];
+    label.textContent = Data[1].split('$').pop().replaceAll('_', ' ');
     div_register_name.appendChild(label)
 
     // ایجاد عنصر <table>

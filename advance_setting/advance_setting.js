@@ -1,4 +1,13 @@
 
+// Get JSON data from the hidden div
+var jsonData = document.getElementById("json_server").innerText;
+// Parse JSON into a JavaScript object
+var data = JSON.parse(jsonData);
+// Store the serial value in a variable
+var serial = data.serial;
+var user = data.user;
+
+
 function load_end(){
 
 
@@ -320,11 +329,11 @@ var device = "computer";
 function detectDevice() {
     if (window.matchMedia("(max-width: 768px)").matches) {
         device = "mobile"
-        alert("📱 دستگاه: موبایل");
+        //alert("📱 دستگاه: موبایل");
         return "mobile";
     } else {
         device = "computer"
-        alert("💻 دستگاه: کامپیوتر");
+       // alert("💻 دستگاه: کامپیوتر");
         return "desktop";
     }
 }
