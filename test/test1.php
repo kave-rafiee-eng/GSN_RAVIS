@@ -312,6 +312,7 @@ include "../Footer.php";
 
 <script src="advance_mqtt_fun.js"></script> <!-- اضافه کردن فایل JavaScript -->
 <script src="list_data_advance.js"></script> <!-- اضافه کردن فایل JavaScript -->
+<script src="advance_list_HW_main.js"></script> <!-- اضافه کردن فایل JavaScript -->
 <script src="fun_create.js"></script> <!-- اضافه کردن فایل JavaScript -->
 <script src="test1.js"></script> <!-- اضافه کردن فایل JavaScript -->
 

@@ -67,13 +67,12 @@ function buttonAction(name) {
     }
 
 
-
-
     if( arrays[name] ){
         activeArray = structuredClone(arrays[name])
     }
     else{
         address.length=0;
+        document.getElementById("addrress").innerHTML = address;
         activeArray = structuredClone(arrays["mian_menu"])
     }
 

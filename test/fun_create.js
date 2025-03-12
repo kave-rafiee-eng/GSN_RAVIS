@@ -55,7 +55,6 @@ function createTable( Names ) {
 
 function createInput( data ) {
 
-
     // دریافت محل اضافه کردن `input`
     const container = document.getElementById("inputContainer");
 
@@ -72,11 +71,54 @@ function createInput( data ) {
 
 // ایجاد `input`
     const inputElement = document.createElement("input");
-    inputElement.type = "text";
+    inputElement.type = "number";
     inputElement.id = data[1];
     inputElement.className = "form-control";
     inputElement.placeholder = data[2];
 
+    inputElement.max = data[0].max;
+    inputElement.min = data[0].min;
+    inputElement.step = data[0].step;
+
+   /* inputElement.max = 100;
+    inputElement.min = 0;
+    inputElement.step = 5;*/
+
+    // تابع گرد کردن مقدار به نزدیک‌ترین step
+    function roundToStep(value, step, min) {
+        return Math.round((value - min) / step) * step + min;
+    }
+
+// کنترل محدودیت هنگام تایپ و تغییر
+   /* inputElement.addEventListener('input', function () {
+        let value = parseFloat(inputElement.value);
+
+        // کنترل مقدار برای محدودیت‌های max و min
+        if (value > parseFloat(inputElement.max)) {
+            inputElement.value = inputElement.max;
+        } else if (value < parseFloat(inputElement.min)) {
+            inputElement.value = inputElement.min;
+        } else {
+            // تبدیل به نزدیک‌ترین step
+            inputElement.value = roundToStep(value, parseFloat(inputElement.step), parseFloat(inputElement.min));
+        }
+    });*/
+
+// جلوگیری از دور زدن محدودیت در DevTools
+    inputElement.addEventListener('change', function () {
+        let value = parseFloat(inputElement.value);
+
+        if (value > parseFloat(inputElement.max)) {
+            alert(`مقدار ورودی نباید بیشتر از ${inputElement.max} باشد!`);
+            inputElement.value = inputElement.max;
+        } else if (value < parseFloat(inputElement.min)) {
+            alert(`مقدار ورودی نباید کمتر از ${inputElement.min} باشد!`);
+            inputElement.value = inputElement.min;
+        } else {
+            // اصلاح خودکار مقدار به نزدیک‌ترین step
+            inputElement.value = roundToStep(value, parseFloat(inputElement.step), parseFloat(inputElement.min));
+        }
+    });
 
 // اضافه کردن `label`، `input` و `button` به `div`
     div.appendChild(label);
