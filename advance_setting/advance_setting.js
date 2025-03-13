@@ -12,9 +12,12 @@ function refresh(){
     if( mqtt_connect ){
         if (Mqtt_alertModal) Mqtt_alertModal.hide();
     }
+    else{
+        showMqtt_modal();
+    }
 
 }
-setInterval(refresh, 1000);
+setInterval(refresh, 2000);
 
 
 function load_end(){
