@@ -70,6 +70,19 @@ arrays_list.List_Baudrate = [
     "57600", "115200", "128000", "256000"
 ];
 
+//---------------------------- List_Speed LIST
+arrays_list.List_Speed = [
+    "Stop", "Slow", "Rev",
+    "Med", "Fast"
+];
+
+//---------------------------- List_01 LIST
+arrays_list.List_01 = [
+    "0", "1"
+];
+
+
+
 
 
 //------------------------------ HW Main_Board Table
@@ -207,3 +220,34 @@ for (let i = 1; i <= arrays_list[arrays.HW_Main_Board$Numrator$ParallelSetting[2
 Object.assign(arrays.HW_Main_Board$Numrator$ParallelSetting[0], { offset: 0, factor: 1, Addition: 0 });
 
 
+
+//--------------------------------------------- HW_Main_Board$Drive$ParallelSetting multy_Xsatage_SELECT
+arrays.HW_Main_Board$Drive$ParallelSetting = [{ type: "multy_Xsatage_SELECT",status:0 , stage:3 },"HW_Main_Board$Drive$ParallelSetting","List_Speed", "List_01"];
+
+let rows = arrays.HW_Main_Board$Drive$ParallelSetting[0].stage;
+let cols = arrays_list[arrays.HW_Main_Board$Drive$ParallelSetting[2]].length
+
+arrays.HW_Main_Board$Drive$ParallelSetting[0].data = createMatrix(rows,cols);
+arrays.HW_Main_Board$Drive$ParallelSetting[0].status = createMatrix(rows,cols);
+
+arrays.HW_Main_Board$Drive$ParallelSetting[0].address = createMatrix(3,2);
+arrays.HW_Main_Board$Drive$ParallelSetting[0].address[0] = { ar: 5, ad: 0};
+arrays.HW_Main_Board$Drive$ParallelSetting[0].address[1] = { ar: 6, ad: 0};
+arrays.HW_Main_Board$Drive$ParallelSetting[0].address[2] = { ar: 7, ad: 0};
+
+Object.assign(arrays.HW_Main_Board$Drive$ParallelSetting[0], { offset: 0, factor: 1, Addition: 0 });
+
+var test_matrix = arrays.HW_Main_Board$Drive$ParallelSetting[0].data[1][2];
+
+function createMatrix(rows, cols) {
+    const matrix = [];
+    let value = 1; // مقدار شروع برای پر کردن آرایه (می‌توان تغییر داد)
+    for (let i = 0; i < rows; i++) {
+        const row = [];
+        for (let j = 0; j < cols; j++) {
+            row.push(value++);
+        }
+        matrix.push(row);
+    }
+    return matrix;
+}

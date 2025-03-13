@@ -307,48 +307,6 @@ function createMultySelect(Data) {
 }
 
 
-/*
-document.getElementById("submitNumber").addEventListener("click", function() {
-    // دریافت مقدار عددی وارد شده
-    let userInput = document.getElementById("userInputNumber").value.trim();
-
-    // دریافت عناصر مورد نیاز
-    let errorMessage = document.getElementById("error-message");
-    let progressBar = document.getElementById("progressBar");
-
-    // بررسی مقدار ورودی
-    if (userInput === "" || isNaN(userInput) || userInput < 0 || userInput > 100) {
-        errorMessage.style.display = "block"; // نمایش پیام خطا
-        return;
-    }
-
-    // مقداردهی عددی صحیح
-    let numericValue = parseFloat(userInput);
-
-    // بروزرسانی `progress bar`
-    progressBar.style.width = numericValue + "%";
-    progressBar.setAttribute("aria-valuenow", numericValue);
-    progressBar.innerText = numericValue + "%"; // نمایش مقدار درون progress bar
-
-    // بستن پیام خطا در صورت ورود مقدار معتبر
-    errorMessage.style.display = "none";
-
-    // نمایش مقدار دریافت شده
-    alert("مقدار وارد شده: " + numericValue);
-
-    // بستن مودال به‌صورت صحیح
-    let modalElement = document.getElementById('numberInputModal');
-    let modalInstance = bootstrap.Modal.getInstance(modalElement);
-    if (modalInstance) {
-        modalInstance.hide();
-    }
-
-    // استفاده از مقدار عددی (مثلاً ارسال به سرور یا پردازش بیشتر)
-    console.log("عدد دریافت شده:", numericValue);
-});
-*/
-
-
 let alertModal; // متغیر به صورت گلوبال تعریف می‌شود
 let mqtt_progress = 10;
 
@@ -464,3 +422,124 @@ function close_mqtt_alert_Handler() {
     window.location.assign("/GSM_RAVIS/main/home.php");
 
 }
+
+
+
+function Create_Multy_Xsatage_SELECT(Data) {
+
+    const multySlectContainer = document.getElementById("multySlectContainer");
+
+    // ایجاد `div` برای قرار دادن `label` و `tablr`
+    const div = document.createElement("div");
+    div.className = "mb-3";
+    div.id = "div_MultySelect"
+
+
+    const  div_register_name = document.getElementById("register_name")
+
+// ایجاد `label`
+    const label = document.createElement("label");
+    label.setAttribute("for", "dynamicInput");
+    label.className = "form-label fs-5 fw-semibold text-dark";
+    label.textContent = Data[1].split('$').pop().replaceAll('_', ' ');
+    div_register_name.appendChild(label)
+
+    // ایجاد عنصر <table>
+    const table = document.createElement("table");
+    table.id = "dynamicTable"; // تنظیم شناسه برای حذف بعدی
+    table.className = "table table-bordered table-striped text-center";
+
+
+    // ایجاد <thead>
+    const thead = document.createElement("thead");
+    thead.className = "table-dark";
+    thead.innerHTML = `
+                <tr>
+                    <th>SP</th>
+                    <th>V0</th>
+                    <th>V1</th>
+                    <th>V2</th>
+                </tr>
+            `;
+    table.appendChild(thead);
+
+    // ایجاد <tbody>
+    const tbody = document.createElement("tbody");
+    table.appendChild(tbody);
+
+    let html = "";
+
+    for (let cols = 0; cols < arrays_list[Data[2]].length; cols++) {
+        html += `<tr>
+                <td>
+                    <button class="btn btn-primary">${arrays_list[Data[2]][cols]}</button>
+                </td>`;
+
+        for (let rows_stage = 0; rows_stage < Data[0].stage; rows_stage++) {
+            html += `<td>
+                    <select id="${Data[1]}${rows_stage}_${cols}" class="form-select" >
+                        ${arrays_list[Data[3]].map((option, index2) => `
+                            <option value="${index2}">${option}</option>`).join("")}
+                    </select>
+
+                </td>`;
+        }
+
+        html += `</tr>`;
+    }
+
+    // تابع تغییر رنگ برای تغییر رنگ در حالت بسته
+
+
+    tbody.innerHTML = html;
+
+    div.appendChild(table);
+
+    // اضافه کردن جدول به صفحه
+    multySlectContainer.appendChild(div);
+
+    createBTN_save_read();
+
+}
+
+// تابع تغییر رنگ
+function changeColor(selectElement) {
+    const selectedOption = selectElement.options[selectElement.selectedIndex].text;
+    if (selectedOption === "1" || selectedOption === "NO") {
+        selectElement.style.color = 'green';
+        selectElement.style.fontWeight = 'bold';
+        selectElement.style.backgroundColor = '#eaf4da'; // پس‌زمینه خاکستری
+    } else  if (selectedOption === "NC") {
+        selectElement.style.color = '';
+        selectElement.style.fontWeight = 'bold';
+        selectElement.style.backgroundColor = '#f6c9c9'; // پس‌زمینه خاکستری
+    }else {
+        selectElement.style.color = '';     // بازگشت به رنگ پیش‌فرض
+        selectElement.style.fontWeight = ''; // بازگشت به وزن فونت پیش‌فرضپ
+        selectElement.style.backgroundColor = ''; // پس‌زمینه خاکستری
+    }
+
+}
+
+// بررسی مقدار پیش‌فرض در زمان بارگذاری صفحه
+window.onload = function() {
+    document.querySelectorAll('select').forEach(selectElement => {
+        changeColor(selectElement); // بررسی مقدار پیش‌فرض
+
+        // مدیریت تغییر رنگ در زمان تغییر توسط کاربر
+        selectElement.addEventListener('change', () => changeColor(selectElement));
+    });
+
+    // 🚨 Interval Polling برای نظارت بر تغییر مقدار توسط توابع دیگر
+    setInterval(() => {
+        document.querySelectorAll('select').forEach(selectElement => {
+            const previousValue = selectElement.getAttribute('data-prev-value');
+            const currentValue = selectElement.value;
+
+            if (previousValue !== currentValue) {
+                changeColor(selectElement); // تغییر رنگ در صورت تغییر مقدار
+                selectElement.setAttribute('data-prev-value', currentValue); // بروزرسانی مقدار قبلی
+            }
+        });
+    }, 500); // بازبینی در هر 500 میلی‌ثانیه
+};

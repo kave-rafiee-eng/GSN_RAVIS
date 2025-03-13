@@ -115,3 +115,4 @@ for (let i = 1; i <= arrays_list[arrays.HW_Carcodec$Numrator$ParallelSetting[2]]
     arrays.HW_Carcodec$Numrator$ParallelSetting[0][`data${i}`] = i;
 }
 Object.assign(arrays.HW_Carcodec$Numrator$ParallelSetting[0], { offset: 0, factor: 1, Addition: 0 });
+

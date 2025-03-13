@@ -25,8 +25,8 @@ function load_end(){
 
     startConnect();
 
-    buttonAction("mian_menu");
-
+    //buttonAction("mian_menu");
+    buttonAction("HW_Main_Board$Drive$ParallelSetting");
 
 
 }
@@ -125,6 +125,9 @@ function buttonAction(name) {
     }
     else if ( activeArray[0].type == "multy_SELECT") {
         createMultySelect(activeArray);
+    }
+    else if ( activeArray[0].type == "multy_Xsatage_SELECT") {
+        Create_Multy_Xsatage_SELECT(activeArray);
     }
 
     send_mqtt();
@@ -260,6 +263,62 @@ function send_mqtt(){
 
     }
 
+
+    let index_send=0;
+
+    if (  activeArray[0].type == "multy_Xsatage_SELECT" ) {
+
+        for (let cols = 0; cols < arrays_list[activeArray[2]].length; cols++) {
+            for (let rows_stage = 0; rows_stage < activeArray[0].stage; rows_stage++) {
+
+                if( activeArray[0].status[rows_stage][cols] != "update"  ){
+
+                    obj_send["ad"+index_send] = activeArray[0].address[rows_stage].ad+cols;
+                    obj_send["ar"+index_send] = activeArray[0].address[rows_stage].ar;
+                    if( activeArray[0].status[rows_stage][cols] == "upload" ){
+                        obj_send["st"+index_send] = 1;
+                    }
+                    else{
+                        obj_send["st"+index_send] = 0;
+                    }
+
+                    obj_send["da"+index_send] = document.getElementById(activeArray[1]+rows_stage+"_"+cols).value;
+                    console.log( document.getElementById(activeArray[1]+rows_stage+"_"+cols).value )
+                    activeArray[0].status[rows_stage][cols] = "download"
+
+                    index_send++;
+
+                }
+
+                if(index_send>2)break;
+            }
+            if(index_send>2)break;
+        }
+
+        if( index_send>0){
+            console.log(JSON.stringify(obj_send));
+            publishMessage(topic,JSON.stringify(obj_send));
+        }
+
+        let step=0;
+        let pass=0;
+        let progress =0;
+        for (let cols = 0; cols < arrays_list[activeArray[2]].length; cols++) {
+            for (let rows_stage = 0; rows_stage < activeArray[0].stage; rows_stage++) {
+                step++;
+                if (activeArray[0].status[rows_stage][cols] == "update") {
+                    pass++;
+                }
+            }
+        }
+        progress = pass/step*100;
+        if( pass != step ){
+            showProgressModal('در حال اتصال ...', 'لطفاً منتظر بمانید.');
+            updateProgress(progress);
+        }
+
+    }
+
 }
 
 function ADVANCE_mqtt_massage_get(DATA){
@@ -324,6 +383,42 @@ function ADVANCE_mqtt_massage_get(DATA){
         progress = pass/step*100;
         updateProgress(progress);
 
+    }
+
+    let index_send=1;
+
+    if (  activeArray[0].type == "multy_Xsatage_SELECT" ) {
+
+        for (let cols = 0; cols < arrays_list[activeArray[2]].length; cols++) {
+            for (let rows_stage = 0; rows_stage < activeArray[0].stage; rows_stage++) {
+
+                for (let j = 0; j < 10; j++) {
+
+                    if( activeArray[0].address[rows_stage].ar == DATA_Recive["ar"+j] && activeArray[0].address[rows_stage].ad+cols == DATA_Recive["ad"+j] ){
+
+                        activeArray[0].data[rows_stage][cols] = DATA_Recive["da"+j]
+                        activeArray[0].status[rows_stage][cols] = "update"
+
+                        document.getElementById(activeArray[1]+rows_stage+"_"+cols).value =  activeArray[0].data[rows_stage][cols] ;
+
+                    }
+                }
+            }
+        }
+
+        let step=0;
+        let pass=0;
+        let progress =0;
+        for (let cols = 0; cols < arrays_list[activeArray[2]].length; cols++) {
+            for (let rows_stage = 0; rows_stage < activeArray[0].stage; rows_stage++) {
+                step++;
+                if (activeArray[0].status[rows_stage][cols] == "update") {
+                    pass++;
+                }
+            }
+        }
+        progress = pass/step*100;
+        updateProgress(progress);
 
     }
 
