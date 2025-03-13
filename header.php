@@ -22,6 +22,13 @@
 
     </div><!-- End Logo -->
 
+    <div class="d-flex align-items-center justify-content-between m-3  ">
+        <h5> <span class="badge bg-secondary-subtle text-dark-emphasis"><?php
+        echo "Serial:".$serial;
+                ?></span></h5>
+
+    </div><!-- End Logo -->
+
 
 
 
