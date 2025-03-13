@@ -100,11 +100,13 @@ function checkConnection() {
             message.destinationName = "ping_topic";         // تعیین تاپیک
             client.send(message);                          // ارسال پیام با متد `send()`
             console.log("Ping sent successfully");
+            mqtt_connect=1;
         } else {
             console.warn("Client is disconnected. Reconnecting...");
             reconnect();
         }
     } catch (error) {
+        mqtt_connect=0;
         console.error("Error in ping check:", error.message);
         reconnect();  // اقدام برای برقراری مجدد اتصال
     }
