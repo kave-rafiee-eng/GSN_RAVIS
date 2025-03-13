@@ -11,7 +11,7 @@
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <div class="d-flex align-items-center justify-content-between m-3  ">
+    <div class="d-flex align-items-center justify-content-between m-1  ">
         <h5> <span class="badge bg-<?php if( $user_active_time > 0 )echo "success"; else echo "danger";?>"><?php
                 if( $user == "admin") echo "بدون محدودیت";
                 else{
@@ -22,9 +22,9 @@
 
     </div><!-- End Logo -->
 
-    <div class="d-flex align-items-center justify-content-between m-3  ">
+    <div class="d-flex align-items-center justify-content-between  ">
         <h5> <span class="badge bg-secondary-subtle text-dark-emphasis"><?php
-        echo "Serial:".$serial;
+        echo $serial;
                 ?></span></h5>
 
     </div><!-- End Logo -->
