@@ -25,8 +25,8 @@ function load_end(){
 
     startConnect();
 
-    //buttonAction("mian_menu");
-    buttonAction("HW_Main_Board$Drive$ParallelSetting");
+    buttonAction("mian_menu");
+    //buttonAction("HW_Main_Board$Drive$ParallelSetting");
 
 
 }

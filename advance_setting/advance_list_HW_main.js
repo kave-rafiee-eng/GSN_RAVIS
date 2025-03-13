@@ -239,6 +239,10 @@ Object.assign(arrays.HW_Main_Board$Drive$ParallelSetting[0], { offset: 0, factor
 
 var test_matrix = arrays.HW_Main_Board$Drive$ParallelSetting[0].data[1][2];
 
+
+
+
+
 function createMatrix(rows, cols) {
     const matrix = [];
     let value = 1; // مقدار شروع برای پر کردن آرایه (می‌توان تغییر داد)
