@@ -1,4 +1,5 @@
 
+var mqtt_connect=0;
 function startConnect(){
 
     clientID = "clientID - "+parseInt(Math.random() * 100);
@@ -24,9 +25,10 @@ function startConnect(){
     document.getElementById("div_connection_status").innerHTML = "try to connect...";
 
     showMqtt_modal();
+    mqtt_connect=0;
 }
 
-var mqtt_connect=0;
+
 
 function onConnect(){
     //document.getElementById("div_connection_status").innerHTML = "connect";
@@ -88,3 +90,33 @@ function publishMessage(topic,msg){
     client.send(Message);
     document.getElementById("div_message_publish").innerHTML = msg + "/" + massage_count;
 }
+
+
+
+function checkConnection() {
+    try {
+        if (client.isConnected()) {
+            const message = new Paho.MQTT.Message("ping");  // ایجاد پیام جدید
+            message.destinationName = "ping_topic";         // تعیین تاپیک
+            client.send(message);                          // ارسال پیام با متد `send()`
+            console.log("Ping sent successfully");
+        } else {
+            console.warn("Client is disconnected. Reconnecting...");
+            reconnect();
+        }
+    } catch (error) {
+        console.error("Error in ping check:", error.message);
+        reconnect();  // اقدام برای برقراری مجدد اتصال
+    }
+}
+
+// اجرای پینگ هر 10 ثانیه
+setInterval(checkConnection, 5000);
+
+function reconnect() {
+    client.connect({
+        onSuccess: onConnect,
+        onFailure: (error) => console.error("Reconnection failed:", error.errorMessage)
+    });
+}
+

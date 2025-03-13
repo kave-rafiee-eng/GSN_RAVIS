@@ -17,9 +17,7 @@ function refresh(){
 setInterval(refresh, 1000);
 
 
-
 function load_end(){
-
 
     detectDevice();
 
@@ -28,12 +26,8 @@ function load_end(){
     buttonAction("mian_menu");
     //buttonAction("HW_Main_Board$Drive$ParallelSetting");
 
-
 }
 window.addEventListener("load", load_end);
-
-
-
 
 
 
@@ -151,6 +145,14 @@ function save() {
             activeArray[0][`status${i}`] = "upload";
         }
     }
+    if (  activeArray[0].type == "multy_Xsatage_SELECT" ) {
+        for (let cols = 0; cols < arrays_list[activeArray[2]].length; cols++) {
+            for (let rows_stage = 0; rows_stage < activeArray[0].stage; rows_stage++) {
+                activeArray[0].status[rows_stage][cols] = "upload";
+
+            }
+        }
+    }
     send_mqtt();
     console.log("save");
 }
@@ -161,6 +163,14 @@ function read() {
     if (  activeArray[0].type == "multy_SELECT" ) {
         for (let i = 0; i < arrays_list[activeArray[2]].length; i++) {
             activeArray[0][`status${i}`] = "download";
+        }
+    }
+    if (  activeArray[0].type == "multy_Xsatage_SELECT" ) {
+        for (let cols = 0; cols < arrays_list[activeArray[2]].length; cols++) {
+            for (let rows_stage = 0; rows_stage < activeArray[0].stage; rows_stage++) {
+                activeArray[0].status[rows_stage][cols] = "download";
+
+            }
         }
     }
     send_mqtt();
