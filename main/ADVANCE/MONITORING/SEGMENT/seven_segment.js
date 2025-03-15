@@ -129,12 +129,14 @@ function SEG_mqtt_massage_get(DATA){
     for (let i = 0; i < SEG_list_data.length; i++) {
 
         if( SEG_list_data[i][1] == "seg_l"  ){
-            segment_r = decodeSevenSegment(Number(SEG_list_data[i][5])&127) ;
+           // segment_r = decodeSevenSegment(Number(SEG_list_data[i][5])&127) ;
+            segment_r = SEG_list_data[i][5]&127;
             if( Number(SEG_list_data[i][5]) & 128 )dir_UP=1;
             else dir_UP=0;
         }
         if( SEG_list_data[i][1] == "seg_r"  ){
-            segment_l = decodeSevenSegment(Number(SEG_list_data[i][5])&127) ;
+            //segment_l = decodeSevenSegment(Number(SEG_list_data[i][5])&127) ;
+            segment_l = SEG_list_data[i][5]&127;
             if( Number(SEG_list_data[i][5]) & 128 )dir_DN=1
             else dir_DN=0
         }
@@ -166,8 +168,11 @@ function SEG_UPDATE(){
     }
 
     if( all_one ){
-        display.setValue(segment_l+segment_r);
+        //display.setValue(segment_l+segment_r);
+        display.setValue_2digit(segment_l,segment_r)
     }
+    //display.setValue_2digit(0b1010101,0b0101010)
+
 
 }
 
@@ -258,6 +263,7 @@ function refresh(){
 
     if( all_one ){
         SEG_UPDATE();
+
     }
 
     ch = 1 - ch;

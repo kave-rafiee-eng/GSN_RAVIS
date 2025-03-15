@@ -45,6 +45,13 @@ SegmentDisplay.prototype.setValue = function(value) {
   this.draw();
 };
 
+SegmentDisplay.prototype.setValue_2digit = function(value1,value2) {
+  this.value1 = value1;
+  this.value2 = value2;
+  this.draw();
+};
+
+
 SegmentDisplay.prototype.draw = function() {
   var display = document.getElementById(this.displayId);
   if (display) {
@@ -92,14 +99,17 @@ SegmentDisplay.prototype.draw = function() {
       context.transform(1, 0, skew, 1, 0, 0);
 
       // draw segments
-      var xPos = 0;
+      /*var xPos = 0;
       var size = (this.value) ? this.value.length : 0;
       for (var i = 0; i < this.pattern.length; i++) {
         var mask  = this.pattern.charAt(i);
         var value = (i < size) ? this.value.charAt(i).toLowerCase() : ' ';
         xPos += this.drawDigit(context, xPos, mask, value);
-      }
-
+      }*/
+      var mask  = "#";
+      var xPos = 0;
+      xPos += this.drawDigit(context, xPos, mask, this.value1);
+       this.drawDigit(context, xPos, mask, this.value2);
       // finish drawing
       context.restore();
     }
@@ -170,7 +180,9 @@ SegmentDisplay.prototype.drawDigit = function(context, xPos, mask, c) {
       } else {
         var x = xPos;
         var y = 0;
-        context.fillStyle = this.getSegmentColor(c, '02356789acefp', '02356789abcdefgiopqrstz@');
+        //context.fillStyle = this.getSegmentColor(c, '02356789acefp', '02356789abcdefgiopqrstz@');
+        if( c & 1 )context.fillStyle = this.colorOn;
+        else context.fillStyle = this.colorOff
         context.beginPath();
         switch (this.cornerType) {
           case SegmentDisplay.SymmetricCorner:
@@ -199,7 +211,9 @@ SegmentDisplay.prototype.drawDigit = function(context, xPos, mask, c) {
       // draw segment b
       x = xPos + this.digitWidth - this.segmentWidth;
       y = 0;
-      context.fillStyle = this.getSegmentColor(c, '01234789adhpy', '01234789abdhjmnopqruwy');
+      //context.fillStyle = this.getSegmentColor(c, '01234789adhpy', '01234789abdhjmnopqruwy');
+      if( c & 2 )context.fillStyle = this.colorOn;
+      else context.fillStyle = this.colorOff
       context.beginPath();
       switch (this.cornerType) {
         case SegmentDisplay.SymmetricCorner:
@@ -223,7 +237,10 @@ SegmentDisplay.prototype.drawDigit = function(context, xPos, mask, c) {
       // draw segment c
       x = xPos + this.digitWidth - this.segmentWidth;
       y = h + this.segmentWidth;
-      context.fillStyle = this.getSegmentColor(c, '013456789abdhnouy', '01346789abdghjmnoqsuw@', '%');
+      //context.fillStyle = this.getSegmentColor(c, '013456789abdhnouy', '01346789abdghjmnoqsuw@', '%');
+      if( c & 4 )context.fillStyle = this.colorOn;
+      else context.fillStyle = this.colorOff
+
       context.beginPath();
       context.moveTo(x, y + this.segmentWidth + d);
       context.lineTo(x + s, y + s + d);
@@ -296,7 +313,9 @@ SegmentDisplay.prototype.drawDigit = function(context, xPos, mask, c) {
       else {
         x = xPos;
         y = this.digitHeight - this.segmentWidth;
-        context.fillStyle = this.getSegmentColor(c, '0235689bcdelotuy_', '0235689bcdegijloqsuz_=@');
+        //context.fillStyle = this.getSegmentColor(c, '0235689bcdelotuy_', '0235689bcdegijloqsuz_=@');
+        if( c & 8 )context.fillStyle = this.colorOn;
+        else context.fillStyle = this.colorOff
         context.beginPath();
         context.moveTo(x + this.segmentWidth + d, y);
         context.lineTo(x + this.digitWidth - this.segmentWidth - d, y);
@@ -326,7 +345,9 @@ SegmentDisplay.prototype.drawDigit = function(context, xPos, mask, c) {
       // draw segment e
       x = xPos;
       y = h + this.segmentWidth;
-      context.fillStyle = this.getSegmentColor(c, '0268abcdefhlnoprtu', '0268acefghjklmnopqruvw@');
+      //context.fillStyle = this.getSegmentColor(c, '0268abcdefhlnoprtu', '0268acefghjklmnopqruvw@');
+      if( c & 16 )context.fillStyle = this.colorOn;
+      else context.fillStyle = this.colorOff
       context.beginPath();
       context.moveTo(x, y + this.segmentWidth + d);
       context.lineTo(x + s, y + s + d);
@@ -350,7 +371,9 @@ SegmentDisplay.prototype.drawDigit = function(context, xPos, mask, c) {
       // draw segment f
       x = xPos;
       y = 0;
-      context.fillStyle = this.getSegmentColor(c, '045689abcefhlpty', '045689acefghklmnopqrsuvwy@', '%');
+      //context.fillStyle = this.getSegmentColor(c, '045689abcefhlpty', '045689acefghklmnopqrsuvwy@', '%');
+      if( c & 32 )context.fillStyle = this.colorOn;
+      else context.fillStyle = this.colorOff
       context.beginPath();
       context.moveTo(x + this.segmentWidth, y + this.segmentWidth + d);
       context.lineTo(x + this.segmentWidth, y + h + this.segmentWidth - d);
@@ -376,7 +399,9 @@ SegmentDisplay.prototype.drawDigit = function(context, xPos, mask, c) {
       if (this.segmentCount == 7) {
         x = xPos;
         y = (this.digitHeight - this.segmentWidth) / 2.0;
-        context.fillStyle = this.getSegmentColor(c, '2345689abdefhnoprty-=');
+       // context.fillStyle = this.getSegmentColor(c, '2345689abdefhnoprty-=');
+        if( c & 64 )context.fillStyle = this.colorOn;
+        else context.fillStyle = this.colorOff
         context.beginPath();
         context.moveTo(x + s + d, y + s);
         context.lineTo(x + this.segmentWidth + d, y);
@@ -554,6 +579,55 @@ SegmentDisplay.prototype.getSegmentColor = function(c, charSet7, charSet14, char
   }
 };
 
+//------------------------
+// تابع برای روشن کردن سگمنت‌ها بر اساس عدد 8 بیتی
+SegmentDisplay.prototype.setBinaryToBothSegments = function(byteValue) {
+  const segmentMap = [
+    0b0000001, // سگمنت a
+    0b0000010, // سگمنت b
+    0b0000100, // سگمنت c
+    0b0001000, // سگمنت d
+    0b0010000, // سگمنت e
+    0b0100000, // سگمنت f
+    0b1000000  // سگمنت g
+  ];
 
+  const display = document.getElementById(this.displayId);
+  if (!display) return;
 
+  const context = display.getContext('2d');
+  if (!context) return;
+
+  // پاک کردن نمایشگر قبل از رسم جدید
+  context.clearRect(0, 0, display.width, display.height);
+
+  // نمایش دو سگمنت مشابه
+  let xPos = 0;
+  for (let digit = 0; digit < 2; digit++) {
+    for (let i = 0; i < segmentMap.length; i++) {
+      if (byteValue & segmentMap[i]) {
+        this.drawSegment(context, xPos, i, true); // روشن کردن سگمنت
+      } else {
+        this.drawSegment(context, xPos, i, false); // خاموش کردن سگمنت
+      }
+    }
+    xPos += this.digitWidth + this.digitDistance; // حرکت به سگمنت بعدی
+  }
+};
+
+// تابع برای رسم سگمنت‌ها (مستقیماً روی Canvas)
+SegmentDisplay.prototype.drawSegment = function(context, xPos, segmentIndex, isOn) {
+  context.fillStyle = isOn ? this.colorOn : this.colorOff;
+  const offset = this.segmentWidth / 2;
+
+  switch (segmentIndex) {
+    case 0: context.fillRect(xPos + offset, 0, this.digitWidth - offset * 2, this.segmentWidth); break; // a
+    case 1: context.fillRect(xPos + this.digitWidth - this.segmentWidth, offset, this.segmentWidth, this.digitHeight / 2 - offset); break; // b
+    case 2: context.fillRect(xPos + this.digitWidth - this.segmentWidth, this.digitHeight / 2 + offset, this.segmentWidth, this.digitHeight / 2 - offset); break; // c
+    case 3: context.fillRect(xPos + offset, this.digitHeight - this.segmentWidth, this.digitWidth - offset * 2, this.segmentWidth); break; // d
+    case 4: context.fillRect(xPos, this.digitHeight / 2 + offset, this.segmentWidth, this.digitHeight / 2 - offset); break; // e
+    case 5: context.fillRect(xPos, offset, this.segmentWidth, this.digitHeight / 2 - offset); break; // f
+    case 6: context.fillRect(xPos + offset, this.digitHeight / 2 - offset / 2, this.digitWidth - offset * 2, this.segmentWidth); break; // g
+  }
+};
 

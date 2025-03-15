@@ -289,9 +289,14 @@ include "../../../../Footer.php";
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
 
-<script  src="SEG_list_data.js"></script>
-<script  src="SEG_mqtt_fun.js"></script>
-<script  src="seven_segment.js"></script>
+<?php
+$version = '2.0.5'; // فقط این نسخه را تغییر دهید
+?>
+
+
+<script  src="SEG_list_data.js?v=<?php echo $version; ?>"></script>"></script>
+<script  src="SEG_mqtt_fun.js?v=<?php echo $version; ?>"></script>"></script>
+<script  src="seven_segment.js?v=<?php echo $version; ?>"></script>"></script>
 
 <!-- Vendor JS Files -->
 <script src="/GSM_RAVIS/assets/vendor/apexcharts/apexcharts.min.js"></script>
