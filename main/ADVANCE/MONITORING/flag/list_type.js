@@ -459,6 +459,34 @@ list_data.push(["Serial Extension Input","I5", JSON.stringify(obj),"unknown",0  
 obj.ar = 2; obj.ad = 8;  obj.bit=7; obj.not=0;
 list_data.push(["Serial Extension Input","S68", JSON.stringify(obj),"unknown",0  ]);
 
+/*****/
 
+obj.ar = 2; obj.ad = 12;  obj.bit=1; obj.not=0;
+list_data.push(["Main Input (HW)","CF3", JSON.stringify(obj),"unknown",0  ]);
 
+obj.ar = 2; obj.ad = 12;  obj.bit=2; obj.not=0;
+list_data.push(["Main Input (HW)","1CF", JSON.stringify(obj),"unknown",0  ]);
 
+obj.ar = 2; obj.ad = 12;  obj.bit=3; obj.not=0;
+list_data.push(["Main Input (HW)","CAN", JSON.stringify(obj),"unknown",0  ]);
+
+obj.ar = 2; obj.ad = 12;  obj.bit=4; obj.not=0;
+list_data.push(["Main Input (HW)","CA1", JSON.stringify(obj),"unknown",0  ]);
+
+obj.ar = 2; obj.ad = 12;  obj.bit=5; obj.not=0;
+list_data.push(["Main Input (HW)","IN1", JSON.stringify(obj),"unknown",0  ]);
+
+obj.ar = 2; obj.ad = 12;  obj.bit=6; obj.not=0;
+list_data.push(["Main Input (HW)","IN2", JSON.stringify(obj),"unknown",0  ]);
+
+obj.ar = 2; obj.ad = 12;  obj.bit=7; obj.not=0;
+list_data.push(["Main Input (HW)","IN3", JSON.stringify(obj),"unknown",0  ]);
+
+obj.ar = 2; obj.ad = 12;  obj.bit=8; obj.not=0;
+list_data.push(["Main Input (HW)","IN4", JSON.stringify(obj),"unknown",0  ]);
+
+for( let i=0; i<12; i++ ){
+
+    obj.ar = 2; obj.ad = 12;  obj.bit=i+11; obj.not=0;
+    list_data.push(["Main Input (HW)","H"+(i+1), JSON.stringify(obj),"unknown",0  ]);
+}
