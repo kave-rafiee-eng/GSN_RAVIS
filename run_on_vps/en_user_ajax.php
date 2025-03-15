@@ -35,8 +35,58 @@ if ( isset($_GET["json"])  ) {
             $resault=mysqli_query($con,$quary);
         }
 
-        $quary = "INSERT INTO `date_time`(`id`, `serial`, `name`, `date`, `time`) VALUES ('0','$obj->serial','last_en_user','$date','$time')";
+        $id_found = 0;
+        // -----
+        $quary = "SELECT `id`, `serial`, `name`, `date`, `time` FROM `date_time` WHERE `serial` = '$obj->serial' ";
         $resault=mysqli_query($con,$quary);
+        while( $page = mysqli_fetch_assoc($resault) ) {
+            if ($page['name'] == "last_en_user") {
+                $id_found=1;
+                $last_en_user_time = $page['time'];
+                $last_en_user_date = $page['date'];
+            }
+        }
+        
+
+        $insert_new=0;
+
+        if( $id_found == 1 ){
+
+            echo $last_en_user_time .'+'.$last_en_user_date . '/';
+
+            if( $last_en_user_date == $date ){
+                // تبدیل زمان‌ها به timestamp
+                $STAMP_last_en_user_time = strtotime($last_en_user_time);
+                $STAMP_time = strtotime($time);
+
+                $differenceInSeconds = abs($STAMP_time - $STAMP_last_en_user_time);
+
+                if ($differenceInSeconds <= 300) {
+
+                }
+                else {$insert_new=1;
+                    echo "0";
+                }
+            }
+            else {
+                $insert_new = 1;
+                echo "1";
+            }
+
+        }
+        else{
+            $insert_new=1;
+            echo "2";
+        }
+
+        if( $insert_new == 1 ){
+
+            echo "*******";
+            $quary = "INSERT INTO `date_time`(`id`, `serial`, `name`, `date`, `time`) VALUES ('0','$obj->serial','last_en_user','$date','$time')";
+            $resault=mysqli_query($con,$quary);
+        }
+
+
 
         echo "OK";
 
