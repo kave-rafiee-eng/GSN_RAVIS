@@ -98,12 +98,6 @@ function show_table_flag(){
         if (copiedArray[j][4] == 1) no_error=0;
     }
 
-    for (let i = 0; i < uniqueArAdPairs.length; i++) {
-        if (uniqueArAdPairs[i][1] == 0) {
-            no_error=0;
-        }
-    }
-
     if( no_error ){
         var tr = document.createElement("TR");
         var td = document.createElement("TD");
@@ -122,7 +116,7 @@ function show_table_flag(){
 
         td = document.createElement("TD");
 
-        newButton.textContent = "all 0"
+        newButton.textContent = "all"
         newButton.style.width = "100%"
         newButton.className = "btn btn-primary btn-lg"
 
