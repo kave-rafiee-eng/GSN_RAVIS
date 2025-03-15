@@ -98,6 +98,14 @@ function show_table_flag(){
         if (copiedArray[j][4] == 1) no_error=0;
     }
 
+    for (let i = 0; i < list_data.length; i++) {
+
+        if ( list_data[i][3] != "update" ) {
+            no_error=0;
+        }
+
+    }
+
     if( no_error ){
         var tr = document.createElement("TR");
         var td = document.createElement("TD");

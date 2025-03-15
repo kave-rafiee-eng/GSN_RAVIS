@@ -254,14 +254,14 @@ include "../../../../Footer.php";
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
 
-<script>
-    const version = '1.0.3'; // این نسخه را هنگام به‌روزرسانی تغییر دهید
-</script>
+<?php
+$version = '1.0.5'; // فقط این نسخه را تغییر دهید
+?>
 
 <!-- Vendor JS Files -->
-<script  src="Error_Mqtt_Function.js?v=<script>document.write(version)</script>"></script>
-<script  src="Error_List.js?v=<script>document.write(version)</script>"></script>
-<script  src="Error.js"></script>
+<script  src="Error_Mqtt_Function.js?v=<?php echo $version; ?>"></script>
+<script  src="Error_List.js?v=<?php echo $version; ?>>"></script>
+<script  src="Error.js?v=<?php echo $version; ?>"></script>
 
 <script src="/GSM_RAVIS/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/GSM_RAVIS/assets/vendor/quill/quill.js"></script>
