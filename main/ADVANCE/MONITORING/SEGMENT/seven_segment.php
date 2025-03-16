@@ -10,7 +10,7 @@ include "../../../../function.php"; //my_function
 //-------------------------------------------------NUMBER OF STOP STNG    2
 list($id,$number_of_stop,$change) = post_register_manager($con,"number_of_stop",$serial,"advance_settin","general*",0,2);
 
-$version = '7.0.5'; // فقط این نسخه را تغییر دهید
+$version = '8.0.5'; // فقط این نسخه را تغییر دهید
 ?>
 
 <!DOCTYPE html>
@@ -169,27 +169,6 @@ include "../../../../Sidebar.php";
 
             </div>
 
-            <div class="col-lg-2">
-                <div class="card"  >
-                    <div class="card-body ">
-                        <h5 class="card-title">Hall</h5>
-
-                        <table  class="table table-bordered"   >
-                            <thead>
-                            <tr>
-                                <th style="background-color: #97BC62" scope="col">N</th>
-                            </tr>
-                            </thead>
-                            <tbody id="table_flag" >
-
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-
-            </div>
-
 
             <div class="col-lg-4">
                 <div class="row">
@@ -310,6 +289,31 @@ include "../../../../Sidebar.php";
                     </div>
                 </div>
             </div>
+
+            <div class="col-lg-2">
+                <div class="card"  >
+                    <div class="card-body ">
+                        <h5 class="card-title">Hall</h5>
+
+                        <select  onchange="list_type_change()" onload="" id="select_type"  class="form-select" aria-label="Default select example">
+                        </select>
+
+                        <table  class="table table-bordered"   >
+                            <thead>
+                            <tr>
+                                <th style="background-color: #97BC62" scope="col">N</th>
+                            </tr>
+                            </thead>
+                            <tbody id="table_flag" >
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+
 
         </div>
     </section>

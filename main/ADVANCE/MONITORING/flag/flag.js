@@ -157,8 +157,6 @@ function show_table_flag(){
 
     }
 
-
-
 }
 
 

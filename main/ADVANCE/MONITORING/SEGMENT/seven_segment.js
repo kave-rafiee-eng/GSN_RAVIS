@@ -19,6 +19,12 @@ function load_end() {
 
     console.log("start");
 
+    show_select_type();
+
+    change_array();
+
+    show_table_flag();
+
 }
 
 window.addEventListener("load", load_end);
@@ -58,13 +64,33 @@ function send() {
         }
     }
 
+    for (let i = 0; i < uniqueArAdPairs.length; i++) {
+        if (uniqueArAdPairs[i][1] == 0) {
+            all_osend=0;
+        }
+    }
+
     if (all_osend == 1) {
         for (let i = 0; i < SEG_list_data.length; i++) {
             SEG_list_data[i][4] = 0;
         }
+        for (let i = 0; i < uniqueArAdPairs.length; i++) {
+            uniqueArAdPairs[i][1]=0;
+        }
     }
 
     let index = 1;
+
+    if( send_one_time ){
+        var JOSN_send1 = JSON.parse(send_one_time);
+        obj_send["ad" + index] = JOSN_send1.ad;
+        obj_send["ar" + index] = JOSN_send1.ar;
+        obj_send["st" + index] = 1;
+        obj_send["da" + index] = JOSN_send1.bit;
+        index=10;
+        send_one_time=0;
+        send_one_time.length =0;
+    }
     for (let i = 0; i < SEG_list_data.length; i++) {
 
         if (SEG_list_data[i][4] == 0) {
@@ -79,13 +105,33 @@ function send() {
             index++;
 
             SEG_list_data[i][4] = 1;
-            SEG_list_data[i][3] = "update";
 
             console.log("****");
 
         }
 
-        if (index > 3) break;
+        if (index > 2) break;
+
+    }
+
+    for (let i = 0; i < uniqueArAdPairs.length; i++) {
+
+        if( uniqueArAdPairs[i][1] == 0 ){
+
+            var obj = JSON.parse(uniqueArAdPairs[i][0])
+
+            obj_send["ad"+index] = obj.ad;
+            obj_send["ar"+index] = obj.ar;
+            obj_send["st"+index] = 0;
+            obj_send["da"+index] = 0;
+
+            index++;
+
+            uniqueArAdPairs[i][1]=1;
+
+        }
+
+        if( index > 3 )break;
 
     }
 
@@ -132,6 +178,25 @@ function SEG_mqtt_massage_get(DATA) {
 
     }
 
+    for (let i = 0; i < list_data.length; i++) {
+
+        var DATA_List = JSON.parse(list_data[i][2])
+
+        for (let j = 0; j < 10; j++) {
+
+            if(DATA_List.ar == DATA_Recive["ar"+j] && DATA_List.ad == DATA_Recive["ad"+j] ){
+
+                if( DATA_Recive["da"+j] & (1 << DATA_List.bit ) )list_data[i][4] =  1 - DATA_List.not;
+                else list_data[i][4] = DATA_List.not - 0;
+                list_data[i][3] = "update";
+                console.log(DATA_List);
+                timer_send = 5;
+            }
+
+        }
+
+    }
+
     for (let i = 0; i < SEG_list_data.length; i++) {
 
         if (SEG_list_data[i][1] == "seg_l") {
@@ -160,6 +225,19 @@ function SEG_mqtt_massage_get(DATA) {
         }
 
     }
+
+    let all_osend = 1;
+
+    for (let i = 0; i < uniqueArAdPairs.length; i++) {
+        if (uniqueArAdPairs[i][1] == 0) {
+            all_osend=0;
+        }
+    }
+
+    if (all_osend == 1) {
+        show_table_flag();
+    }
+
 
     SEG_UPDATE();
 
@@ -479,5 +557,160 @@ function decodeSevenSegment(number) {
 
 
 //----------------------------
+var list_uniq_type = [...new Set(list_data.map(item => item[0]))];
+
+function show_select_type(){
+
+    for (let i=0; i<list_uniq_type.length; i++) {
+        var z = document.createElement("option");
+        z.setAttribute("value", i);
+        var t = document.createTextNode(list_uniq_type[i]);
+        z.appendChild(t);
+        document.getElementById("select_type").appendChild(z);
+    }
+}
+
+function list_type_change() {
+    let selectElement = document.getElementById("select_type");
+    let selectedValue = selectElement.value; // مقدار انتخاب‌شده را دریافت می‌کند
+
+    console.log("مقدار انتخاب‌شده:", selectedValue);
+
+    change_array();
+
+    show_table_flag();
+}
+
+var status="unknown";
+let bit=1;
+
+let uniqueArAdPairs
+
+let inputOnlyList
+
+function change_array(){
+
+    let selectElement = document.getElementById("select_type");
+    let selectedValue = selectElement.value; // مقدار انتخاب‌شده را دریافت می‌کند
+
+    inputOnlyList = list_data
+        .filter(item => item[0] === list_uniq_type[selectedValue] ) // انتخاب فقط داده‌های "input"
+        .map(item => [...item]);
 
 
+    uniqueArAdPairs = [
+        ...new Map(
+            inputOnlyList.map(item => {
+                let obj = JSON.parse(item[2]);
+                return [`${obj.ar}-${obj.ad}`,item[2]]; // ترکیب ar و ad به عنوان کلید
+
+            })
+        ).values()
+    ];
+
+    uniqueArAdPairs = uniqueArAdPairs.map(item => [item, 0]);
+
+    console.log("aaaa");
+}
+
+var send_one_time;
+function show_table_flag(){
+
+   // change_array();
+
+    var table_flag = document.getElementById("table_flag");
+
+    table_flag.replaceChildren();
+
+    var copiedArray = JSON.parse(JSON.stringify(list_data));
+
+    let selectElement = document.getElementById("select_type");
+    let selectedValue = selectElement.value; // مقدار انتخاب‌شده را دریافت می‌کند
+
+    for (let j = 0; j < copiedArray.length; j++) {
+
+        if( copiedArray[j][0] == list_uniq_type[selectedValue] ){
+
+            var tr = document.createElement("TR");
+
+            tr.setAttribute("id", "tr_flag"+j);
+            table_flag.appendChild(tr);
+
+            const newButton = document.createElement('button');
+
+            td = document.createElement("TD");
+
+            newButton.textContent = copiedArray[j][1]+"        "
+            newButton.style.width = "100%"
+            newButton.className = "btn btn-primary btn-sm"
+
+            // افزودن رویداد کلیک به دکمه
+            newButton.addEventListener('click', function() {
+
+                list_data[j][3] = "click";
+                copiedArray[j][3] = "click";
+
+                handleButtonClick(list_data[j][3]);
+
+                send_one_time = list_data[j][2]
+
+            });
+
+            if( copiedArray[j][3] == "update" ){
+
+                if( copiedArray[j][4] == 1 ){
+
+                    newButton.style.background = "#dd5151"
+                    newButton.style.color = "#ffffff"
+                    newButton.style.border = "1px solid #dd5151"
+                    newButton.style.textShadowColor = "text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff"
+                    newButton.style.boxShadow = " 0 0 20px #dd5151"
+
+                    var symbol = document.createElement('i')
+                    symbol.className = "bi bi-1-circle-fill";
+                    symbol.style.color = "#ffffff"
+                    newButton.appendChild(symbol);
+
+                }
+                else{
+
+                    newButton.style.background = "#0068ff"
+                    newButton.style.color = "#ffffff"
+                    newButton.style.border = "1px solid #ffffff"
+                    newButton.style.textShadowColor = "text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff"
+                    newButton.style.boxShadow = " 0 0 20px #ffffff"
+
+                    var symbol = document.createElement('i')
+                    symbol.className = "bi bi-0-circle-fill";
+                    symbol.style.color = "#ffffff"
+                    newButton.appendChild(symbol);
+                }
+            }
+            else if(copiedArray[j][3] == "click") {
+                newButton.style.background = "#f6d037"
+                newButton.style.color = "#da6060"
+                newButton.style.border = "1px solid #dcdbdb"
+                newButton.style.textShadowColor = "text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff"
+            }
+            else{
+                newButton.style.background = "#dcdbdb"
+                newButton.style.color = "#000000"
+                newButton.style.border = "1px solid #dcdbdb"
+                newButton.style.textShadowColor = "text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #ffffff"
+            }
+
+            td.appendChild(newButton);
+            tr.appendChild(td);
+
+        }
+
+    }
+
+}
+
+function handleButtonClick(buttonName) {
+
+    buttonName = "click"
+   // alert(list_data)
+    show_table_flag();
+}
