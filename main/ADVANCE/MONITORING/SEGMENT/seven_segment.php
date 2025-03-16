@@ -113,7 +113,7 @@ include "../../../../Sidebar.php";
     <section class="section">
         <div class="row">
 
-            <div class="col-lg-7">
+            <div class="col-lg-6">
                 <div class="card"  >
                     <div class="card-body ">
                         <h5 class="card-title">Display</h5>
@@ -164,19 +164,34 @@ include "../../../../Sidebar.php";
 
                                 </li>
                             </ul>
+                    </div>
+                </div>
 
+            </div>
+
+            <div class="col-lg-2">
+                <div class="card"  >
+                    <div class="card-body ">
+                        <h5 class="card-title">Hall</h5>
+
+                        <table  class="table table-bordered"   >
+                            <thead>
+                            <tr>
+                                <th style="background-color: #97BC62" scope="col">N</th>
+                            </tr>
+                            </thead>
+                            <tbody id="table_flag" >
+
+                            </tbody>
+                        </table>
 
                     </div>
-
-
                 </div>
 
             </div>
 
 
-
-
-            <div class="col-lg-5">
+            <div class="col-lg-4">
                 <div class="row">
                     <div class="card">
                         <div class="card-body">
