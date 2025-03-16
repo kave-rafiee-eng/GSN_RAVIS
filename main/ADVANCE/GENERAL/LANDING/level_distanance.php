@@ -175,7 +175,9 @@ include "../../../../Sidebar.php";
 
 <main  id="main" class="main">
 
-
+    <?php
+    include "../modal.php";
+    ?>
     <div class="pagetitle">
 
         <h1>branch</h1>

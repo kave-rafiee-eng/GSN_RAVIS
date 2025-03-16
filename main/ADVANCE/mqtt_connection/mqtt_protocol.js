@@ -164,6 +164,7 @@ function send_mqtt(){
     }
 
     if( send == 1 ){
+        showProgressModal('در حال اتصال ...', 'لطفاً منتظر بمانید.');
         dbg_mass.innerHTML = JSON.stringify(obj_send)
         publishMessage(topic_publish,JSON.stringify(obj_send));
     }
@@ -207,6 +208,8 @@ function show_status(){
     }
 
     progress =    Math.round(progress_passed/step *100) ;
+
+    updateProgress(progress);
 
     status="upload & download";
     if( progress == 100 )status="update";
@@ -323,3 +326,55 @@ const kave_chart = new Chart(ctx, {
 });
 
 
+
+let alertModal; // متغیر به صورت گلوبال تعریف می‌شود
+let mqtt_progress = 10;
+function showProgressModal(title, message) {
+
+    const modalTitle = document.getElementById('modalTitle');
+    const modalMessage = document.getElementById('modalMessage');
+    const progressBar_Madal = document.getElementById('progressBar_Madal');
+    const closeButton = document.getElementById('closeButton');
+
+    if (!alertModal) {
+        alertModal = new bootstrap.Modal(document.getElementById('alertModal'));
+
+        // تنظیم عنوان و پیام به صورت پویا
+        modalTitle.textContent = title;
+        modalMessage.textContent = message;
+        progressBar_Madal.style.width = `${mqtt_progress}%`;
+        progressBar_Madal.textContent = `${mqtt_progress}%`;
+        closeButton.disabled = false;
+
+    }
+
+    // نمایش مودال
+    alertModal.show();
+
+    closeButton.removeEventListener('click', closeModalHandler); // جلوگیری از چندین بار افزودن
+    closeButton.addEventListener('click', closeModalHandler);
+
+}
+
+function closeModalHandler() {
+    if (alertModal) alertModal.hide();
+}
+
+// تابعی برای کنترل مقدار progress
+function updateProgress(value) {
+    const progressBar_Madal = document.getElementById('progressBar_Madal');
+    const modalMessage = document.getElementById('modalMessage');
+
+    progressBar_Madal.style.width = `${value}%`;
+    progressBar_Madal.textContent = `${value}%`;
+
+    if (value >= 100) {
+        modalMessage.textContent = "عملیات با موفقیت انجام شد!";
+
+        // بستن خودکار مودال پس از تکمیل
+        setTimeout(() => {
+            modalMessage.textContent = "لطفاً صبر کنید، عملیات در حال انجام است.";
+            if (alertModal) alertModal.hide();
+        }, 500);
+    }
+}

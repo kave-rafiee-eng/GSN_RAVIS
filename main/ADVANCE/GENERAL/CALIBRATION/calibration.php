@@ -192,6 +192,10 @@ include "../../../../Sidebar.php";
 
 <main  id="main" class="main">
 
+    <?php
+    include "../modal.php";
+    ?>
+
     <div class="row d-flex  ">
         <h5> <span class="badge bg-dark">
         <form onchange="refresh_radio()" action="" method="post" id="form_refresh">

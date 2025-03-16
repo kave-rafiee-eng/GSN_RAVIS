@@ -163,7 +163,9 @@ include "../../../../Sidebar.php";
 
 <main  id="main" class="main">
 
-
+    <?php
+    include "../modal.php";
+    ?>
     <section class="section">
         <div class="row">
             <div class="col-lg-7">
