@@ -23,3 +23,58 @@ button {
     box-shadow: 0 0 5px #008cff, 0 0 20px #008cff, 0 0 50px #008cff,
     0 0 100px #008cff;
 }
+
+
+
+
+
+.elevator-container {
+    position: relative;
+    width: 100%;
+    height: 20vh; /* مقیاس بر اساس ارتفاع صفحه */
+    max-width: 500px;
+    background-color: #ffffff;
+    border: 5px solid #504e51;
+    border-radius: 15px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.door {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    background-color: #bbb;
+    border: 2px solid #888;
+    transition: transform 1.5s ease-in-out;
+}
+
+.left-door {
+    left: 0;
+    transform: translateX(0);  /* در حالت بسته */
+}
+
+.right-door {
+    right: 0;
+    transform: translateX(0);  /* در حالت بسته */
+}
+
+.open .left-door {
+    transform: translateX(-100%);
+}
+
+.open .right-door {
+    transform: translateX(100%);
+}
+
+.status {
+    margin-top: 15px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .elevator-container {
+        height: 40vh; /* ارتفاع کمتر در صفحه‌های کوچکتر */
+    }
+}

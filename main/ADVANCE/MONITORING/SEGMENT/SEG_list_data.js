@@ -7,3 +7,6 @@ obj.ar = 4; obj.ad = 1;
 SEG_list_data.push(["seg","seg_l" , JSON.stringify(obj),"unknown",0,0  ]);
 obj.ar = 4; obj.ad = 2;
 SEG_list_data.push(["seg","seg_r" , JSON.stringify(obj),"unknown",0,0  ]);
+
+obj.ar = 2; obj.ad = 4;
+SEG_list_data.push(["Carcodec","Carcodec Output" , JSON.stringify(obj),"unknown",0,0  ]);

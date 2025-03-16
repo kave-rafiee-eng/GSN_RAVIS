@@ -126,24 +126,45 @@ include "../../../../Sidebar.php";
                                         Sorry, your browser does not support canvas.
                                     </canvas>
 
-                                    <div class="row"  style="background-color: rgb(255, 255, 255)">
-                                        <div class="col-11 "  >
-                                            <canvas id="display" width="260" height="140">
-                                                Your browser is unfortunately not supported.
-                                            </canvas>
-                                        </div>
-                                    </div>
+                                    <canvas id="display" width="260" height="140">
+                                        Your browser is unfortunately not supported.
+                                    </canvas>
 
                                 </li>
 
                                 <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>dir</li>
                                 <li class="list-group-item">
-                                    <div class="row" style="background-color: #919191" >
+
+                                    <div class="row" >
+                                        <div class="col-lg-4 text-center"  >
+                                            <label id="labe_door1">close</label>
+                                            <div class="elevator-container" id="door1">
+                                                <div class="door left-door"></div>
+                                                <div class="door right-door"></div>
+                                            </div>
+                                        </div>
+
+                                        <div  class="col-lg-4 text-center" >
+                                            <label id="labe_door2">close</label>
+                                            <div class="elevator-container" id="door2">
+                                                <div class="door left-door"></div>
+                                                <div class="door right-door"></div>
+                                            </div>
+                                        </div>
+
+                                        <div  class="col-lg-4 text-center" >
+                                            <label id="labe_door3">close</label>
+                                            <div class="elevator-container" id="door3">
+                                                <div class="door left-door"></div>
+                                                <div class="door right-door"></div>
+                                            </div>
+                                        </div>
 
                                     </div>
-                                </li>
 
+                                </li>
                             </ul>
+
 
                     </div>
 
@@ -151,6 +172,9 @@ include "../../../../Sidebar.php";
                 </div>
 
             </div>
+
+
+
 
             <div class="col-lg-5">
                 <div class="row">
@@ -290,7 +314,7 @@ include "../../../../Footer.php";
 <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
 
 <?php
-$version = '2.0.5'; // فقط این نسخه را تغییر دهید
+$version = '3.0.5'; // فقط این نسخه را تغییر دهید
 ?>
 
 

@@ -251,7 +251,7 @@ list_data.push(["Carcodec Input","PHC2" , JSON.stringify(obj),"unknown",0  ]);
 obj.ar = 2; obj.ad = 3;  obj.bit=5; obj.not=0;
 list_data.push(["Carcodec Input","PHC3" , JSON.stringify(obj),"unknown",0  ]);
 
-obj.ar = 2; obj.ad = 3;  obj.bit=6; obj.not=1;
+obj.ar = 2; obj.ad = 3;  obj.bit=6; obj.not=0;
 list_data.push(["Carcodec Input","DO1" , JSON.stringify(obj),"unknown",0  ]);
 
 obj.ar = 2; obj.ad = 3;  obj.bit=7; obj.not=0;

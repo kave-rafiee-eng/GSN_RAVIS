@@ -1,15 +1,17 @@
 var json_server = JSON.parse(document.getElementById("json_server").innerHTML)
 var number_of_stop = json_server.number_of_stop;
 
-var dir=0;
-var dir_UP=0;
+var dir = 0;
+var dir_UP = 0;
 var dir_DN = 0;
 
-var segment=1;
-var segment_l="0";
-var segment_r="0";
+var segment = 1;
+var segment_l = "0";
+var segment_r = "0";
 
-function load_end(){
+var door = [0,0,0]
+
+function load_end() {
 
     startConnect();
 
@@ -18,77 +20,80 @@ function load_end(){
     console.log("start");
 
 }
+
 window.addEventListener("load", load_end);
 
 // -------------------------------------------------------------------- Timer Send MQTT
 
-let timer_send=50;
-function red(){
+let timer_send = 50;
 
-    if( timer_send > 0 )timer_send--;
+function red() {
+
+    if (timer_send > 0) timer_send--;
     else {
         send();
-        timer_send=50;
+        timer_send = 50;
     }
 
 }
+
 setInterval(red, 100);
 
 // -------------------------------------------------------------------- Send MQTT
 
-function send(){
+function send() {
 
     var obj_send = new Object();
 
-    let serial = Number(document.getElementById("div_serial").textContent )
+    let serial = Number(document.getElementById("div_serial").textContent)
 
     obj_send.serial = serial;
 
-     console.log("Send Data");
+    console.log("Send Data");
 
-    let all_osend=1;
+    let all_osend = 1;
     for (let i = 0; i < SEG_list_data.length; i++) {
         if (SEG_list_data[i][4] == 0) {
-            all_osend=0;
+            all_osend = 0;
         }
     }
 
-    if( all_osend == 1 ){
+    if (all_osend == 1) {
         for (let i = 0; i < SEG_list_data.length; i++) {
-            SEG_list_data[i][4]=0;
+            SEG_list_data[i][4] = 0;
         }
     }
 
-    let index=1;
+    let index = 1;
     for (let i = 0; i < SEG_list_data.length; i++) {
 
-        if( SEG_list_data[i][4] == 0 ){
+        if (SEG_list_data[i][4] == 0) {
 
             var obj = JSON.parse(SEG_list_data[i][2])
 
-            obj_send["ad"+index] = obj.ad;
-            obj_send["ar"+index] = obj.ar;
-            obj_send["st"+index] = 0;
-            obj_send["da"+index] = 0;
+            obj_send["ad" + index] = obj.ad;
+            obj_send["ar" + index] = obj.ar;
+            obj_send["st" + index] = 0;
+            obj_send["da" + index] = 0;
 
             index++;
 
-            SEG_list_data[i][4] =1;
+            SEG_list_data[i][4] = 1;
             SEG_list_data[i][3] = "update";
 
             console.log("****");
 
         }
 
-        if( index > 3 )break;
+        if (index > 3) break;
 
     }
 
-    let topic = "server/"+serial
+    let topic = "server/" + serial
 
-    publishMessage(topic,JSON.stringify(obj_send));
+    publishMessage(topic, JSON.stringify(obj_send));
 
-    kave_chart.data.datasets[0].data[0]=massage_count*50;
+    kave_chart.data.datasets[0].data[0] = massage_count * 50;
     kave_chart.update()
 
 }
@@ -96,15 +101,16 @@ function send(){
 
 // -------------------------------------------------------------------- Recive MQTT
 
-let color_pr=0;
-function SEG_mqtt_massage_get(DATA){
+let color_pr = 0;
+var C_out=0;
+function SEG_mqtt_massage_get(DATA) {
 
     SegmentDisplay.colorOn = 'rgb(62,233,15)';
 
 
     console.log("DATA GET");
 
-    var DATA_Recive = JSON.parse(DATA) ;
+    var DATA_Recive = JSON.parse(DATA);
 
     for (let i = 0; i < SEG_list_data.length; i++) {
 
@@ -112,10 +118,10 @@ function SEG_mqtt_massage_get(DATA){
 
         for (let j = 0; j < 10; j++) {
 
-            if(DATA_List.ar == DATA_Recive["ar"+j] && DATA_List.ad == DATA_Recive["ad"+j] ){
+            if (DATA_List.ar == DATA_Recive["ar" + j] && DATA_List.ad == DATA_Recive["ad" + j]) {
 
                 SEG_list_data[i][3] = "update";
-                SEG_list_data[i][5] = DATA_Recive["da"+j];
+                SEG_list_data[i][5] = DATA_Recive["da" + j];
                 console.log(DATA_List);
 
                 timer_send = 5;
@@ -128,17 +134,29 @@ function SEG_mqtt_massage_get(DATA){
 
     for (let i = 0; i < SEG_list_data.length; i++) {
 
-        if( SEG_list_data[i][1] == "seg_l"  ){
-           // segment_r = decodeSevenSegment(Number(SEG_list_data[i][5])&127) ;
-            segment_r = SEG_list_data[i][5]&127;
-            if( Number(SEG_list_data[i][5]) & 128 )dir_UP=1;
-            else dir_UP=0;
+        if (SEG_list_data[i][1] == "seg_l") {
+            // segment_r = decodeSevenSegment(Number(SEG_list_data[i][5])&127) ;
+            segment_r = SEG_list_data[i][5] & 127;
+            if (Number(SEG_list_data[i][5]) & 128) dir_UP = 1;
+            else dir_UP = 0;
         }
-        if( SEG_list_data[i][1] == "seg_r"  ){
+        if (SEG_list_data[i][1] == "seg_r") {
             //segment_l = decodeSevenSegment(Number(SEG_list_data[i][5])&127) ;
-            segment_l = SEG_list_data[i][5]&127;
-            if( Number(SEG_list_data[i][5]) & 128 )dir_DN=1
-            else dir_DN=0
+            segment_l = SEG_list_data[i][5] & 127;
+            if (Number(SEG_list_data[i][5]) & 128) dir_DN = 1
+            else dir_DN = 0
+        }
+        if (SEG_list_data[i][1] == "Carcodec Output") {
+
+            C_out = SEG_list_data[i][5] ;
+
+            if( Number(C_out) & 1)door[0]=1;
+            else door[0]=0;
+            if( Number(C_out) & 2)door[1]=1;
+            else door[1]=0;
+            if( Number(C_out) & 4)door[2]=1;
+            else door[2]=0;
+
         }
 
     }
@@ -149,56 +167,72 @@ function SEG_mqtt_massage_get(DATA){
 
     //send();
 
-    kave_chart.data.datasets[0].data[1]=get_count*50;
+    kave_chart.data.datasets[0].data[1] = get_count * 50;
     kave_chart.update()
 
 
-   // show_status();
+    // show_status();
 }
-
 
 
 // -------------------------------------------------------------------- 7SEG UPDATEER
 
-function SEG_UPDATE(){
+function SEG_UPDATE() {
 
-    let all_one=1;
+    let all_one = 1;
     for (let i = 0; i < SEG_list_data.length; i++) {
-        if ( SEG_list_data[i][4] == 0 ) all_one=0;
+        if (SEG_list_data[i][4] == 0) all_one = 0;
     }
 
-    if( all_one ){
-        //display.setValue(segment_l+segment_r);
-        display.setValue_2digit(segment_l,segment_r)
+    if (all_one) {
+
+        display.setValue_2digit(segment_l, segment_r)
+
+
+        // دسترسی به درب‌ها و لیبل‌ها به صورت خودکار
+        const doors = [1, 2, 3].map(num => document.getElementById(`door${num}`));
+        const labels = [1, 2, 3].map(num => document.getElementById(`labe_door${num}`));
+
+        // بروزرسانی وضعیت درب‌ها
+        doors.forEach((doorElement, index) => {
+            if (door[index]) {
+                doorElement.classList.remove('open');
+                labels[index].innerText = "Close";
+            } else {
+                doorElement.classList.add('open');
+                labels[index].innerText = "Open";
+            }
+        });
+
     }
-    //display.setValue_2digit(0b1010101,0b0101010)
+
 
 
 }
 
 // -------------------------------------------------------------------- STATUS
 
-function show_status(){
+function show_status() {
 
     status = "update"
 
-    let step=0;
-    let progress_passed=0;
+    let step = 0;
+    let progress_passed = 0;
 
     for (let i = 0; i < SEG_list_data.length; i++) {
         step++;
-        if ( SEG_list_data[i][4] == 1 ) {
+        if (SEG_list_data[i][4] == 1) {
             progress_passed++;
         }
     }
 
-    if( progress_passed == step )color_pr = 1 - color_pr
+    if (progress_passed == step) color_pr = 1 - color_pr
 
-    progress =    Math.round(progress_passed/step *100) ;
+    progress = Math.round(progress_passed / step * 100);
 
-    status="upload & download";
-    if( progress == 100 )status="update";
-    if(progress == 0)status = "unknown";
+    status = "upload & download";
+    if (progress == 100) status = "update";
+    if (progress == 0) status = "unknown";
 
     let div_status = document.getElementById("status_mqtt")
 
@@ -208,9 +242,9 @@ function show_status(){
 
     const newButton = document.createElement('button');
     newButton.textContent = status;
-    if(status == "upload & download")newButton.className = "btn btn-warning  ";
-    if(status == "unknown")newButton.className = "btn btn-light  ";
-    if(status == "update")newButton.className = "btn btn-success  ";
+    if (status == "upload & download") newButton.className = "btn btn-warning  ";
+    if (status == "unknown") newButton.className = "btn btn-light  ";
+    if (status == "update") newButton.className = "btn btn-success  ";
     newButton.disabled = true
     div_status.appendChild(newButton);
 
@@ -228,16 +262,16 @@ function show_status(){
     div_pr.className = "progress col-6 m-3";
 
     const div_progress = document.createElement("div");
-    div_progress.textContent = progress+"%";
+    div_progress.textContent = progress + "%";
     div_progress.className = "progress-bar";
 
-    if( color_pr == 0 )div_progress.style.backgroundColor = "red";
+    if (color_pr == 0) div_progress.style.backgroundColor = "red";
     else div_progress.style.backgroundColor = "blue";
 
     div_progress.setAttribute("id", "progress-status");
     div_progress.role = "progressbar";
-    div_progress.style.width = progress+"%";
-    div_progress.ariaValueNow = progress+"%";
+    div_progress.style.width = progress + "%";
+    div_progress.ariaValueNow = progress + "%";
     div_progress.ariaValueMin = "0%";
     div_progress.ariaValueMax = "100%";
 
@@ -254,34 +288,34 @@ function show_status(){
 
 // --------------------------------------------------------------------  blanking Triangle
 var ch = 0;
-function refresh(){
 
-    let all_one=1;
+function refresh() {
+
+    let all_one = 1;
     for (let i = 0; i < SEG_list_data.length; i++) {
-        if ( SEG_list_data[i][4] == 0 ) all_one=0;
+        if (SEG_list_data[i][4] == 0) all_one = 0;
     }
 
-    if( all_one ){
+    if (all_one) {
         SEG_UPDATE();
 
     }
 
     ch = 1 - ch;
-    if( ch == 0 && all_one  ){
+    if (ch == 0 && all_one) {
 
-        if( dir_UP || dir_DN ){
+        if (dir_UP || dir_DN) {
             drawTriangle(dir);
-        }
-        else {
+        } else {
             context.clearRect(0, 0, canvas.width, canvas.height);
         }
 
-    }
-    else{
+    } else {
         context.clearRect(0, 0, canvas.width, canvas.height);
     }
 
 }
+
 setInterval(refresh, 500);
 
 // -------------------------------------------------------------------- drawTriangle
@@ -300,21 +334,21 @@ function drawTriangle(dir) {
 
     let height = 100 * Math.cos(Math.PI / 6);
 
-    if(dir_UP == 1 ){
+    if (dir_UP == 1) {
         context.beginPath();
         context.moveTo(+10, canvas.height);
         context.lineTo(canvas.height, 10);
-        context.lineTo(canvas.height*2-10, canvas.height);
+        context.lineTo(canvas.height * 2 - 10, canvas.height);
         context.closePath();
-    }
-    else if (dir_DN == 1 ){
+    } else if (dir_DN == 1) {
         context.beginPath();
         context.moveTo(10, 10);
-        context.lineTo(canvas.height , canvas.height);
-        context.lineTo(canvas.height*2-10 , 10);
+        context.lineTo(canvas.height, canvas.height);
+        context.lineTo(canvas.height * 2 - 10, 10);
         context.closePath();
+    } else {
+        context.clearRect(0, 0, canvas.width, canvas.height);
     }
-    else{context.clearRect(0, 0, canvas.width, canvas.height);}
 
 
     // the outline
@@ -357,7 +391,6 @@ const kave_chart = new Chart(ctx, {
         }
     }
 });
-
 
 
 /*
@@ -441,10 +474,8 @@ function decodeSevenSegment(number) {
     return segmentMap[number] || "Invalid Input";
 }
 
-// تست نمونه‌ها
-const testNumbers = [0x3F, 0x5B, 0x4F, 0x3D, 0x79, 0x76];
 
-testNumbers.forEach(num => {
-    console.log(`0x${num.toString(16).toUpperCase()} → ${decodeSevenSegment(num)}`);
-});
+
+//----------------------------
+
 
