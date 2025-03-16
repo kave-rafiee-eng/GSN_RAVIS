@@ -170,7 +170,7 @@ include "../../../../Sidebar.php";
             </div>
 
 
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <div class="row">
                     <div class="card">
                         <div class="card-body">
@@ -290,7 +290,7 @@ include "../../../../Sidebar.php";
                 </div>
             </div>
 
-            <div class="col-lg-2">
+            <div class="col-lg-3">
                 <div class="card"  >
                     <div class="card-body ">
                         <h5 class="card-title">Hall</h5>
