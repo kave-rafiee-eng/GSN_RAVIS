@@ -91,7 +91,7 @@ button {
 /* حالت نامشخص */
 .unknown .left-door,
 .unknown .right-door {
-    background-color: #ffd700;  /* رنگ زرد برای وضعیت نامشخص */
+    background-color: #3a66a1;  /* رنگ زرد برای وضعیت نامشخص */
     animation: blink 1s infinite alternate;
 }
 

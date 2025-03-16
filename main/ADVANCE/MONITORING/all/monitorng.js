@@ -16,7 +16,7 @@ function refresh(){
 
     if( timer_send >= 0 ){ timer_send-- }
     else{
-        timer_send=60;
+        timer_send=30;
         send();
     }
 

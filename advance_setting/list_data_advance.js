@@ -110,7 +110,6 @@ Object.assign(arrays.Phase_Reverse[0], { offset: 0, factor: 1, Addition: 0 });
 arrays.service_type = [{ type: "select",ar:0,ad:3,status:0,data:0,send:0},"service_type","List_service_type"];
 Object.assign(arrays.service_type[0], { offset: 0, factor: 1, Addition: 0 });
 
-
 //--------------------------------------------- list_type_elevator select
 arrays.Type_Elevator = [{ type: "select",ar:0,ad:1,status:0,data:0,send:0},"Type_Elevator","list_type_elevator"];
 Object.assign(arrays.Type_Elevator[0], { offset: 0, factor: 1, Addition: 0 });

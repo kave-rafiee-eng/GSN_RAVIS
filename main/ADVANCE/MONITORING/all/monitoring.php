@@ -5,6 +5,8 @@ include "../../../../read.php"; // $con
 
 include "../../../../login/login_check.php"; //LOGIN_CHECK
 
+$version = '1.0.1'; // فقط این نسخه را تغییر دهید
+
 ?>
 
 <!DOCTYPE html>
@@ -214,12 +216,12 @@ include "../../../../Footer.php";
 
 
 <!-- Vendor JS Files -->
-<script  src="table_esp.js"></script>
-<script  src="mqtt_connection.js"></script>
-<script  src="table_mqtt.js"></script>
-<script  src="list.js"></script>
-<script  src="select.js"></script>
-<script  src="monitorng.js"></script>
+<script  src="table_esp.js?v=<?php echo $version; ?>"></script>
+<script  src="mqtt_connection.js?v=<?php echo $version; ?>"></script>
+<script  src="table_mqtt.js?v=<?php echo $version; ?>"></script>
+<script  src="list.js?v=<?php echo $version; ?>"></script>
+<script  src="select.js?v=<?php echo $version; ?>"></script>
+<script  src="monitorng.js?v=<?php echo $version; ?>"></script>
 
 <script src="/GSM_RAVIS/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/GSM_RAVIS/assets/vendor/quill/quill.js"></script>

@@ -10,7 +10,7 @@ include "../../../../function.php"; //my_function
 //-------------------------------------------------NUMBER OF STOP STNG    2
 list($id,$number_of_stop,$change) = post_register_manager($con,"number_of_stop",$serial,"advance_settin","general*",0,2);
 
-$version = '8.0.6'; // فقط این نسخه را تغییر دهید
+$version = '8.0.7'; // فقط این نسخه را تغییر دهید
 ?>
 
 <!DOCTYPE html>
@@ -137,6 +137,7 @@ include "../../../../Sidebar.php";
 
                                     <div class="row"  >
                                         <div class="col-md-4 text-center"  >
+                                            <label STYLE="color: #ff0000" id="">DOOR1</label>
                                             <label id="labe_door1">unknown</label>
                                             <div class="elevator-container" id="door1" style="height: 10vh" >
                                                 <div class="door left-door"></div>
@@ -145,6 +146,7 @@ include "../../../../Sidebar.php";
                                         </div>
 
                                         <div  class="col-md-4 text-center" >
+                                            <label STYLE="color: #ff0000" id="">DOOR2</label>
                                             <label id="labe_door2">unknown</label>
                                             <div class="elevator-container" id="door2">
                                                 <div class="door left-door"></div>
@@ -153,6 +155,7 @@ include "../../../../Sidebar.php";
                                         </div>
 
                                         <div  class="col-md-4 text-center" >
+                                            <label STYLE="color: #ff0000" id="">DOOR3</label>
                                             <label id="labe_door3">unknown</label>
                                             <div class="elevator-container" id="door3">
                                                 <div class="door left-door"></div>
