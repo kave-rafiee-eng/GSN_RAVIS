@@ -10,7 +10,7 @@ include "../../../../function.php"; //my_function
 //-------------------------------------------------NUMBER OF STOP STNG    2
 list($id,$number_of_stop,$change) = post_register_manager($con,"number_of_stop",$serial,"advance_settin","general*",0,2);
 
-$version = '4.0.5'; // فقط این نسخه را تغییر دهید
+$version = '5.0.5'; // فقط این نسخه را تغییر دهید
 ?>
 
 <!DOCTYPE html>

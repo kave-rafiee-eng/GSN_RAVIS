@@ -30,8 +30,8 @@ button {
 
 .elevator-container {
     position: relative;
-    width: 100%;
-    height: 20vh; /* ارتفاع پیش‌فرض برای دسکتاپ */
+    width: 80%;
+    height: 15vh; /* ارتفاع پیش‌فرض برای دسکتاپ */
     max-width: 500px;
     background-color: #ffffff;
     border: 5px solid #504e51;
@@ -43,13 +43,13 @@ button {
 /* تنظیم ارتفاع کمتر برای صفحه‌های کوچک‌تر (موبایل) */
 @media (max-width: 768px) {
     .elevator-container {
-        height: 10vh; /* کاهش ارتفاع برای موبایل */
+        height: 5vh; /* کاهش ارتفاع برای موبایل */
     }
 }
 
 @media (max-width: 480px) {
     .elevator-container {
-        height: 8vh; /* کاهش بیشتر ارتفاع برای دستگاه‌های بسیار کوچک */
+        height: 3vh; /* کاهش بیشتر ارتفاع برای دستگاه‌های بسیار کوچک */
     }
 }
 
