@@ -31,13 +31,26 @@ button {
 .elevator-container {
     position: relative;
     width: 100%;
-    height: 20vh; /* مقیاس بر اساس ارتفاع صفحه */
+    height: 20vh; /* ارتفاع پیش‌فرض برای دسکتاپ */
     max-width: 500px;
     background-color: #ffffff;
     border: 5px solid #504e51;
     border-radius: 15px;
     overflow: hidden;
     margin: 0 auto;
+}
+
+/* تنظیم ارتفاع کمتر برای صفحه‌های کوچک‌تر (موبایل) */
+@media (max-width: 768px) {
+    .elevator-container {
+        height: 10vh; /* کاهش ارتفاع برای موبایل */
+    }
+}
+
+@media (max-width: 480px) {
+    .elevator-container {
+        height: 8vh; /* کاهش بیشتر ارتفاع برای دستگاه‌های بسیار کوچک */
+    }
 }
 
 .door {
@@ -60,11 +73,11 @@ button {
 }
 
 .open .left-door {
-    transform: translateX(-100%);
+    transform: translateX(-65%);
 }
 
 .open .right-door {
-    transform: translateX(100%);
+    transform: translateX(65%);
 }
 
 .status {

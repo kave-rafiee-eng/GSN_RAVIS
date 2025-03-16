@@ -10,7 +10,7 @@ include "../../../../function.php"; //my_function
 //-------------------------------------------------NUMBER OF STOP STNG    2
 list($id,$number_of_stop,$change) = post_register_manager($con,"number_of_stop",$serial,"advance_settin","general*",0,2);
 
-
+$version = '4.0.5'; // فقط این نسخه را تغییر دهید
 ?>
 
 <!DOCTYPE html>
@@ -45,13 +45,13 @@ list($id,$number_of_stop,$change) = post_register_manager($con,"number_of_stop",
     <link href="/GSM_RAVIS/assets/css/style.css" rel="stylesheet">
 
     <!-- Template Main CSS File -->
-    <link href="style1.css" rel="stylesheet">
+    <link href="style1.css?v=<?php echo $version; ?>" rel="stylesheet">
 
     <!--[if lt IE 9]>
     <script type="text/javascript" src="excanvas.js"></script>
     <![endif]-->
 
-    <script type="text/javascript" src="segment-display.js"></script>
+    <script type="text/javascript" src="segment-display.js?v=<?php echo $version; ?>"></script>
     <script type="text/javascript">
 
         var display = new SegmentDisplay("display");
@@ -313,9 +313,7 @@ include "../../../../Footer.php";
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
 
-<?php
-$version = '3.0.5'; // فقط این نسخه را تغییر دهید
-?>
+
 
 
 <script  src="SEG_list_data.js?v=<?php echo $version; ?>"></script>"></script>
