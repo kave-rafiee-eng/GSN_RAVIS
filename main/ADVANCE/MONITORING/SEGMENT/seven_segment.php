@@ -10,7 +10,7 @@ include "../../../../function.php"; //my_function
 //-------------------------------------------------NUMBER OF STOP STNG    2
 list($id,$number_of_stop,$change) = post_register_manager($con,"number_of_stop",$serial,"advance_settin","general*",0,2);
 
-$version = '6.0.5'; // فقط این نسخه را تغییر دهید
+$version = '7.0.5'; // فقط این نسخه را تغییر دهید
 ?>
 
 <!DOCTYPE html>
@@ -137,7 +137,7 @@ include "../../../../Sidebar.php";
 
                                     <div class="row"  >
                                         <div class="col-md-4 text-center"  >
-                                            <label id="labe_door1">close</label>
+                                            <label id="labe_door1">unknown</label>
                                             <div class="elevator-container" id="door1" style="height: 10vh" >
                                                 <div class="door left-door"></div>
                                                 <div class="door right-door"></div>
@@ -145,7 +145,7 @@ include "../../../../Sidebar.php";
                                         </div>
 
                                         <div  class="col-md-4 text-center" >
-                                            <label id="labe_door2">close</label>
+                                            <label id="labe_door2">unknown</label>
                                             <div class="elevator-container" id="door2">
                                                 <div class="door left-door"></div>
                                                 <div class="door right-door"></div>
@@ -153,7 +153,7 @@ include "../../../../Sidebar.php";
                                         </div>
 
                                         <div  class="col-md-4 text-center" >
-                                            <label id="labe_door3">close</label>
+                                            <label id="labe_door3">unknown</label>
                                             <div class="elevator-container" id="door3">
                                                 <div class="door left-door"></div>
                                                 <div class="door right-door"></div>
@@ -351,6 +351,8 @@ include "../../../../Footer.php";
                 elevator.style.height = '20vh';  // دسکتاپ
                 elevator.style.width="80%"
             }
+
+            elevator.classList.add('unknown');
         });
     }
 

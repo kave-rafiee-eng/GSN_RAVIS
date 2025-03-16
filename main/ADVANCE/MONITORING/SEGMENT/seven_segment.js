@@ -196,9 +196,11 @@ function SEG_UPDATE() {
         // بروزرسانی وضعیت درب‌ها
         doors.forEach((doorElement, index) => {
             if (door[index]) {
+                doorElement.classList.remove('unknown');
                 doorElement.classList.remove('open');
                 labels[index].innerText = "Close";
             } else {
+                doorElement.classList.remove('unknown');
                 doorElement.classList.add('open');
                 labels[index].innerText = "Open";
             }
