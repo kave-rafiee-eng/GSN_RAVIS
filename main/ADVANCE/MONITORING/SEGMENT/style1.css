@@ -28,10 +28,16 @@ button {
 
 
 
+:root {
+    --elevator-height-desktop: 20vh;
+    --elevator-height-tablet: 12vh;
+    --elevator-height-mobile: 8vh;
+}
+
 .elevator-container {
     position: relative;
     width: 80%;
-    height: 15vh; /* ارتفاع پیش‌فرض برای دسکتاپ */
+    height: var(--elevator-height-desktop); /* ارتفاع پیش‌فرض */
     max-width: 500px;
     background-color: #ffffff;
     border: 5px solid #504e51;
@@ -40,16 +46,17 @@ button {
     margin: 0 auto;
 }
 
-/* تنظیم ارتفاع کمتر برای صفحه‌های کوچک‌تر (موبایل) */
-@media (max-width: 768px) {
+/* برای صفحه‌های متوسط (تبلت) */
+@media (max-width: 992px) {
     .elevator-container {
-        height: 5vh; /* کاهش ارتفاع برای موبایل */
+        height: var(--elevator-height-tablet);
     }
 }
 
-@media (max-width: 480px) {
+/* برای صفحه‌های کوچک (موبایل) */
+@media (max-width: 576px) {
     .elevator-container {
-        height: 3vh; /* کاهش بیشتر ارتفاع برای دستگاه‌های بسیار کوچک */
+        height: var(--elevator-height-mobile);
     }
 }
 

@@ -10,7 +10,7 @@ include "../../../../function.php"; //my_function
 //-------------------------------------------------NUMBER OF STOP STNG    2
 list($id,$number_of_stop,$change) = post_register_manager($con,"number_of_stop",$serial,"advance_settin","general*",0,2);
 
-$version = '5.0.5'; // فقط این نسخه را تغییر دهید
+$version = '6.0.5'; // فقط این نسخه را تغییر دهید
 ?>
 
 <!DOCTYPE html>
@@ -135,16 +135,16 @@ include "../../../../Sidebar.php";
                                 <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i>dir</li>
                                 <li class="list-group-item">
 
-                                    <div class="row" >
-                                        <div class="col-lg-4 text-center"  >
+                                    <div class="row"  >
+                                        <div class="col-md-4 text-center"  >
                                             <label id="labe_door1">close</label>
-                                            <div class="elevator-container" id="door1">
+                                            <div class="elevator-container" id="door1" style="height: 10vh" >
                                                 <div class="door left-door"></div>
                                                 <div class="door right-door"></div>
                                             </div>
                                         </div>
 
-                                        <div  class="col-lg-4 text-center" >
+                                        <div  class="col-md-4 text-center" >
                                             <label id="labe_door2">close</label>
                                             <div class="elevator-container" id="door2">
                                                 <div class="door left-door"></div>
@@ -152,7 +152,7 @@ include "../../../../Sidebar.php";
                                             </div>
                                         </div>
 
-                                        <div  class="col-lg-4 text-center" >
+                                        <div  class="col-md-4 text-center" >
                                             <label id="labe_door3">close</label>
                                             <div class="elevator-container" id="door3">
                                                 <div class="door left-door"></div>
@@ -334,6 +334,33 @@ include "../../../../Footer.php";
 <script src="/GSM_RAVIS/assets/js/main.js"></script>
 
 
+<script>
+    function adjustElevatorHeight() {
+        const doors = ['door1', 'door2', 'door3'].map(id => document.getElementById(id));
+
+        doors.forEach(elevator => {
+            if (!elevator) return; // اطمینان از وجود عنصر
+
+            if (window.innerWidth <= 480) {
+                elevator.style.height = '14vh';   // موبایل (کوچک)
+                elevator.style.width="40%"
+            } else if (window.innerWidth <= 768) {
+                elevator.style.height = '15vh';  // تبلت
+                elevator.style.width="70%"
+            } else {
+                elevator.style.height = '20vh';  // دسکتاپ
+                elevator.style.width="80%"
+            }
+        });
+    }
+
+    // اعمال ارتفاع هنگام بارگذاری صفحه
+    window.addEventListener('load', adjustElevatorHeight);
+
+    // تنظیم مجدد ارتفاع هنگام تغییر اندازه صفحه
+    window.addEventListener('resize', adjustElevatorHeight);
+
+</script>
 
 </body>
 
