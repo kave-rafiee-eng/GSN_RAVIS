@@ -44,6 +44,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
    header("location: /GSM_RAVIS/admin/admin_home.php");
 }
 
+date_default_timezone_set("Asia/Tehran");
+
+$current_date = date("Y/m/d");
+$current_time = date("H:i:s");
+
 ?>
 
 <!DOCTYPE html>
@@ -121,19 +126,20 @@ include "Sidebar_admin.php";
 
                 <div class="card">
                     <div class="card-body">
-
-                        <h5 class="card-title">HELP</h5>
-
+                        
+                        <h5 class="card-title">جاوید شاه</h5>
                         <!-- Accordion without outline borders -->
                         <div class="accordion accordion-flush" id="accordionFlushExample">
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="flush-headingOne">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                                        SETTING
+                                        <?php
+                                            echo $current_date."  ".$current_time
+                                        ?>
                                     </button>
                                 </h2>
                                 <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">جهت دسترسی به تنظیمات برد از منوی کشویی استفاده کنید</div>
+                                    <div class="accordion-body">تاریخ و زمان فعلی(ایران/تهران)</div>
                                 </div>
                             </div>
                         </div><!-- End Accordion without outline borders -->
@@ -143,7 +149,7 @@ include "Sidebar_admin.php";
                         <!-- Default Tabs -->
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Active Device</button>
+                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Devices</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Add</button>
@@ -162,6 +168,7 @@ include "Sidebar_admin.php";
                                         <th>pass</th>
                                         <th data-type="date" data-format="YYYY/DD/MM">Date</th>
                                         <th data-type="time" >Time</th>
+                                        <th data-type="time" >Status(15min)</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -184,14 +191,53 @@ include "Sidebar_admin.php";
 
                                         $date=0;
                                         $time=0;
+                                        $last_date=0;
+                                        $last_time=0;
+
+                                        $data_found=0;
                                         while( $page_date_time = mysqli_fetch_assoc($resault2) ) {
 
-                                            $time = $page_date_time['time'];
-                                            $date = $page_date_time['date'];
+                                            if ($page_date_time['name'] == "last_gsm_connection") {
+                                                $last_date = $page_date_time['date'];
+                                                $last_time = $page_date_time['time'];
+                                                $data_found = 1;
+                                            }
+
                                         }
 
-                                        echo "<td>".$date."</td>";
-                                        echo "<td>".$time."</td>";
+                                        if( $data_found ){
+
+                                            echo "<td>".$last_date."</td>";
+                                            echo "<td>".$last_time."</td>";
+
+
+                                            if( $last_date == $current_date ){
+                                                // تبدیل زمان‌ها به timestamp
+                                                $STAMP_last_time = strtotime($last_time);
+                                                $STAMP_current_time = strtotime($current_time);
+
+                                                $differenceInSeconds = abs($STAMP_current_time - $STAMP_last_time);
+
+                                                if ($differenceInSeconds <= 900) {
+                                                    echo "<td>"."Active"."</td>";
+                                                }
+                                                else {
+                                                    echo "<td>"."Disable"."</td>";
+                                                }
+                                            }
+                                            else {
+                                                $insert_new = 1;
+                                                echo "1";
+                                            }
+                                        }
+                                        else{
+                                            echo "<td>"."----"."</td>";
+                                            echo "<td>"."----"."</td>";
+                                            echo "<td>"."----"."</td>";
+                                        }
+
+
+
                                         echo "</tr> ";
                                     }
                                     ?>

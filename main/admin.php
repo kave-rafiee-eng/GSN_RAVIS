@@ -80,27 +80,7 @@
     <link rel="stylesheet" href="tree_css.css">
 
     <SCRIPT>
-        function myFunction(){
 
-            const toastLiveExample = document.getElementById('liveToast')
-
-            var x = document.getElementById("select").value;
-
-
-            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
-            toastBootstrap.show()
-
-            if( x == 1 ){
-                document.getElementById("my_alert").innerHTML = "اولویت بر اساس انتخاب طبقه از بالا به پایین";
-            }
-            else if(x==2){
-                document.getElementById("my_alert").innerHTML = "بدون اولویت سرویس دهی به نزدیک ترین طبقه";
-            }
-            else if( x== 3 ){
-                document.getElementById("my_alert").innerHTML = "دستی";
-            }
-
-        }
 
 
     </SCRIPT>
