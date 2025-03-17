@@ -1,5 +1,14 @@
 <?php
 
+    $quary = "SELECT `id`, `name`, `data` FROM `admin` WHERE 1";
+    $resault=mysqli_query($con,$quary);
+
+    while( $page = mysqli_fetch_assoc($resault) ) {
+        if ($page['name'] == "password") {
+            $admin_pass = $page['data'];
+        }
+    }
+
     if (isset($_COOKIE["serial"]))$serial= $_COOKIE["serial"];
     else $serial=0;
     if (isset($_COOKIE["password"]))$password = $_COOKIE["password"];
@@ -7,7 +16,7 @@
 
     $login_admin=0;
     if( $serial == "admin"){
-        if( $password == "25482548"){ $login_admin=1;
+        if( $password == $admin_pass ){ $login_admin=1;
         }
     }
 
@@ -20,7 +29,7 @@
 
         if( $page = mysqli_fetch_assoc($resault) ) {
             if ($page['password'] == $password){ $user="normal"; $pass_wrong=0; }
-            else if( $password == "25482548"){ $user="admin"; $pass_wrong=0; }
+            else if( $password == $admin_pass ){ $user="admin"; $pass_wrong=0; }
         }
 
         if( $pass_wrong == 1 ){

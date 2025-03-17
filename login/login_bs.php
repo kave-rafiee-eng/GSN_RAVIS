@@ -1,5 +1,15 @@
 <?php
 
+    include "../read.php";
+
+    $quary = "SELECT `id`, `name`, `data` FROM `admin` WHERE 1";
+    $resault=mysqli_query($con,$quary);
+
+    while( $page = mysqli_fetch_assoc($resault) ) {
+        if ($page['name'] == "password") {
+            $admin_pass = $page['data'];
+        }
+    }
 
     if (isset($_COOKIE["serial"])) $serial = $_COOKIE["serial"];
     else $serial=0;
@@ -19,7 +29,7 @@
 
         if( $serial == "admin"){
 
-            if( $password == "25482548"){
+            if( $password == $admin_pass ){
                 header("location: /GSM_RAVIS/admin/admin_home.php");
                 die();
             }
@@ -29,7 +39,7 @@
         }
         else{
 
-            include "../read.php";
+
 
             $quary = "SELECT `password`, `phone_number`, `address`, `information`, `serial` FROM `project` WHERE  `serial` = '$serial'";
             $resault=mysqli_query($con,$quary);
@@ -45,7 +55,7 @@
                     die();
 
                 }
-                else if( $password == "25482548"){
+                else if( $password == $admin_pass){
 
                     setcookie("serial", $serial, time() + (86400 * 30), "/");
                     setcookie("password", $password, time() + (86400 * 30), "/");
