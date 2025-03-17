@@ -113,7 +113,7 @@ include "Sidebar_admin.php";
         <h1>Admin</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/GSM_RAVIS/main/home.php">Admin</a></li>
+                <li class="breadcrumb-item"><a href="">Admin</a></li>
                 <li class="breadcrumb-item">Home</li>
                 <li class="breadcrumb-item active">Home</li>
             </ol>
