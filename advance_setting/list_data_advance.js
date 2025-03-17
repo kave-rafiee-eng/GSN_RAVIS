@@ -48,7 +48,7 @@ arrays.Phase_Control = [{ type: "table"},"Phase_Reverse", "Phase_Fault", "One_Ph
 arrays.Relay_Time = [{ type: "table"},"Relay_Time$ON_Delay", "Relay_Time$ON_Time" ];
 
 //------------------------------ _1CF_Delay Table
-arrays._1CF_Delay = [{ type: "table"},"_1CF_Delay$All_Floors", "_1CF_Delay_Up/Down_Del" ];
+arrays._1CF_Delay = [{ type: "table"},"_1CF_Delay$All_Floors", "_1CF_Delay_Up_Down_Del" ];
 
 
 //--------------------------------------------- _1CF_Delay$All_Floors input
@@ -115,6 +115,36 @@ arrays.Type_Elevator = [{ type: "select",ar:0,ad:1,status:0,data:0,send:0},"Type
 Object.assign(arrays.Type_Elevator[0], { offset: 0, factor: 1, Addition: 0 });
 
 
+//--------------------------------------------- _1CF_Delay_Up_Down_Del multy_Xsatage_INPUT
+
+arrays._1CF_Delay_Up_Down_Del = [{ type: "multy_Xsatage_INPUT",status:0 , stage:2 },"_1CF_Delay_Up_Down_Del","num_of_stop", "0"];
+
+ rows = arrays._1CF_Delay_Up_Down_Del[0].stage;
+ cols = 20;
+
+arrays._1CF_Delay_Up_Down_Del[0].data = createMatrix(rows,cols);
+arrays._1CF_Delay_Up_Down_Del[0].status = createMatrix(rows,cols);
+
+arrays._1CF_Delay_Up_Down_Del[0].address = createMatrix(2,2);
+arrays._1CF_Delay_Up_Down_Del[0].address[0] = { ar: 8, ad: 0};
+arrays._1CF_Delay_Up_Down_Del[0].address[1] = { ar: 9, ad: 0};
+
+Object.assign(arrays._1CF_Delay_Up_Down_Del[0], { offset: 0, factor: 20, Addition: 0 , step:0.05 , min :0 , max:10 });
+
+Object.assign(arrays._1CF_Delay_Up_Down_Del[0], { per_en: 1, pre_ar: 0, pre_ad: 2, pre_status: 0 ,pre_data: 0 });
+
+function createMatrix(rows, cols) {
+    const matrix = [];
+    let value = 1; // مقدار شروع برای پر کردن آرایه (می‌توان تغییر داد)
+    for (let i = 0; i < rows; i++) {
+        const row = [];
+        for (let j = 0; j < cols; j++) {
+            row.push(value++);
+        }
+        matrix.push(row);
+    }
+    return matrix;
+}
 
 
 

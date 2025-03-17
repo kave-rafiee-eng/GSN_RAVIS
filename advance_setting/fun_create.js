@@ -93,27 +93,10 @@ function createInput(data) {
      inputElement.min = 0;
      inputElement.step = 5;*/
 
-    // تابع گرد کردن مقدار به نزدیک‌ترین step
     function roundToStep(value, step, min) {
-        return Math.round((value - min) / step) * step + min;
+        return +(Math.round((value - min) / step) * step + min).toFixed(2);
     }
 
-// کنترل محدودیت هنگام تایپ و تغییر
-    /* inputElement.addEventListener('input', function () {
-         let value = parseFloat(inputElement.value);
-
-         // کنترل مقدار برای محدودیت‌های max و min
-         if (value > parseFloat(inputElement.max)) {
-             inputElement.value = inputElement.max;
-         } else if (value < parseFloat(inputElement.min)) {
-             inputElement.value = inputElement.min;
-         } else {
-             // تبدیل به نزدیک‌ترین step
-             inputElement.value = roundToStep(value, parseFloat(inputElement.step), parseFloat(inputElement.min));
-         }
-     });*/
-
-// جلوگیری از دور زدن محدودیت در DevTools
     inputElement.addEventListener('change', function () {
         let value = parseFloat(inputElement.value);
 
@@ -124,10 +107,11 @@ function createInput(data) {
             alert(`مقدار ورودی نباید کمتر از ${inputElement.min} باشد!`);
             inputElement.value = inputElement.min;
         } else {
-            // اصلاح خودکار مقدار به نزدیک‌ترین step
+            // اصلاح خودکار مقدار به نزدیک‌ترین step و محدود کردن اعشار
             inputElement.value = roundToStep(value, parseFloat(inputElement.step), parseFloat(inputElement.min));
         }
     });
+
 
 // اضافه کردن `label`، `input` و `button` به `div`
     //div.appendChild(label);
@@ -308,7 +292,7 @@ function createMultySelect(Data) {
 
 
 let alertModal; // متغیر به صورت گلوبال تعریف می‌شود
-let mqtt_progress = 10;
+let mqtt_progress = 0;
 
 function showProgressModal(title, message) {
 
@@ -358,6 +342,25 @@ function updateProgress(value) {
             if (alertModal) alertModal.hide();
         }, 500);
     }
+}
+
+function updateProgress_change_color(value,color) {
+    const progressBar_Madal = document.getElementById('progressBar_Madal');
+
+    progressBar_Madal.style.width = `${value}%`;
+    progressBar_Madal.textContent = `${value}%`;
+
+    if( color == "yellow"){
+        progressBar_Madal.className = "progress-bar progress-bar-striped progress-bar-animated bg-waning"
+    }
+
+    if( color == "green"){
+        progressBar_Madal.className = "progress-bar progress-bar-striped progress-bar-animated bg-success"
+    }
+
+    console.log("sdsdsd")
+
+
 }
 
 
@@ -543,3 +546,125 @@ window.onload = function() {
         });
     }, 500); // بازبینی در هر 500 میلی‌ثانیه
 };
+
+
+
+
+function Create_Multy_Xsatage_INPUT(Data) {
+
+    let btn = document.getElementById("div_BTN_save_read");
+    if (btn) {
+        btn.remove(); // حذف جدول
+    }
+    let deL_table = document.getElementById("dynamicTable");
+    if (deL_table) {
+        deL_table.remove(); // حذف جدول
+    }
+
+    let register_name = document.getElementById("register_name");
+    register_name.innerHTML=""
+
+    const multySlectContainer = document.getElementById("multySlectContainer");
+
+    // ایجاد `div` برای قرار دادن `label` و `tablr`
+    const div = document.createElement("div");
+    div.className = "mb-3";
+    div.id = "div_MultySelect"
+
+
+    const  div_register_name = document.getElementById("register_name")
+
+// ایجاد `label`
+    const label = document.createElement("label");
+    label.setAttribute("for", "dynamicInput");
+    label.className = "form-label fs-5 fw-semibold text-dark";
+    label.textContent = Data[1].split('$').pop().replaceAll('_', ' ');
+    div_register_name.appendChild(label)
+
+    // ایجاد عنصر <table>
+    const table = document.createElement("table");
+    table.id = "dynamicTable"; // تنظیم شناسه برای حذف بعدی
+    table.className = "table table-bordered table-striped text-center";
+
+
+    // ایجاد <thead>
+    const thead = document.createElement("thead");
+    thead.className = "table-dark";
+    thead.innerHTML = `
+                <tr>
+                    <th>FLR</th>
+                    <th>UP</th>
+                    <th>DN</th>
+                </tr>
+            `;
+    table.appendChild(thead);
+
+    // ایجاد <tbody>
+    const tbody = document.createElement("tbody");
+    table.appendChild(tbody);
+
+    let html = "";
+
+    for (let cols = 0; cols < Data[0].pre_data; cols++) {
+
+        let tr = document.createElement("tr");
+
+        let td = document.createElement("td");
+        const button = document.createElement("button");
+        button.innerHTML = cols
+        button.className = `btn btn-warning`;
+        button.disabled = true;
+        td.appendChild(button)
+        tr.appendChild(td)
+
+        for (let rows_stage = 0; rows_stage < Data[0].stage; rows_stage++) {
+
+            let td = document.createElement("td");
+
+            const inputElement = document.createElement("input");
+            inputElement.type = "number";
+            inputElement.id = Data[1]+rows_stage+"_"+cols;
+            inputElement.className = "form-control text_center";
+            inputElement.placeholder = Data[3];
+            inputElement.value = Number(Data[3])
+            inputElement.style.textAlign = 'center';
+            inputElement.max = Data[0].max;
+            inputElement.min = Data[0].min;
+            inputElement.step = Data[0].step;
+
+            td.appendChild(inputElement);
+            tr.appendChild(td)
+
+            function roundToStep(value, step, min) {
+                return +(Math.round((value - min) / step) * step + min).toFixed(2);
+            }
+
+            inputElement.addEventListener('change', function () {
+                let value = parseFloat(inputElement.value);
+
+                if (value > parseFloat(inputElement.max)) {
+                    alert(`مقدار ورودی نباید بیشتر از ${inputElement.max} باشد!`);
+                    inputElement.value = inputElement.max;
+                } else if (value < parseFloat(inputElement.min)) {
+                    alert(`مقدار ورودی نباید کمتر از ${inputElement.min} باشد!`);
+                    inputElement.value = inputElement.min;
+                } else {
+                    // اصلاح خودکار مقدار به نزدیک‌ترین step و محدود کردن اعشار
+                    inputElement.value = roundToStep(value, parseFloat(inputElement.step), parseFloat(inputElement.min));
+                }
+            });
+
+        }
+
+        tbody.appendChild(tr)
+
+    }
+
+    div.appendChild(table);
+
+
+    multySlectContainer.appendChild(div);
+
+    createBTN_save_read();
+
+}

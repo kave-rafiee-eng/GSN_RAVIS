@@ -27,7 +27,7 @@ function load_end(){
     startConnect();
 
     buttonAction("mian_menu");
-    //buttonAction("HW_Main_Board$Drive$ParallelSetting");
+    //buttonAction("_1CF_Delay_Up_Down_Del");
 
 }
 window.addEventListener("load", load_end);
@@ -126,6 +126,9 @@ function buttonAction(name) {
     else if ( activeArray[0].type == "multy_Xsatage_SELECT") {
         Create_Multy_Xsatage_SELECT(activeArray);
     }
+    else if ( activeArray[0].type == "multy_Xsatage_INPUT") {
+        Create_Multy_Xsatage_INPUT(activeArray);
+    }
 
     send_mqtt();
 
@@ -148,14 +151,25 @@ function save() {
             activeArray[0][`status${i}`] = "upload";
         }
     }
-    if (  activeArray[0].type == "multy_Xsatage_SELECT" ) {
-        for (let cols = 0; cols < arrays_list[activeArray[2]].length; cols++) {
-            for (let rows_stage = 0; rows_stage < activeArray[0].stage; rows_stage++) {
-                activeArray[0].status[rows_stage][cols] = "upload";
+    if (   activeArray[0].type == "multy_Xsatage_SELECT" || activeArray[0].type == "multy_Xsatage_INPUT"  ) {
 
-            }
+        let cols_conter=0;
+        if( activeArray[0].type == "multy_Xsatage_SELECT" ){
+            cols_conter = arrays_list[activeArray[2]].length
+        }
+        if( activeArray[0].type == "multy_Xsatage_INPUT" ){
+            cols_conter = activeArray[0].pre_data
+        }
+
+        for (let cols = 0; cols < cols_conter; cols++) {
+                for (let rows_stage = 0; rows_stage < activeArray[0].stage; rows_stage++) {
+                    activeArray[0].status[rows_stage][cols] = "upload";
+
+                }
+
         }
     }
+
     send_mqtt();
     console.log("save");
 }
@@ -168,8 +182,18 @@ function read() {
             activeArray[0][`status${i}`] = "download";
         }
     }
-    if (  activeArray[0].type == "multy_Xsatage_SELECT" ) {
-        for (let cols = 0; cols < arrays_list[activeArray[2]].length; cols++) {
+    if (   activeArray[0].type == "multy_Xsatage_SELECT" || activeArray[0].type == "multy_Xsatage_INPUT"   ) {
+
+        let cols_conter=0;
+        if( activeArray[0].type == "multy_Xsatage_SELECT" ){
+            cols_conter = arrays_list[activeArray[2]].length
+        }
+        if( activeArray[0].type == "multy_Xsatage_INPUT" ){
+            cols_conter = activeArray[0].pre_data
+        }
+        activeArray[0].pre_data=0;
+        activeArray[0].pre_status=0;
+        for (let cols = 0; cols < cols_conter; cols++) {
             for (let rows_stage = 0; rows_stage < activeArray[0].stage; rows_stage++) {
                 activeArray[0].status[rows_stage][cols] = "download";
 
@@ -207,9 +231,8 @@ function send_mqtt(){
                 obj_send["da1"] = 0;
             }
 
-
-                console.log(JSON.stringify(obj_send));
-                publishMessage(topic,JSON.stringify(obj_send));
+            console.log(JSON.stringify(obj_send));
+            publishMessage(topic,JSON.stringify(obj_send));
 
 
             activeArray[0].send = 1;
@@ -279,9 +302,42 @@ function send_mqtt(){
 
     let index_send=0;
 
-    if (  activeArray[0].type == "multy_Xsatage_SELECT" ) {
+    let pre=1;
+    if (activeArray[0].hasOwnProperty('per_en')) {
 
-        for (let cols = 0; cols < arrays_list[activeArray[2]].length; cols++) {
+        if( activeArray[0].pre_status != "update"  ){
+
+            pre=0;
+
+            obj_send["ad1"] = activeArray[0].pre_ad;
+            obj_send["ar1"] = activeArray[0].pre_ar;
+
+            obj_send["st1"] = 0;
+            obj_send["da1"] = 0;
+
+            console.log(JSON.stringify(obj_send));
+            publishMessage(topic,JSON.stringify(obj_send));
+
+            activeArray[0].pre_status = "download"
+        }
+
+        if(activeArray[0].pre_status != "update"){
+            showProgressModal('در حال اتصال ...', 'لطفاً منتظر بمانید.');
+        }
+
+    }
+
+    if (  ( activeArray[0].type == "multy_Xsatage_SELECT" || activeArray[0].type == "multy_Xsatage_INPUT" ) && pre  ) {
+
+        let cols_conter=0;
+        if( activeArray[0].type == "multy_Xsatage_SELECT" ){
+            cols_conter = arrays_list[activeArray[2]].length
+        }
+        if( activeArray[0].type == "multy_Xsatage_INPUT" ){
+            cols_conter = activeArray[0].pre_data
+        }
+
+        for (let cols = 0; cols < cols_conter; cols++) {
             for (let rows_stage = 0; rows_stage < activeArray[0].stage; rows_stage++) {
 
                 if( activeArray[0].status[rows_stage][cols] != "update"  ){
@@ -295,8 +351,10 @@ function send_mqtt(){
                         obj_send["st"+index_send] = 0;
                     }
 
-                    obj_send["da"+index_send] = document.getElementById(activeArray[1]+rows_stage+"_"+cols).value;
-                    console.log( document.getElementById(activeArray[1]+rows_stage+"_"+cols).value )
+                    obj_send["da"+index_send] = Math.round(document.getElementById( activeArray[1]+rows_stage+"_"+cols ).value * activeArray[0].factor + activeArray[0].Addition +  activeArray[0].offset )
+
+                    //console.log("===="+activeArray[1]+rows_stage+"_"+cols);
+                    //console.log( document.getElementById(activeArray[1]+rows_stage+"_"+cols).value )
                     activeArray[0].status[rows_stage][cols] = "download"
 
                     index_send++;
@@ -309,14 +367,14 @@ function send_mqtt(){
         }
 
         if( index_send>0){
-            console.log(JSON.stringify(obj_send));
+            //console.log(JSON.stringify(obj_send));
             publishMessage(topic,JSON.stringify(obj_send));
         }
 
         let step=0;
         let pass=0;
         let progress =0;
-        for (let cols = 0; cols < arrays_list[activeArray[2]].length; cols++) {
+        for (let cols = 0; cols < cols_conter; cols++) {
             for (let rows_stage = 0; rows_stage < activeArray[0].stage; rows_stage++) {
                 step++;
                 if (activeArray[0].status[rows_stage][cols] == "update") {
@@ -400,16 +458,44 @@ function ADVANCE_mqtt_massage_get(DATA){
 
     let index_send=1;
 
-    if (  activeArray[0].type == "multy_Xsatage_SELECT" ) {
+    let pre=1;
+    if (activeArray[0].hasOwnProperty('per_en')) {
 
-        for (let cols = 0; cols < arrays_list[activeArray[2]].length; cols++) {
+        for (let j = 0; j < 10; j++) {
+
+            if(activeArray[0].pre_ar == DATA_Recive["ar"+j] && activeArray[0].pre_ad == DATA_Recive["ad"+j] ){
+
+                activeArray[0].pre_data = DATA_Recive["da" + j] ;
+                activeArray[0].pre_status = "update"
+
+                updateProgress_change_color(100,"yellow");
+
+                Create_Multy_Xsatage_INPUT(activeArray);
+                pre=1
+            }
+        }
+    }
+    if (  (activeArray[0].type == "multy_Xsatage_SELECT" || activeArray[0].type == "multy_Xsatage_INPUT") && pre ) {
+
+
+        let cols_conter=0;
+        if( activeArray[0].type == "multy_Xsatage_SELECT" ){
+             cols_conter = arrays_list[activeArray[2]].length
+        }
+        if( activeArray[0].type == "multy_Xsatage_INPUT" ){
+             cols_conter = activeArray[0].pre_data
+        }
+
+        for (let cols = 0; cols < cols_conter; cols++) {
             for (let rows_stage = 0; rows_stage < activeArray[0].stage; rows_stage++) {
 
                 for (let j = 0; j < 10; j++) {
 
                     if( activeArray[0].address[rows_stage].ar == DATA_Recive["ar"+j] && activeArray[0].address[rows_stage].ad+cols == DATA_Recive["ad"+j] ){
 
-                        activeArray[0].data[rows_stage][cols] = DATA_Recive["da"+j]
+                        console.log("$$$$")
+
+                        activeArray[0].data[rows_stage][cols] = (DATA_Recive["da"+j] - activeArray[0].offset) /activeArray[0].factor - activeArray[0].Addition
                         activeArray[0].status[rows_stage][cols] = "update"
 
                         document.getElementById(activeArray[1]+rows_stage+"_"+cols).value =  activeArray[0].data[rows_stage][cols] ;
@@ -422,7 +508,7 @@ function ADVANCE_mqtt_massage_get(DATA){
         let step=0;
         let pass=0;
         let progress =0;
-        for (let cols = 0; cols < arrays_list[activeArray[2]].length; cols++) {
+        for (let cols = 0; cols < cols_conter; cols++) {
             for (let rows_stage = 0; rows_stage < activeArray[0].stage; rows_stage++) {
                 step++;
                 if (activeArray[0].status[rows_stage][cols] == "update") {
@@ -431,6 +517,7 @@ function ADVANCE_mqtt_massage_get(DATA){
             }
         }
         progress = pass/step*100;
+        updateProgress_change_color(progress,"green");
         updateProgress(progress);
 
     }

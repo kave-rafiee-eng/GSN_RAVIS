@@ -8,6 +8,9 @@ include "../login/login_check.php"; //LOGIN_CHECK
 include "../function.php"; //my_function
 
 $change="unknown";
+
+$version = '1.0.0'; // فقط این نسخه را تغییر دهید
+
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +26,6 @@ $change="unknown";
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
 
     <!-- Favicons -->
     <link href="/GSM_RAVIS/assets/img/favicon.png" rel="icon">
@@ -52,9 +54,6 @@ $change="unknown";
     * Author: BootstrapMade.com
     * License: https://bootstrapmade.com/license/
     ======================================================== -->
-
-
-    <link rel="stylesheet" href="styles.css">
 
     <SCRIPT>
 
@@ -120,7 +119,6 @@ include "../Sidebar.php";
     </div>
 
     <div class="pagetitle">
-
         <h1>branch</h1>
         <nav>
             <ol class="breadcrumb">
@@ -350,12 +348,12 @@ include "../Footer.php";
 <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
 
 
-<script src="list_data_advance.js"></script> <!-- اضافه کردن فایل JavaScript -->
-<script src="advance_list_HW_main.js"></script> <!-- اضافه کردن فایل JavaScript -->
-<script src="advance_list_HW_carcodec.js"></script> <!-- اضافه کردن فایل JavaScript -->
-<script src="fun_create.js"></script> <!-- اضافه کردن فایل JavaScript -->
-<script src="advance_setting.js"></script> <!-- اضافه کردن فایل JavaScript -->
-<script src="advance_mqtt_fun.js"></script> <!-- اضافه کردن فایل JavaScript -->
+<script src="list_data_advance.js?v=<?php echo $version; ?>"></script> <!-- اضافه کردن فایل JavaScript -->
+<script src="advance_list_HW_main.js?v=<?php echo $version; ?>"></script> <!-- اضافه کردن فایل JavaScript -->
+<script src="advance_list_HW_carcodec.js?v=<?php echo $version; ?>"></script> <!-- اضافه کردن فایل JavaScript -->
+<script src="fun_create.js?v=<?php echo $version; ?>"></script> <!-- اضافه کردن فایل JavaScript -->
+<script src="advance_setting.js?v=<?php echo $version; ?>"></script> <!-- اضافه کردن فایل JavaScript -->
+<script src="advance_mqtt_fun.js?v=<?php echo $version; ?>"></script> <!-- اضافه کردن فایل JavaScript -->
 
 <!-- Vendor JS Files -->
 <script src="/GSM_RAVIS/assets/vendor/apexcharts/apexcharts.min.js"></script>

@@ -1,3 +1,4 @@
+
 //----------------------------- ProgMainInputs LIST
 arrays_list.list_hw_input = [
     "CF3", "1CF", "CAN", "CA1", "IFN",
@@ -222,6 +223,7 @@ Object.assign(arrays.HW_Main_Board$Numrator$ParallelSetting[0], { offset: 0, fac
 
 
 //--------------------------------------------- HW_Main_Board$Drive$ParallelSetting multy_Xsatage_SELECT
+
 arrays.HW_Main_Board$Drive$ParallelSetting = [{ type: "multy_Xsatage_SELECT",status:0 , stage:3 },"HW_Main_Board$Drive$ParallelSetting","List_Speed", "List_01"];
 
 let rows = arrays.HW_Main_Board$Drive$ParallelSetting[0].stage;
@@ -237,21 +239,8 @@ arrays.HW_Main_Board$Drive$ParallelSetting[0].address[2] = { ar: 7, ad: 0};
 
 Object.assign(arrays.HW_Main_Board$Drive$ParallelSetting[0], { offset: 0, factor: 1, Addition: 0 });
 
-var test_matrix = arrays.HW_Main_Board$Drive$ParallelSetting[0].data[1][2];
 
 
 
 
 
-function createMatrix(rows, cols) {
-    const matrix = [];
-    let value = 1; // مقدار شروع برای پر کردن آرایه (می‌توان تغییر داد)
-    for (let i = 0; i < rows; i++) {
-        const row = [];
-        for (let j = 0; j < cols; j++) {
-            row.push(value++);
-        }
-        matrix.push(row);
-    }
-    return matrix;
-}
