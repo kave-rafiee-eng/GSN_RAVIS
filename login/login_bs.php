@@ -39,8 +39,6 @@
         }
         else{
 
-
-
             $quary = "SELECT `password`, `phone_number`, `address`, `information`, `serial` FROM `project` WHERE  `serial` = '$serial'";
             $resault=mysqli_query($con,$quary);
 
@@ -144,12 +142,12 @@
                             if( $serial_wrong || $pass_wrong ){
                                 echo"<div  id=\"liveToast\" class=\"col-4 \" style=\"  width: 100%  \">";
 
-                                    echo "<div class=\"alert alert-warning  alert-dismissible fade show \" role=\"alert\" >";
+                                    echo "<div class=\"alert alert-light  alert-dismissible fade show \" role=\"alert\" >";
 
                                         echo "<strong class=\"me-auto\">Error</strong>";
                                         echo "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>";
 
-                                        echo "<div  class=\"toast-body alert alert-danger text-center \" role=\"alert\">";
+                                        echo "<div  class=\"toast-body alert alert-danger text-center text-dark \" role=\"alert\">";
                                             if($serial_wrong)echo"سریال ثبت نشده";
                                             if($pass_wrong)echo"پسورد اشتباه است";
                                         echo "</div>";
