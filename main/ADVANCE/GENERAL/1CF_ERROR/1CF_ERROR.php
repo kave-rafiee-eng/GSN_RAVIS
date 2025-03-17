@@ -263,7 +263,7 @@ include "../../../../Sidebar.php";
                                         <div class="row ">
                                             <label class="col-sm-4 col-form-label">Time Out</label>
                                             <div class="col-sm-6">
-                                                <input  id="time_out" step="1" value="<?php echo $time_out;?>" name="time_out" type="number" class="form-control"  min="0" max="20">
+                                                <input  id="time_out" step="1" value="<?php echo $time_out;?>" name="time_out" type="number" class="form-control"  min="0" max="100">
                                             </div>
                                             <label class="col-sm-2 col-form-label text-danger ">sec</label>
                                         </div>
