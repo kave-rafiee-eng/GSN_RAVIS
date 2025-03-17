@@ -380,7 +380,7 @@ include "../../../../Sidebar.php";
                                     </li>
                                 </ul>
 
-                                <input  style="display: none" value="<?php echo $number_of_stop;?>"  name="number_of_stop" type="number" class="form-control" id="number_of_stop" min="0" max="60">
+                                <input  style=" display: none" value="<?php echo $number_of_stop;?>"  name="number_of_stop" type="number" class="form-control" id="number_of_stop" min="0" max="60" step="1">
 
                             </div><!-- Read From device -->
 

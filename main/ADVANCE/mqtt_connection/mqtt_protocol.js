@@ -45,6 +45,54 @@ function first_send() {
     }
 }*/
 
+function timer_check(){
+
+    check_max_min();
+}
+setInterval(timer_check, 500);
+
+function roundToStep(value, step, min) {
+    return +(Math.round((value - min) / step) * step + min).toFixed(2);
+}
+function check_max_min(){
+    for(let i=0; i<list_settnig.length; i++){
+        if(document.getElementById(list_settnig[i][0]) ){
+            const element = document.getElementById(list_settnig[i][0])
+            if( element instanceof HTMLInputElement ){
+
+                console.log("element Find")
+
+                let value = parseFloat(element.value);
+
+                if (value > parseFloat(element.max)) {
+                    alert(`مقدار ورودی نباید بیشتر از ${element.max} باشد!`);
+                    element.value = element.max;
+                } else if (value < parseFloat(element.min)) {
+                    alert(`مقدار ورودی نباید کمتر از ${element.min} باشد!`);
+                    element.value = element.min;
+                } else {
+                    // اصلاح خودکار مقدار به نزدیک‌ترین step و محدود کردن اعشار
+                    if( element.hasAttribute('step') ){
+                        element.value = roundToStep(value, parseFloat(element.step), parseFloat(element.min));
+                    }
+                    else{
+                        element.value = roundToStep(value, parseFloat(1), parseFloat(element.min));
+                    }
+
+                }
+            }
+        }
+
+    }
+}
+
+function myFunction(){
+
+}
+
+
+
+
 
 let topic_publish = "server/"+serial
 function load_end(){
@@ -58,8 +106,6 @@ function load_end(){
     }
 
     show_status()
-
-
 
 }
 

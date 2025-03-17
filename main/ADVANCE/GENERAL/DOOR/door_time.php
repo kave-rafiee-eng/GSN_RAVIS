@@ -229,7 +229,7 @@ include "../../../../Sidebar.php";
                                         <div class="row ">
                                             <label class="col-sm-4 col-form-label">Open Delay</label>
                                             <div class="col-sm-6">
-                                                <input  step=".1" value="<?php echo $open_delay;?>" name="open_delay" id="open_delay" type="number" class="form-control"  min="0" max="200">
+                                                <input  step=".1" value="<?php echo $open_delay;?>" name="open_delay" id="open_delay" type="number" class="form-control"  min="0" max="20">
                                             </div>
                                             <label class="col-sm-2 col-form-label text-danger ">sec</label>
                                         </div>
@@ -239,7 +239,7 @@ include "../../../../Sidebar.php";
                                         <div class="row ">
                                             <label class="col-sm-4 col-form-label">Close Delay</label>
                                             <div class="col-sm-6">
-                                                <input  step=".1" value="<?php echo $close_delay;?>" name="close_delay" id="close_delay" type="number" class="form-control"  min="0" max="200">
+                                                <input  step=".1" value="<?php echo $close_delay;?>" name="close_delay" id="close_delay" type="number" class="form-control"  min="0" max="20">
                                             </div>
                                             <label class="col-sm-2 col-form-label text-danger ">sec</label>
                                         </div>
@@ -279,7 +279,7 @@ include "../../../../Sidebar.php";
                                         <div class="row ">
                                             <label class="col-sm-4 col-form-label">69 Debouncer</label>
                                             <div class="col-sm-6">
-                                                <input step=".1" value="<?php echo $debouncer_69;?>" name="debouncer_69" id="debouncer_69" type="number" class="form-control"  min="0" max="200">
+                                                <input step=".1" value="<?php echo $debouncer_69;?>" name="debouncer_69" id="debouncer_69" type="number" class="form-control"  min="0" max="20">
                                             </div>
                                             <label class="col-sm-2 col-form-label text-danger ">sec</label>
                                         </div>
@@ -289,7 +289,7 @@ include "../../../../Sidebar.php";
                                         <div class="row ">
                                             <label class="col-sm-4 col-form-label">68 Debouncer</label>
                                             <div class="col-sm-6">
-                                                <input step=".1" value="<?php echo $debouncer_68;?>" name="debouncer_68" id="debouncer_68" type="number" class="form-control"  min="0" max="200">
+                                                <input step=".1" value="<?php echo $debouncer_68;?>" name="debouncer_68" id="debouncer_68" type="number" class="form-control"  min="0" max="20">
                                             </div>
                                             <label class="col-sm-2 col-form-label text-danger ">sec</label>
                                         </div>

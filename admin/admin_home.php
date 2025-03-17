@@ -126,7 +126,7 @@ include "Sidebar_admin.php";
 
                 <div class="card">
                     <div class="card-body">
-                        
+
                         <h5 class="card-title">جاوید شاه</h5>
                         <!-- Accordion without outline borders -->
                         <div class="accordion accordion-flush" id="accordionFlushExample">

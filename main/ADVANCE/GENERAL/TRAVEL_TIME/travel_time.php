@@ -202,7 +202,7 @@ include "../../../../Sidebar.php";
                             <div class="row mb-3">
 
                                 <div class="col-sm-10">
-                                    <input oninput="myFunction()"  value="<?php echo $travel_time;?>" name="travel_time" type="number" class="form-control" id="travel_time" min="0" max="200">
+                                    <input oninput="myFunction()"  value="<?php echo $travel_time;?>" name="travel_time" type="number" class="form-control" id="travel_time" min="0" max="200" step="1">
                                 </div>
                             </div>
 
