@@ -8,6 +8,9 @@ include "../../../../login/login_check.php"; //LOGIN_CHECK
 include "../../../../function.php"; //my_function
 
 include "../../../../main/GSM/change_status.php"; //change_status_function
+
+$version = '1.0.0'; // فقط این نسخه را تغییر دهید
+
 ?>
 
 <!DOCTYPE html>
@@ -267,9 +270,9 @@ include "../../../../Footer.php";
 <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
 
 <!-- Vendor JS Files -->
-<script  src="Flag_Mqtt_Function.js"></script>
-<script  src="list_type.js"></script>
-<script  src="flag.js"></script>
+<script  src="Flag_Mqtt_Function.js?v=<?php echo $version; ?>"></script>
+<script  src="list_type.js?v=<?php echo $version; ?>"></script>
+<script  src="flag.js?v=<?php echo $version; ?>"></script>
 
 <script src="/GSM_RAVIS/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/GSM_RAVIS/assets/vendor/quill/quill.js"></script>

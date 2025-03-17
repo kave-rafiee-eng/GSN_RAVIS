@@ -30,7 +30,7 @@ function repeater(){
 
 }
 setInterval(repeater, 1000);
-
+/*
 // ذخیره شناسه تایمر
 let TIMER_first_send = setInterval(first_send, 500);
 
@@ -43,7 +43,7 @@ function first_send() {
         // خاموش کردن تایمر
         clearInterval(TIMER_first_send);
     }
-}
+}*/
 
 
 let topic_publish = "server/"+serial

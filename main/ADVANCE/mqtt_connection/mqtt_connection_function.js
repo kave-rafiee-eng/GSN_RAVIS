@@ -47,6 +47,7 @@ function onConnect(){
     console.log("subscribe to:", topic);
 
     mqtt_connect=1;
+    send_mqtt();
 }
 function onConnectionLost(responseObject){
     document.getElementById("div_connection_status").innerHTML += "<span> ERROR: Connection is lost.</span><br>";

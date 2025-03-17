@@ -202,14 +202,14 @@ function send(){
 
 }
 
-var timer_send=50;
+var timer_send=30;
 
 function red(){
 
     if( timer_send > 0 )timer_send--;
     else {
         send();
-        timer_send=50;
+        timer_send=30;
     }
 
 }
