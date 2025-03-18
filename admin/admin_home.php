@@ -101,11 +101,11 @@ $current_time = date("H:i:s");
 <body  >
 
 <?php
-include "header_admin.php";
+    include "header_admin.php";
 ?>
 
 <?php
-include "Sidebar_admin.php";
+    include "Sidebar_admin.php";
 ?>
 
 <main  id="main" class="main">

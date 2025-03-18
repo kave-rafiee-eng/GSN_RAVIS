@@ -255,7 +255,7 @@ include "../../../../Footer.php";
 <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
 
 <?php
-$version = '1.0.7'; // فقط این نسخه را تغییر دهید
+$version = '1.0.8'; // فقط این نسخه را تغییر دهید
 ?>
 
 <!-- Vendor JS Files -->

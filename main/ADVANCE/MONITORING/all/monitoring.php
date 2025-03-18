@@ -5,7 +5,7 @@ include "../../../../read.php"; // $con
 
 include "../../../../login/login_check.php"; //LOGIN_CHECK
 
-$version = '1.0.1'; // فقط این نسخه را تغییر دهید
+$version = '1.0.2'; // فقط این نسخه را تغییر دهید
 
 ?>
 

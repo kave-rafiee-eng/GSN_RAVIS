@@ -79,7 +79,7 @@ function send() {
         }
     }
 
-    let index = 1;
+    let index = 0;
 
     if( send_one_time ){
         var JOSN_send1 = JSON.parse(send_one_time);
@@ -110,7 +110,7 @@ function send() {
 
         }
 
-        if (index > 2) break;
+        if (index > 20) break;
 
     }
 
@@ -182,7 +182,7 @@ function SEG_mqtt_massage_get(DATA) {
 
         var DATA_List = JSON.parse(list_data[i][2])
 
-        for (let j = 0; j < 10; j++) {
+        for (let j = 0; j < 20; j++) {
 
             if(DATA_List.ar == DATA_Recive["ar"+j] && DATA_List.ad == DATA_Recive["ad"+j] ){
 

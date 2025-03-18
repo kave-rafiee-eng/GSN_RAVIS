@@ -9,7 +9,7 @@ include "../../../../function.php"; //my_function
 
 include "../../../../main/GSM/change_status.php"; //change_status_function
 
-$version = '1.0.0'; // فقط این نسخه را تغییر دهید
+$version = '1.0.1'; // فقط این نسخه را تغییر دهید
 
 ?>
 

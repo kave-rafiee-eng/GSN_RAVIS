@@ -169,7 +169,7 @@ function send(){
         }
     }
 
-    let index=1;
+    let index=0;
     for (let i = 0; i < uniqueArAdPairs.length; i++) {
 
         if( uniqueArAdPairs[i][1] == 0 ){
@@ -187,7 +187,7 @@ function send(){
 
         }
 
-        if( index > 3 )break;
+        if( index > 20 )break;
 
     }
 
@@ -259,7 +259,7 @@ function FLAG_mqtt_massage_get(DATA){
 
         var DATA_List = JSON.parse(list_data[i][2])
 
-        for (let j = 0; j < 10; j++) {
+        for (let j = 0; j < 40; j++) {
 
             if(DATA_List.ar == DATA_Recive["ar"+j] && DATA_List.ad == DATA_Recive["ad"+j] ){
 

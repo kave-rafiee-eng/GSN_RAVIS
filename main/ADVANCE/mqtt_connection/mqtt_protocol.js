@@ -30,6 +30,19 @@ function repeater(){
 
 }
 setInterval(repeater, 1000);
+
+let timer_send=50;
+function repeat(){
+
+    if( timer_send > 0 )timer_send--;
+    else {
+        send_mqtt();
+        timer_send=30;
+    }
+
+}
+setInterval(repeat, 100);
+
 /*
 // ذخیره شناسه تایمر
 let TIMER_first_send = setInterval(first_send, 500);
@@ -121,6 +134,7 @@ function isJson(str) {
 }
 function mqtt_massage_get( message ){
 
+
     if( JSON.parse(message) ) {
 
         const obj_esp = JSON.parse(message);
@@ -133,11 +147,13 @@ function mqtt_massage_get( message ){
 
                 var obj_setting = JSON.parse(list_settnig[i][1])
 
-                for (let j = 0; j < 10; j++) {
+                for (let j = 0; j < 40; j++) {
 
                     if (obj_setting.ar == obj_esp["ar" + j] && obj_setting.ad == obj_esp["ad" + j]) {
 
                         if (obj_esp["da" + j] >= 0) {
+
+                            timer_send=50;
 
                             let factor = list_settnig[i][4];
                             let Addition = list_settnig[i][5];
@@ -183,7 +199,7 @@ function send_mqtt(){
 
     let j=0;
 
-    for (let i = 1; i < list_settnig.length+1 && j<3 ; i++) {
+    for (let i = 1; i < list_settnig.length+1 && j < 20 ; i++) {
 
         let data = document.getElementById(list_settnig[i-1][0])
 

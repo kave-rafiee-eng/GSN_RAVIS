@@ -47,7 +47,7 @@ function send(){
         }
     }
 
-    let index=1;
+    let index=0;
     for (let i = 0; i < data_table_mqtt.length; i++) {
 
         if( data_table_mqtt[i][3] == 1 ){
@@ -61,7 +61,7 @@ function send(){
             index++;
         }
 
-        if( index > 3 )break;
+        if( index > 15 )break;
 
     }
 
@@ -94,7 +94,7 @@ function esp_data(esp_data){
 
         var obj_mqtt = JSON.parse(data_table_mqtt[i][2])
 
-        for (let j = 0; j < 10; j++) {
+        for (let j = 0; j < 40; j++) {
 
             //if( esp_data.search("ad"+j) >= 0 ){
 

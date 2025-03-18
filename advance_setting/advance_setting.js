@@ -217,18 +217,16 @@ function send_mqtt(){
 
         if( activeArray[0].status != "update"  ){
 
-            obj_send["ad1"] = activeArray[0].ad;
-            obj_send["ar1"] = activeArray[0].ar;
+            obj_send["ad0"] = activeArray[0].ad;
+            obj_send["ar0"] = activeArray[0].ar;
             if( activeArray[0].status == "upload" ){
-                obj_send["st1"] = 1;
-                obj_send["da1"] = Math.round(document.getElementById(activeArray[1]).value * activeArray[0].factor + activeArray[0].Addition +  activeArray[0].offset )
-
-
+                obj_send["st0"] = 1;
+                obj_send["da0"] = Math.round(document.getElementById(activeArray[1]).value * activeArray[0].factor + activeArray[0].Addition +  activeArray[0].offset )
 
             }
             else{
-                obj_send["st1"] = 0;
-                obj_send["da1"] = 0;
+                obj_send["st0"] = 0;
+                obj_send["da0"] = 0;
             }
 
             console.log(JSON.stringify(obj_send));
@@ -247,7 +245,7 @@ function send_mqtt(){
     }
 
 
-    let j=1;
+    let j=0;
 
     if (  activeArray[0].type == "multy_SELECT" ) {
 
@@ -273,7 +271,7 @@ function send_mqtt(){
             }
             //arrays.multy_SELECT[0][`status${i}`] = i;
 
-            if(j>3)break;
+            if(j>23)break;
         }
 
         if( j>1){
@@ -361,9 +359,9 @@ function send_mqtt(){
 
                 }
 
-                if(index_send>2)break;
+                if(index_send>23)break;
             }
-            if(index_send>2)break;
+            if(index_send>23)break;
         }
 
         if( index_send>0){
@@ -402,7 +400,7 @@ function ADVANCE_mqtt_massage_get(DATA){
 
         //var json_activeArray = JSON.parse(activeArray[0])
 
-        for (let j = 0; j < 10; j++) {
+        for (let j = 0; j < 40; j++) {
 
             if(activeArray[0].ar == DATA_Recive["ar"+j] && activeArray[0].ad == DATA_Recive["ad"+j] ){
 
@@ -424,7 +422,7 @@ function ADVANCE_mqtt_massage_get(DATA){
 
         for (let i = 0; i < arrays_list[activeArray[2]].length; i++) {
 
-            for (let j = 0; j < 10; j++) {
+            for (let j = 0; j < 40; j++) {
 
                 if(activeArray[0].ar == DATA_Recive["ar"+j] && (activeArray[0].ad+i) == DATA_Recive["ad"+j] ){
 
@@ -461,7 +459,7 @@ function ADVANCE_mqtt_massage_get(DATA){
     let pre=1;
     if (activeArray[0].hasOwnProperty('per_en')) {
 
-        for (let j = 0; j < 10; j++) {
+        for (let j = 0; j < 40; j++) {
 
             if(activeArray[0].pre_ar == DATA_Recive["ar"+j] && activeArray[0].pre_ad == DATA_Recive["ad"+j] ){
 
@@ -489,7 +487,7 @@ function ADVANCE_mqtt_massage_get(DATA){
         for (let cols = 0; cols < cols_conter; cols++) {
             for (let rows_stage = 0; rows_stage < activeArray[0].stage; rows_stage++) {
 
-                for (let j = 0; j < 10; j++) {
+                for (let j = 0; j < 40; j++) {
 
                     if( activeArray[0].address[rows_stage].ar == DATA_Recive["ar"+j] && activeArray[0].address[rows_stage].ad+cols == DATA_Recive["ad"+j] ){
 
