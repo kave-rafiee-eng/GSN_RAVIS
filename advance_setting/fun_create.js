@@ -338,9 +338,10 @@ function updateProgress(value) {
         modalMessage.textContent = "عملیات با موفقیت انجام شد!";
 
         // بستن خودکار مودال پس از تکمیل
-        setTimeout(() => {
+        /*setTimeout(() => {
             if (alertModal) alertModal.hide();
-        }, 500);
+        }, 500);*/
+        if (alertModal) alertModal.hide();
     }
 }
 

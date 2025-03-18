@@ -9,7 +9,7 @@ include "../function.php"; //my_function
 
 $change="unknown";
 
-$version = '1.0.1'; // فقط این نسخه را تغییر دهید
+$version = '1.0.3'; // فقط این نسخه را تغییر دهید
 
 ?>
 

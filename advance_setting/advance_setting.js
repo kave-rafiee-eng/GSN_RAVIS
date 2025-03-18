@@ -307,11 +307,11 @@ function send_mqtt(){
 
             pre=0;
 
-            obj_send["ad1"] = activeArray[0].pre_ad;
-            obj_send["ar1"] = activeArray[0].pre_ar;
+            obj_send["ad0"] = activeArray[0].pre_ad;
+            obj_send["ar0"] = activeArray[0].pre_ar;
 
-            obj_send["st1"] = 0;
-            obj_send["da1"] = 0;
+            obj_send["st0"] = 0;
+            obj_send["da0"] = 0;
 
             console.log(JSON.stringify(obj_send));
             publishMessage(topic,JSON.stringify(obj_send));
