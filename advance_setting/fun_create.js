@@ -335,7 +335,7 @@ function updateProgress(value) {
     progressBar_Madal.textContent = `${value}%`;
 
     if (value >= 100) {
-        modalMessage.textContent = "عملیات با موفقیت انجام شد!";
+        //modalMessage.textContent = "عملیات با موفقیت انجام شد!";
 
         // بستن خودکار مودال پس از تکمیل
         setTimeout(() => {
